@@ -1,4 +1,4 @@
-package com.moneytrack;
+package com.money.tracker.by.arios;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
