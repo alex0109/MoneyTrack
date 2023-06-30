@@ -1,0 +1,39 @@
+{
+  "translation": {
+    "settings": {
+      "settingsTitle": "Settings",
+      "languageTitle": "Language",
+      "languageUkr": "Ukrainian",
+      "languageEng": "English",
+      "themeTitle": "Theme",
+      "themeDark": "Dark",
+      "themeLight": "Light",
+      "themeDefault": "Default",
+      "currencyTitle": "Currency"
+    },
+    "firstScreen": {
+      "countTitle": "Counts",
+      "noCountsMessage": "You have't any counts",
+      "currentsIncome": "Current month Income:",
+      "countModalTitleIncome": "You can change your monthly income",
+      "modalTitleAdd": "How much do you want to add?",
+      "modalAddButton": "Add",
+      "countModalSetbutton": "Set",
+      "targetTitle": "Targets",
+      "noTargetsMessage": "You have't any targets",
+      "modalTargetTitle": "What is your target?"
+    },
+    "thirdScreen": {
+      "historyTitle": "History",
+      "monthHistoryButton": "Month history",
+      "fullHistoryButton": "Full history",
+      "noHistoryMessage": "You have't any actions"
+    },
+    "global": {
+      "back": "Back",
+      "placeholderValue": "Your value...",
+      "placeholderTitle": "Your title...",
+      "headerBalance": "Balance"
+    }
+  }
+}

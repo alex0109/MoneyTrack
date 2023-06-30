@@ -1,0 +1,39 @@
+{
+  "translation": {
+    "settings": {
+      "settingsTitle": "Налаштування",
+      "languageTitle": "Мова",
+      "languageUkr": "Українська",
+      "languageEng": "Англійська",
+      "themeTitle": "Тема",
+      "themeDark": "Темна",
+      "themeLight": "Світла",
+      "themeDefault": "Як на смартфоні",
+      "currencyTitle": "Валюта"
+    },
+    "firstScreen": {
+      "countTitle": "Рахунки",
+      "noCountsMessage": "У вас немає жодного рахунку",
+      "currentsIncome": "Ваш місячний дохід:",
+      "countModalTitleIncome": "Ви можете змінити ваш місячний дохід",
+      "modalTitleAdd": "Скільки ви хочете додати?",
+      "modalAddButton": "Додати",
+      "countModalSetbutton": "Встановити",
+      "targetTitle": "Цілі",
+      "noTargetsMessage": "У вас немає жодної цілі",
+      "modalTargetTitle": "Яку ціль ви хочете визначити?"
+    },
+    "thirdScreen": {
+      "historyTitle": "Історія",
+      "monthHistoryButton": "Історія за місяць",
+      "fullHistoryButton": "Повна історія",
+      "noHistoryMessage": "Зараз ваша історія пуста..."
+    },
+    "global": {
+      "back": "Назад",
+      "placeholderValue": "Ваше число...",
+      "placeholderTitle": "Ваша назва...",
+      "headerBalance": "Баланс"
+    }
+  }
+}
