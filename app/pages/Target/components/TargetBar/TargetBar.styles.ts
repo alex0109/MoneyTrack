@@ -21,18 +21,20 @@ export const styles = StyleSheet.create({
     backgroundColor: 'rgba(228, 229, 231, 0.2)',
   },
   contentItem: {
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
     height: '100%',
     paddingLeft: 10,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: '500',
     paddingLeft: 10,
   },
   subTitle: {
     paddingLeft: 10,
     color: Colors.light.colors.success,
-    fontSize: 16,
+    fontSize: 18,
   },
 });

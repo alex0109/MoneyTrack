@@ -37,9 +37,7 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
         </Text>
       </View>
       <View style={styles.chart}>
-        <View style={{ flex: 1 }}>
-          <Pie radius={100} innerRadius={70} sections={data} strokeCap={'butt'} />
-        </View>
+        <Pie radius={100} innerRadius={70} sections={data} strokeCap={'butt'} />
         <View style={[styles.categoriesCircle]}>
           {actions.map((item, index) => {
             const { x, y } = getCoordinatesForIndex(-index + 1, actions.length);

@@ -1,7 +1,14 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AlternativeKeyboard from '../../../../modules/Calculator/AlternativeKeyboard';
@@ -35,7 +42,15 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
   } = useActions();
   const { category } = useTypedSelector((state) => state);
   const [toggleCustomisation, setToggleCustomisation] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { t } = useTranslation();
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const findModalPropByID = (index: string): ICategory => {
     const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
@@ -75,7 +90,7 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
   };
 
   return (
-    <ScrollView style={[styles.container, { backgroundColor: matchedCategory?.color }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: matchedCategory?.color }]}>
       <View style={[styles.header, { backgroundColor: matchedCategory?.color }]}>
         <TextInput
           style={[styles.title, { color: colors.themeColor }]}
@@ -93,14 +108,16 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
           placeholderTextColor={colors.themeColor}
         />
       </View>
-      <ScrollView style={[styles.content, { backgroundColor: colors.themeColor }]}>
+      <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         {toggleCustomisation ? (
           <View>
-            <View
+            <ScrollView
+              horizontal={true}
+              refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
-                justifyContent: 'center',
+                overflow: 'hidden',
               }}>
               {colorsArray.map((color, index) => (
                 <TouchableOpacity
@@ -116,7 +133,7 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
                     borderColor: colors.textColor,
                   }}></TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
               {iconsArray.map((icon, index) => (
                 <TouchableOpacity
@@ -153,8 +170,8 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
             )}
           </TouchableOpacity>
         </View>
-      </ScrollView>
-    </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

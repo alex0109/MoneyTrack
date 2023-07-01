@@ -13,7 +13,6 @@ import {
   AccountsStackNavigator,
   AnalyticsStackNavigator,
   ChartStackNavigator,
-  SettingsStackNavigator,
 } from './StackNavigator';
 
 import type { RootStackParamList } from './StackNavigator';
@@ -22,10 +21,6 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 const TabNavigator = () => {
   const colors = useTheme().colors;
-  const { count } = useTypedSelector((state) => state);
-  const navigation = useNavigation();
-  const { t } = useTranslation();
-  const countsSum = count.map((count) => count.value).reduce((a, b) => a + b, 0);
 
   return (
     <Tab.Navigator
@@ -35,24 +30,11 @@ const TabNavigator = () => {
           backgroundColor: colors.contrastColor,
           borderTopWidth: 0,
         },
-        tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: colors.warning,
         tabBarInactiveTintColor: colors.textColor,
         tabBarButton: (props) => <TouchableOpacity {...props} />,
         tabBarShowLabel: false,
-        headerShown: true,
-        headerBackgroundContainerStyle: {
-          backgroundColor: colors.contrastColor,
-        },
-        headerTitle: () => (
-          <View style={[]}>
-            <Text style={{ color: colors.textColor, fontSize: 20, fontWeight: 'bold' }}>
-              {t('global.headerBalance')} - {countsSum}
-            </Text>
-          </View>
-        ),
-        headerTitleAlign: 'center',
-        headerRight: () => <SettingsIcon />,
+        headerShown: false,
       })}>
       <Tab.Screen
         name='AccountsTab'
@@ -74,28 +56,6 @@ const TabNavigator = () => {
           tabBarIcon: ({ color }) => <Ionicons name='md-stats-chart' size={22} color={color} />,
         }}
         component={AnalyticsStackNavigator}
-      />
-      <Tab.Screen
-        name='SettingsTab'
-        options={{
-          tabBarButton: () => null,
-          headerTitle: () => null,
-          headerRight: () => null,
-          headerLeft: () => (
-            <View
-              style={{
-                height: '100%',
-                width: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons size={30} name='arrow-back-outline' color={colors.textColor} />
-              </TouchableOpacity>
-            </View>
-          ),
-        }}
-        component={SettingsStackNavigator}
       />
     </Tab.Navigator>
   );

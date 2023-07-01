@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
     flex: 2,
   },
   header: {
-    flex: 1,
     marginTop: 40,
   },
   headerText: {
@@ -16,16 +15,17 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   chart: {
+    flex: 1,
     position: 'relative',
-    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonWrap: {
     marginTop: 20,
   },
   categoriesCircle: {
+    alignItems: 'center',
     position: 'absolute',
-    left: '19%',
-    top: '16%',
   },
   categoryItem: {
     alignItems: 'center',
@@ -38,7 +38,6 @@ export const styles = StyleSheet.create({
   addItemCircle: {
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
     height: 45,
     width: 45,
     borderRadius: 40,
