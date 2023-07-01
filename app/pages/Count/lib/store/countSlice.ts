@@ -53,9 +53,16 @@ export const countSlice = createSlice({
       countToChange!.title = action.payload.title;
       return state;
     },
-    handleChangeCount: (state, action: PayloadAction<{ index: string; value: number }>) => {
+    handleChangeCount: (
+      state,
+      action: PayloadAction<{ index: string; value: number; historyValue: number }>
+    ) => {
       const countToChange = state.find((count) => count.index === action.payload.index);
       countToChange!.value = action.payload.value;
+      countToChange!.history.push({
+        date: moment().format('YYYY-MM-DD'),
+        value: action.payload.historyValue,
+      });
       return state;
     },
     handleTopUpCount: (state, action: PayloadAction<{ index: string; value: number }>) => {

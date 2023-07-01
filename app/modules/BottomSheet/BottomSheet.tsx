@@ -121,7 +121,7 @@ const BottomSheet = forwardRef<BottomSheetRefProps, BottomSheetProps>(
               { height: activeHeight, backgroundColor: backgroundColor },
             ]}>
             <View style={styles.lineContainer}>
-              <View style={[styles.line, { backgroundColor: colors.contrastColor }]} />
+              <View style={[styles.line, { backgroundColor: colors.textColor }]} />
             </View>
             {children}
           </Animated.View>

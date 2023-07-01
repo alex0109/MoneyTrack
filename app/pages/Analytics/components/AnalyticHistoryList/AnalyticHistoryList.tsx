@@ -29,7 +29,7 @@ const AnalyticHistoryList: FC = () => {
   useEffect(() => {
     const sortCategories = sortByMonths(category, count).reverse();
     setSortedOutcomes(sortCategories);
-  }, [category]);
+  }, [category, count]);
 
   return (
     <View style={[styles.container]}>

@@ -46,23 +46,25 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
     setCalc(calc + value);
   };
 
-  const calculate = () => {
-    setCalc(eval(calc).toString());
+  const clear = () => {
+    setCalc('');
+    setResult('');
   };
 
+  //Problem with deleting result
   const deleteLast = () => {
     if (calc === '') {
       setCalc('');
       return;
     }
-
     const value = calc.slice(0, -1);
-    setCalc(value);
-  };
 
-  const clear = () => {
-    setCalc('');
-    setResult('');
+    if (value) {
+      setCalc(value);
+      setResult(eval(value).toString());
+    } else {
+      clear();
+    }
   };
 
   const topUpCategoryHandler = () => {
@@ -82,9 +84,20 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
   return (
     <View style={styles.container}>
       <View style={styles.result}>
-        <Text style={[styles.firstNumber, { color: colors.textColor, marginRight: 20 }]}>
-          {calc}
-        </Text>
+        <View style={{ width: '70%', justifyContent: 'center', alignItems: 'center' }}>
+          <Text
+            style={{
+              color: colors.textColor,
+              marginRight: 20,
+              fontSize: calc.length > 6 ? 26 : 32,
+            }}>
+            {calc == '' ? (
+              <Text style={{ fontSize: 16, color: 'gray' }}>Type your value...</Text>
+            ) : (
+              calc
+            )}
+          </Text>
+        </View>
         <View style={{ justifyContent: 'flex-start', height: '100%' }}>
           <TouchableOpacity onPress={() => changeCountHandler()}>
             <Text style={{ textAlign: 'center', fontWeight: 'bold', color: colors.textColor }}>
@@ -111,24 +124,19 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
           <CalculatorButton onPress={() => updateCalc('7')} title='7' />
           <CalculatorButton onPress={() => updateCalc('8')} title='8' />
           <CalculatorButton onPress={() => updateCalc('9')} title='9' />
-          <CalculatorButton onPress={() => updateCalc('/')} title='/' />
         </View>
         <View style={styles.row}>
           <CalculatorButton onPress={() => updateCalc('4')} title='4' />
           <CalculatorButton onPress={() => updateCalc('5')} title='5' />
           <CalculatorButton onPress={() => updateCalc('6')} title='6' />
-          <CalculatorButton onPress={() => updateCalc('*')} title='*' />
         </View>
         <View style={styles.row}>
           <CalculatorButton onPress={() => updateCalc('1')} title='1' />
           <CalculatorButton onPress={() => updateCalc('2')} title='2' />
           <CalculatorButton onPress={() => updateCalc('3')} title='3' />
-          <CalculatorButton onPress={() => updateCalc('-')} title='-' />
         </View>
         <View style={styles.row}>
           <CalculatorButton onPress={() => updateCalc('0')} title='0' />
-          <CalculatorButton onPress={() => calculate()} title='=' />
-          <CalculatorButton onPress={() => updateCalc('+')} title='+' />
         </View>
       </View>
     </View>
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignSelf: 'center',
+    alignItems: 'center',
   },
   iconButton: {
     justifyContent: 'center',
@@ -160,14 +168,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#ccc',
   },
   row: {
-    maxWidth: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  firstNumber: {
-    fontSize: 34,
-  },
-  secondNumber: {
-    fontSize: 26,
+    justifyContent: 'space-around',
   },
 });

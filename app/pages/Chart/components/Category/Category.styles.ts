@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
   header: {
     height: height * 0.2,
     width: '100%',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -50,9 +49,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    height: 70,
     fontSize: 28,
-    width: '100%',
     fontWeight: 'bold',
     textAlign: 'center',
   },

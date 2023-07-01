@@ -1,17 +1,13 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useCallback, useRef } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { TextInput, View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
-import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import CountModal from '../CountModal/CountModal';
-
-import IncomeModal from '../IncomeModal/IncomeModal';
 
 import { styles } from './CountBottomSheet.styles';
 
@@ -25,9 +21,10 @@ interface CountBottomSheetProps {
 }
 const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID }) => {
   const colors = useTheme().colors;
-  const { handleDeleteCount, handleChangeCountTitle, handleChangeCount } = useActions();
+  const { handleDeleteCount } = useActions();
   const { count } = useTypedSelector((state) => state);
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ICount => {
     const item: ICount | undefined = count.find((item: ICount) => item.index === index);
@@ -51,14 +48,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   const countElement = findModalPropByID(countID);
 
   const refCountModal = useRef<ModalRefProps>(null);
-  const refMonthIncomeModal = useRef<ModalRefProps>(null);
-
-  const setMonthIncomeModalVisible = useCallback((modalVisible: boolean) => {
-    const setModalVisible = refMonthIncomeModal.current?.setModalVisible(modalVisible);
-    if (setModalVisible) {
-      refMonthIncomeModal.current?.setModalVisible(modalVisible);
-    }
-  }, []);
 
   const setCountModalVisible = useCallback((modalVisible: boolean) => {
     const setModalVisible = refCountModal.current?.setModalVisible(modalVisible);
@@ -68,19 +57,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   }, []);
 
   const countModalVisible = refCountModal.current?.modalVisible;
-  const monthIncomeModalVisible = refMonthIncomeModal.current?.modalVisible;
-
-  const changeTitleHandler = (index: string, newTitle: string): void => {
-    if (validateTitle(newTitle)) {
-      handleChangeCountTitle({ index: index, title: newTitle });
-    }
-  };
-
-  const countChangeHandler = (index: string, newValue: string): void => {
-    if (validateValue(newValue)) {
-      handleChangeCount({ index: index, value: +newValue });
-    }
-  };
 
   const removeCountHandler = (index: string): void => {
     handleCountClose();
@@ -90,33 +66,16 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   return (
     <View style={[styles.container, { backgroundColor: 'green' }]}>
       <View style={[styles.header, { backgroundColor: 'green' }]}>
-        <TextInput
-          style={[styles.title, { color: colors.themeColor }]}
-          defaultValue={countElement.title}
-          onChangeText={(enteredText) => {
-            changeTitleHandler(countElement.index, enteredText);
-          }}
-          placeholder={t('global.placeholderTitle')!}
-          placeholderTextColor={colors.themeColor}
-        />
-        <TextInput
-          style={[styles.subTitle, { color: colors.themeColor }]}
-          defaultValue={countElement.value.toString()}
-          onChangeText={(enteredText) => {
-            countChangeHandler(countElement.index, enteredText);
-          }}
-          keyboardType='numeric'
-          placeholder={t('global.placeholderValue')!}
-          placeholderTextColor={colors.themeColor}
-        />
+        <Text style={[styles.title, { color: colors.themeColor }]}>{countElement.title}</Text>
       </View>
       <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         <View style={[styles.belt]}>
           <TouchableOpacity onPress={() => removeCountHandler(countID)}>
             <Ionicons name='trash' size={35} color={colors.red} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setMonthIncomeModalVisible(true)}>
-            <Ionicons name='calendar' size={35} color={colors.textColor} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CountEditStack', { countID: countID })}>
+            <Ionicons name='md-construct' size={35} color={colors.textColor} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCountModalVisible(true)}>
             <Ionicons name='add-outline' size={35} color={colors.textColor} />
@@ -132,13 +91,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
           refModal={refCountModal}
           modalVisible={countModalVisible}
           setModalVisible={setCountModalVisible}
-        />
-        <IncomeModal
-          countElementIndex={countElement.index}
-          countMonthIncome={countElement.monthIncome.value}
-          refModal={refMonthIncomeModal}
-          modalVisible={monthIncomeModalVisible}
-          setModalVisible={setMonthIncomeModalVisible}
         />
       </View>
     </View>

@@ -8,6 +8,7 @@ import { useActions } from './shared/lib/hooks/useActions';
 import { useTypedSelector } from './shared/lib/hooks/useTypedSelector';
 import TabNavigator from './shared/lib/navigation/TabNavigator';
 import { ThemeContext } from './shared/lib/providers/ThemeProvider';
+import { persistor } from './shared/lib/store/store';
 
 const Root = () => {
   const { theme } = useContext(ThemeContext);

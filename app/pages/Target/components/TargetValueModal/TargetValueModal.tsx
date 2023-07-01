@@ -55,6 +55,7 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
             styles.modalCountText,
             { color: colors.textColor, borderBottomColor: colors.textColor },
           ]}
+          autoFocus={true}
           placeholder={t('global.placeholderValue')!}
           placeholderTextColor={colors.gray}
           keyboardType='numeric'

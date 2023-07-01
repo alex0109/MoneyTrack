@@ -56,6 +56,7 @@ const CountModal: FC<CountModalProps> = ({
             styles.modalCountText,
             { color: colors.textColor, borderBottomColor: colors.textColor },
           ]}
+          autoFocus={true}
           placeholder={t('global.placeholderValue')!}
           placeholderTextColor={colors.gray}
           keyboardType='numeric'

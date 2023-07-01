@@ -1,15 +1,12 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { Easing, runTiming, useFont, useValue } from '@shopify/react-native-skia';
 import React, { useCallback, useRef } from 'react';
-import { TextInput, View, PixelRatio, Text, TouchableOpacity } from 'react-native';
+import { View, PixelRatio, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
-import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import TargetDonut from '../TargetDonut/TargetDonut';
-import TargetModal from '../TargetModal/TargetModal';
 import TargetValueModal from '../TargetValueModal/TargetValueModal';
 
 import { styles } from './TargetBottomSheet.styles';
@@ -28,14 +25,9 @@ interface TargetBottomSheetProps {
 }
 const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targetID }) => {
   const colors = useTheme().colors;
-
-  const {
-    handleDeleteTarget,
-    handleChangeTarget,
-    handleChangeTargetValue,
-    handleChangeTargetTitle,
-  } = useActions();
+  const { handleDeleteTarget } = useActions();
   const { target } = useTypedSelector((state) => state);
+  const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ITarget => {
     const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
@@ -57,7 +49,6 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
   })();
 
   const refTargeValuetModal = useRef<ModalRefProps>(null);
-  const refTargetModal = useRef<ModalRefProps>(null);
 
   const setTargetValueModalVisible = useCallback((modalVisible: boolean) => {
     const setModalVisible = refTargeValuetModal.current?.setModalVisible(modalVisible);
@@ -66,33 +57,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
     }
   }, []);
 
-  const setTargetModalVisible = useCallback((modalVisible: boolean) => {
-    const setModalVisible = refTargetModal.current?.setModalVisible(modalVisible);
-    if (setModalVisible) {
-      refTargetModal.current?.setModalVisible(modalVisible);
-    }
-  }, []);
-
   const targetValueModalVisible = refTargeValuetModal.current?.modalVisible;
-  const targetModalVisible = refTargetModal.current?.modalVisible;
-
-  const changeTitleHandler = (index: string, newTitle: string): void => {
-    if (validateTitle(newTitle)) {
-      handleChangeTargetTitle({ index: index, title: newTitle });
-    }
-  };
-
-  const targetChangeHandler = (index: string, newTarget: string): void => {
-    if (validateValue(newTarget)) {
-      handleChangeTarget({ index: index, target: +newTarget });
-    }
-  };
-
-  const targetValueChangeHandler = (index: string, newTargetValue: string): void => {
-    if (validateValue(newTargetValue)) {
-      handleChangeTargetValue({ index: index, value: +newTargetValue });
-    }
-  };
 
   const removeTargetHandler = (index: string): void => {
     handleTargetClose();
@@ -111,46 +76,16 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
   return (
     <View style={[styles.container, { backgroundColor: 'green' }]}>
       <View style={[styles.header, { backgroundColor: 'green' }]}>
-        <TextInput
-          style={[styles.title, { color: colors.themeColor }]}
-          defaultValue={targetElement.title}
-          onChangeText={(enteredText) => {
-            changeTitleHandler(targetElement.index, enteredText);
-          }}
-          placeholder='Your title...'
-          placeholderTextColor={colors.themeColor}
-        />
-        <View style={styles.subTitleContainer}>
-          <TextInput
-            style={[styles.subTitle, { color: colors.themeColor }]}
-            defaultValue={targetElement.value.toString()}
-            onChangeText={(enteredText) => {
-              targetValueChangeHandler(targetElement.index, enteredText);
-            }}
-            keyboardType='numeric'
-            placeholder='Your count...'
-            placeholderTextColor={colors.themeColor}
-          />
-          <Text style={[styles.subTitle, { color: colors.themeColor }]}>/</Text>
-          <TextInput
-            style={[styles.subTitle, { color: colors.themeColor }]}
-            defaultValue={targetElement.target.toString()}
-            onChangeText={(enteredText) => {
-              targetChangeHandler(targetElement.index, enteredText);
-            }}
-            keyboardType='numeric'
-            placeholder='Your count...'
-            placeholderTextColor={colors.themeColor}
-          />
-        </View>
+        <Text style={[styles.title, { color: colors.themeColor }]}>{targetElement.title}</Text>
       </View>
       <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         <View style={[styles.belt]}>
           <TouchableOpacity onPress={() => removeTargetHandler(targetID)}>
             <Ionicons name='trash' size={35} color={colors.red} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTargetModalVisible(true)}>
-            <Ionicons name='rocket' size={35} color={colors.info} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TargetEditStack', { targetID: targetID })}>
+            <Ionicons name='md-construct' size={35} color={colors.textColor} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setTargetValueModalVisible(true)}>
             <Ionicons name='add-outline' size={35} color={colors.textColor} />
@@ -173,12 +108,6 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
           refModal={refTargeValuetModal}
           modalVisible={targetValueModalVisible}
           setModalVisible={setTargetValueModalVisible}
-        />
-        <TargetModal
-          targetElement={targetElement}
-          refModal={refTargetModal}
-          modalVisible={targetModalVisible}
-          setModalVisible={setTargetModalVisible}
         />
       </View>
     </View>

@@ -55,7 +55,7 @@ const Accounts: FC = () => {
         </BottomSheet>
         <BottomSheet
           ref={targetBottomSheetRef}
-          activeHeight={height * 0.8}
+          activeHeight={height * 0.9}
           backgroundColor={colors.themeColor}
           backDropColor={'black'}>
           <TargetBottomSheet handleTargetClose={handleTargetClose} targetID={accountID} />

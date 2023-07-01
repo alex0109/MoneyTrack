@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Dimensions, StyleSheet, Text } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -16,7 +16,7 @@ const CalculatorButton: FC<CalculatorButtonProps> = ({ onPress, title, color }) 
   const colors = useTheme().colors;
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, { backgroundColor: color }]}>
-      <Text style={{ color: colors.textColor, fontSize: 24 }}>{title}</Text>
+      <Text style={{ color: colors.textColor, fontSize: 20 }}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 60,
-    width: 60,
-    margin: 8,
+    height: Dimensions.get('screen').height / 15,
+    width: Dimensions.get('screen').height / 15,
+    margin: 2,
   },
 });
