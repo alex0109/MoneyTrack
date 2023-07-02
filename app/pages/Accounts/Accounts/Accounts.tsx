@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useCallback, useRef, useState } from 'react';
+import Analytics from 'appcenter-analytics';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -37,6 +38,10 @@ const Accounts: FC = () => {
 
   const handleTargetClose = useCallback(() => {
     targetBottomSheetRef.current!.close();
+  }, []);
+
+  useEffect(() => {
+    void Analytics.trackEvent('Counts/Targets opened');
   }, []);
 
   return (

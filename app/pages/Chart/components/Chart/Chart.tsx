@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 
+import Analytics from 'appcenter-analytics';
 import moment from 'moment';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -45,6 +46,7 @@ const Chart: FC = () => {
   }, []);
 
   useEffect(() => {
+    void Analytics.trackEvent('Chart opened');
     if (i18n.language == 'uk') {
       moment.updateLocale('uk', {
         months: monthsUA,
@@ -56,9 +58,10 @@ const Chart: FC = () => {
     } else {
       moment().locale('en');
     }
+
     const currMonth = sortByCurrentMonth(category, count);
     setSortedByCurrentMonth(...currMonth);
-  }, [category]);
+  }, [category, count]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

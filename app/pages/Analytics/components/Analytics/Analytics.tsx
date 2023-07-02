@@ -1,4 +1,5 @@
 import { useTheme } from '@react-navigation/native';
+import Analytics from 'appcenter-analytics';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ const AnalyticsScreen: FC = () => {
   });
 
   useEffect(() => {
+    void Analytics.trackEvent('Analytic/History opened');
     if (i18n.language == 'ua') {
       moment.updateLocale('ua', {
         months: monthsUA,
