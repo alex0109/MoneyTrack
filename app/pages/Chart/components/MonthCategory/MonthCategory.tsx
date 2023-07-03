@@ -1,4 +1,4 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
@@ -6,9 +6,11 @@ import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 import Pie from 'react-native-pie';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useDispatch } from 'react-redux';
 
 import { getCoordinatesForIndex } from '../../lib/helpers/getCoordinates';
+
+import { addCategoryAndGetLastIndexThunk } from '../../lib/store/addCategoryAndGetLastIndexThunk';
 
 import { styles } from './MonthCategory.styles';
 
@@ -25,9 +27,14 @@ interface MonthCategoryProps {
 
 const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpenCategory }) => {
   const colors = useTheme().colors;
-  const { handleAddCategory } = useActions();
-
+  const navigation = useNavigation();
   const currentMonth = moment().format('YYYY-MM');
+  const dispatch = useDispatch();
+
+  const addMonthCategoryHandler = async () => {
+    const lastIndex = await dispatch(addCategoryAndGetLastIndexThunk());
+    navigation.navigate('CategoryEditStack', { categoryID: lastIndex });
+  };
 
   return (
     <View style={styles.main}>
@@ -73,10 +80,10 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
             );
           })}
           {actions.length >= 10 || currentMonth !== date ? (
-            <></>
+            <View style={[styles.addItemCircle, { borderWidth: 0 }]}></View>
           ) : (
             <View style={[styles.addItemCircle, { borderColor: colors.textColor }]}>
-              <Pressable onPress={() => handleAddCategory()}>
+              <Pressable onPress={() => addMonthCategoryHandler()}>
                 <Ionicons name={'add-outline'} size={35} color={colors.textColor} />
               </Pressable>
             </View>
