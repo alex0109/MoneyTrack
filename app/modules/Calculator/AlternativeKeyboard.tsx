@@ -68,9 +68,12 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
   };
 
   const topUpCategoryHandler = () => {
-    handleTopUpCategory({ index: categoryID, value: Number(result) });
-    handleDecreaseCount({ index: count[currentCount].index, value: Number(result) });
-    clear();
+    if (count.length > 0) {
+      handleTopUpCategory({ index: categoryID, value: Number(result) });
+      handleDecreaseCount({ index: count[currentCount].index, value: Number(result) });
+      clear();
+    }
+    return;
   };
 
   const changeCountHandler = () => {

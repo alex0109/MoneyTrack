@@ -76,10 +76,7 @@ export const countSlice = createSlice({
     },
     handleDecreaseCount: (state, action: PayloadAction<{ index: string; value: number }>) => {
       const countToChange = state.find((count) => count.index === action.payload.index);
-      if (countToChange!.value !== 0 && countToChange!.value >= action.payload.value) {
-        countToChange!.value = countToChange!.value - action.payload.value;
-        return state;
-      }
+      countToChange!.value = countToChange!.value - action.payload.value;
       return state;
     },
     handleMonthIncome: (state, action: PayloadAction<{ index: string }>) => {
