@@ -60,7 +60,6 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
     [saveTheme, saveThemeIndex]
   );
 
-  // Значение контекста, доступное для компонентов-потребителей
   const contextValue = {
     theme,
     themeIndex,

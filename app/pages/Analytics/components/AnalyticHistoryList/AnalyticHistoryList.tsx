@@ -32,7 +32,7 @@ const AnalyticHistoryList: FC = () => {
   }, [category, count]);
 
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, { paddingLeft: 25 }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Title>{t('thirdScreen.historyTitle')}</Title>
         <TouchableOpacity style={{ paddingRight: 25 }} onPress={() => setToggle(!toggle)}>

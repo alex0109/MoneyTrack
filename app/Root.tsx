@@ -1,18 +1,27 @@
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, useColorScheme } from 'react-native';
+
+import SplashScreen from 'react-native-splash-screen';
 
 import Colors from './shared/assets/styles/colors';
 import { useActions } from './shared/lib/hooks/useActions';
 import { useTypedSelector } from './shared/lib/hooks/useTypedSelector';
+import { AuthStackNavigator } from './shared/lib/navigation/StackNavigator';
 import TabNavigator from './shared/lib/navigation/TabNavigator';
+import { AuthContext } from './shared/lib/providers/AuthProvider';
 import { ThemeContext } from './shared/lib/providers/ThemeProvider';
-import { persistor } from './shared/lib/store/store';
+import { get } from './shared/lib/utils/asyncMethods';
 
-const Root = () => {
+import type { FC } from 'react';
+
+const Root: FC = () => {
   const { theme } = useContext(ThemeContext);
+  const authContext = useContext(AuthContext);
   const deviceTheme = useColorScheme();
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
   const { count } = useTypedSelector((state) => state);
 
   const { handleMonthIncome } = useActions();
@@ -39,14 +48,34 @@ const Root = () => {
     }
   };
 
+  GoogleSignin.configure({
+    webClientId: '352118646986-2o3q0be4l7htn1tdr8occg474fhvbnp9.apps.googleusercontent.com',
+  });
+
   useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await get('token');
+
+      if (storedToken) {
+        authContext.authenticate(storedToken);
+      }
+
+      setIsTryingLogin(false);
+    }
+
+    void fetchToken();
     checkForMonthIncomeHandler();
-  }, []);
+  }, [authContext.isAuthenticated]);
+
+  if (!isTryingLogin) {
+    SplashScreen.hide();
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <NavigationContainer theme={currentTheme(theme)}>
-        <TabNavigator />
+        {authContext.isAuthenticated && <TabNavigator />}
+        {!authContext.isAuthenticated && <AuthStackNavigator />}
       </NavigationContainer>
     </SafeAreaView>
   );

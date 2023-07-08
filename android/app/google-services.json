@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "352118646986",
+    "project_id": "moneytrack-eb7eb",
+    "storage_bucket": "moneytrack-eb7eb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352118646986:android:2caf6df98ae2cc0bd36c33",
+        "android_client_info": {
+          "package_name": "com.money.tracker.by.arios"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352118646986-vpud21ehp2drtoi3vb2hskuh88l3fcu3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.money.tracker.by.arios",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "352118646986-2o3q0be4l7htn1tdr8occg474fhvbnp9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeCGVtpfUGU0stwP1WliK4cFa8H9vRF54"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352118646986-2o3q0be4l7htn1tdr8occg474fhvbnp9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

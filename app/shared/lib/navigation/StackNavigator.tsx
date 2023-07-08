@@ -5,6 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Accounts from '../../../pages/Accounts/Accounts/Accounts';
 import AnalyticsScreen from '../../../pages/Analytics/components/Analytics/Analytics';
+import SignIn from '../../../pages/Auth/components/Authentication/SignIn';
+import SignUp from '../../../pages/Auth/components/Authentication/SignUp';
 import CategoryEdit from '../../../pages/Chart/components/CategoryEdit/CategoryEdit';
 import Chart from '../../../pages/Chart/components/Chart/Chart';
 import CountEdit from '../../../pages/Count/components/CountEdit/CountEdit';
@@ -14,6 +16,8 @@ import Balance from '../../ui/Balance/Balance';
 import SettingsIcon from '../../ui/SettingsIcon/SettingsIcon';
 
 export type RootStackParamList = {
+  SignInStack: { name: string };
+  SignUpStack: { name: string };
   ChartStack: { name: string };
   AccountsStack: { name: string };
   AnalyticsStack: { name: string };
@@ -29,6 +33,7 @@ export type RootStackParamList = {
 const AccountsStack = createStackNavigator<RootStackParamList>();
 const ChartStack = createStackNavigator<RootStackParamList>();
 const AnalyticsStack = createStackNavigator<RootStackParamList>();
+const AuthStack = createStackNavigator<RootStackParamList>();
 
 const screenOptionStyle = {
   headerShown: true,
@@ -36,6 +41,27 @@ const screenOptionStyle = {
   headerTitleAlign: 'center',
   headerRight: () => <SettingsIcon />,
   animationEnabled: false,
+};
+
+const AuthStackNavigator = () => {
+  const colors = useTheme().colors;
+
+  return (
+    <AuthStack.Navigator
+      initialRouteName='SignInStack'
+      screenOptions={{ headerShown: false, animationEnabled: false }}>
+      <AuthStack.Screen
+        name='SignInStack'
+        component={SignIn}
+        options={{ headerStyle: { backgroundColor: colors.contrastColor } }}
+      />
+      <AuthStack.Screen
+        name='SignUpStack'
+        component={SignUp}
+        options={{ headerStyle: { backgroundColor: colors.contrastColor } }}
+      />
+    </AuthStack.Navigator>
+  );
 };
 
 const AccountsStackNavigator = () => {
@@ -138,4 +164,4 @@ const AnalyticsStackNavigator = () => {
   );
 };
 
-export { AccountsStackNavigator, ChartStackNavigator, AnalyticsStackNavigator };
+export { AuthStackNavigator, AccountsStackNavigator, ChartStackNavigator, AnalyticsStackNavigator };

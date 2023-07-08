@@ -7,6 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import Title from '../../../../shared/ui/Title/Title';
 
+import Exit from '../Exit/Exit';
 import Theme from '../Theme/Theme';
 
 import type { FC } from 'react';
@@ -19,6 +20,7 @@ const Settings: FC = () => {
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <Title>{t('settings.settingsTitle')}</Title>
       <Theme />
+      <Exit />
     </ScrollView>
   );
 };

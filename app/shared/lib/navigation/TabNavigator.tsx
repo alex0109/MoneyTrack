@@ -1,13 +1,9 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import SettingsIcon from '../../ui/SettingsIcon/SettingsIcon';
-import { useTypedSelector } from '../hooks/useTypedSelector';
 
 import {
   AccountsStackNavigator,

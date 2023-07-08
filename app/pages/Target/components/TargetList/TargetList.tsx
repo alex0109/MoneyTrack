@@ -25,7 +25,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <View style={{ paddingLeft: 25 }}>
       <Title>{t('firstScreen.targetTitle')}</Title>
       {target.length == 0 ? (
         <View style={styles.noTargetsdMessage}>
@@ -58,7 +58,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
           </View>
         </View>
       )}
-    </>
+    </View>
   );
 };
 

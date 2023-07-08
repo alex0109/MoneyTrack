@@ -13,7 +13,7 @@ const Balance = () => {
   return (
     <View>
       <Text style={{ color: colors.textColor, fontSize: 20, fontWeight: 'bold' }}>
-        {t('global.headerBalance')} - {countsSum}
+        {t('global.headerBalance')} {countsSum}
       </Text>
     </View>
   );

@@ -25,7 +25,7 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
   const { t } = useTranslation();
 
   return (
-    <>
+    <View style={{ paddingLeft: 25 }}>
       <Title>{t('firstScreen.countTitle')}</Title>
 
       {count.length == 0 ? (
@@ -59,7 +59,7 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
           </View>
         </View>
       )}
-    </>
+    </View>
   );
 };
 
