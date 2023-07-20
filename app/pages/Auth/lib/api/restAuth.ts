@@ -12,8 +12,9 @@ const authenticade = async (mode: string, email: string, password: string) => {
   });
 
   const token: string = response.data.idToken;
+  const uid: string = response.data.localId;
 
-  return token;
+  return { token: token, uid: uid };
 };
 
 export const createUser = (email: string, password: string) =>

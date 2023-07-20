@@ -14,7 +14,7 @@ import type { FC } from 'react';
 const TargetEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const { handleChangeTarget, handleChangeTargetValue, handleChangeTargetTitle } = useActions();
-  const { target } = useTypedSelector((state) => state);
+  const target = useTypedSelector((state) => state.target.data);
   const { targetID } = route.params;
 
   const findModalPropByID = (index: string): ITarget => {
@@ -87,5 +87,6 @@ export default TargetEdit;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 25,
   },
 });

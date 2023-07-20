@@ -7,5 +7,3 @@ export const weekdaysUA = [
   'Субота',
   'Неділя',
 ];
-
-export const weekdaysShortUA = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];

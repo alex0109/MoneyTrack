@@ -1,7 +1,6 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
+
 import thunk from 'redux-thunk';
 
 import { categoryReducer } from '../../../pages/Chart/lib/store/categorySlice';
@@ -14,19 +13,12 @@ const rootReducer = combineReducers({
   category: categoryReducer,
 });
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: [thunk],
 });
 
 export type AppDispatch = typeof store.dispatch;
-export type TypeRootState = ReturnType<typeof store.getState>;
-export const persistor = persistStore(store);
+export type RootState = ReturnType<typeof store.getState>;
+
 export { store };

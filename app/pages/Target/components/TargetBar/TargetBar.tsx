@@ -36,16 +36,18 @@ const TargetBar: FC<ITarget> = (target) => {
   );
 
   return (
-    <Swipeable renderRightActions={onRightSwipe}>
-      <SafeAreaView style={[styles.contentContainer, { borderBottomColor: colors.textColor }]}>
-        <View style={styles.contentItem}>
-          <Text style={[styles.title, { color: colors.textColor }]}>{target.title}</Text>
-          <Text style={[styles.subTitle]}>
-            {target.value} / {target.target}
-          </Text>
-        </View>
-      </SafeAreaView>
-    </Swipeable>
+    <View style={{ marginBottom: 30 }}>
+      <Swipeable renderRightActions={onRightSwipe}>
+        <SafeAreaView style={[styles.contentContainer, { borderBottomColor: colors.textColor }]}>
+          <View style={styles.contentItem}>
+            <Text style={[styles.title, { color: colors.textColor }]}>{target.title}</Text>
+            <Text style={[styles.subTitle]}>
+              {target.value} / {target.target}
+            </Text>
+          </View>
+        </SafeAreaView>
+      </Swipeable>
+    </View>
   );
 };
 

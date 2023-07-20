@@ -1,15 +1,13 @@
 import { useTheme } from '@react-navigation/native';
 
 import Analytics from 'appcenter-analytics';
-import moment from 'moment';
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../../modules/BottomSheet/BottomSheet';
-import { monthsShortUA, monthsUA } from '../../../../shared/config/moment/months';
-import { weekdaysShortUA, weekdaysUA } from '../../../../shared/config/moment/weekdays';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import { sortByCurrentMonth } from '../../lib/helpers/getByCurrentMonth';
 import { getPercantageForCategory } from '../../lib/helpers/getPercent';
@@ -24,9 +22,9 @@ import type { FC } from 'react';
 const Chart: FC = () => {
   const colors = useTheme().colors;
   const { height } = useWindowDimensions();
-  const { category, count } = useTypedSelector((state) => state);
+  const category = useTypedSelector((state) => state.category.data);
+  const count = useTypedSelector((state) => state.count.data);
   const [categoryID, setCategoryID] = useState<string>('');
-  const { i18n } = useTranslation();
 
   const [sortedByCurrentMonth, setSortedByCurrentMonth] = useState<IMonthsCategory>({
     month: '',
@@ -47,17 +45,6 @@ const Chart: FC = () => {
 
   useEffect(() => {
     void Analytics.trackEvent('Chart opened');
-    if (i18n.language == 'uk') {
-      moment.updateLocale('uk', {
-        months: monthsUA,
-        monthsShort: monthsShortUA,
-        weekdays: weekdaysUA,
-        weekdaysShort: weekdaysShortUA,
-      });
-      moment().locale('uk');
-    } else {
-      moment().locale('en');
-    }
 
     const currMonth = sortByCurrentMonth(category, count);
     setSortedByCurrentMonth(...currMonth);

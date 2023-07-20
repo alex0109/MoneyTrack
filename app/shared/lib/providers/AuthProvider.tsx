@@ -7,13 +7,15 @@ import type { FC, ReactNode } from 'react';
 
 interface AuthContextType {
   token: string;
+  uid: string;
   isAuthenticated: boolean;
-  authenticate: (arg0: string) => void;
+  authenticate: (arg0: string, arg1: string) => void;
   logout: () => void;
 }
 
 const defaultAuthContext: AuthContextType = {
   token: '',
+  uid: '',
   isAuthenticated: false,
   authenticate: () => {},
   logout: () => {},
@@ -27,19 +29,25 @@ const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
 const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
   const [authToken, setAuthToken] = useState();
+  const [userID, setUserID] = useState();
 
-  const authenticate = (token) => {
+  const authenticate = (token, uid) => {
     setAuthToken(token);
+    setUserID(uid);
     void save('token', token);
+    void save('uid', uid);
   };
 
   const logout = () => {
     setAuthToken(null);
+    setUserID(null);
     void AsyncStorage.removeItem('token');
+    void AsyncStorage.removeItem('uid');
   };
 
   const value = {
     token: authToken,
+    uid: userID,
     isAuthenticated: !!authToken,
     authenticate: authenticate,
     logout: logout,

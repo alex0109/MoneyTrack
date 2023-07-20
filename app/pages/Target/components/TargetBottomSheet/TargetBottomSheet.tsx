@@ -26,7 +26,7 @@ interface TargetBottomSheetProps {
 const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targetID }) => {
   const colors = useTheme().colors;
   const { handleDeleteTarget } = useActions();
-  const { target } = useTypedSelector((state) => state);
+  const target = useTypedSelector((state) => state.target.data);
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ITarget => {

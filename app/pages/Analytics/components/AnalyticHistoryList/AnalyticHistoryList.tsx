@@ -66,7 +66,7 @@ const AnalyticHistoryList: FC = () => {
               ]}>
               <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
                 <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
-                  {moment(item.date).format('dddd - MMM DD YYYY')}
+                  {moment(item.date).format('dddd - DD MM YYYY')}
                 </Text>
               </View>
               <AnalyticHistoryItem values={item.values} />

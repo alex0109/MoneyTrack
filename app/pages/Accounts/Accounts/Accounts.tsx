@@ -12,9 +12,14 @@ import TargetList from '../../Target/components/TargetList/TargetList';
 
 import type { BottomSheetRefProps } from '../../../modules/BottomSheet/BottomSheet';
 import type { FC } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchCount } from '../../Count/lib/store/countSlice';
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 const Accounts: FC = () => {
   const [accountID, setAccountID] = useState<string>('');
+  const dispatch = useDispatch();
+  const count = useTypedSelector((state) => state.count.data);
 
   const colors = useTheme().colors;
 
@@ -47,7 +52,9 @@ const Accounts: FC = () => {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={[{ backgroundColor: colors.themeColor }]} alwaysBounceVertical={false}>
+        <ScrollView
+          style={[{ backgroundColor: colors.themeColor, flex: 1 }]}
+          alwaysBounceVertical={false}>
           <CountList handleModalOpen={handleOpenCount} />
           <TargetList handleModalOpen={handleOpenTarget} />
         </ScrollView>

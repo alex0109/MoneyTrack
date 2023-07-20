@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,13 +13,15 @@ import { colorsArray, iconsArray } from '../../lib/store/propertires';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
+  const authContext = useContext(AuthContext);
   const { handleChangeCategoryTitle, handleChangeCategoryColor, handleChangeCategoryIcon } =
     useActions();
-  const { category } = useTypedSelector((state) => state);
-  const { categoryID }: number = route.params;
+  const category = useTypedSelector((state) => state.category.data);
+  const { categoryID }: string = route.params;
 
   const findModalPropByID = (index: string): ICategory => {
     const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
@@ -110,5 +112,6 @@ export default CategoryEdit;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 25,
   },
 });

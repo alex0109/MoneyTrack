@@ -20,7 +20,7 @@ interface TargetListProps {
 
 const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   const { handleAddTarget } = useActions();
-  const { target } = useTypedSelector((state) => state);
+  const target = useTypedSelector((state) => state.target.data);
   const colors = useTheme().colors;
   const { t } = useTranslation();
 
@@ -66,13 +66,11 @@ export default TargetList;
 
 const styles = StyleSheet.create({
   noTargetsdMessage: {
-    flex: 10,
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 10,
   },
   targetsContent: {
-    flex: 11,
     alignItems: 'center',
     justifyContent: 'flex-start',
     marginBottom: 30,

@@ -42,8 +42,8 @@ const SignIn: FC = () => {
     try {
       setRegisterDisabled(true);
       setLoginButtonDisabled(true);
-      const token = await createUser(inputEmail, inputPass);
-      authContext.authenticate(token);
+      const response = await createUser(inputEmail, inputPass);
+      authContext.authenticate(response.token, response.uid);
       setLoginButtonDisabled(false);
     } catch (error: unknown) {
       setRegisterError(true);

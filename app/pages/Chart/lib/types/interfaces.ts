@@ -15,6 +15,12 @@ export interface ICategory {
   history: IHistory[];
 }
 
+export interface CategoryState {
+  data: ICategory[];
+  loading: boolean;
+  error: string | null;
+}
+
 export interface IAction {
   index: string;
   title: string;

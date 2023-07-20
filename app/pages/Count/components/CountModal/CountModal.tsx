@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
 
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import CustomModal from '../../../../shared/ui/Modal/Modal';
 import ModalTitle from '../../../../shared/ui/ModalTitle/ModalTitle';
+
+import { topUpCountValue } from '../../lib/store/countSlice';
 
 import { styles } from './CountModal.styles';
 
@@ -29,20 +33,21 @@ const CountModal: FC<CountModalProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const { handleTopUpCount } = useActions();
+  const dispatch = useAppDispatch();
+  const authContext = useContext(AuthContext);
   const colors = useTheme().colors;
   const { t } = useTranslation();
 
   const [addedCount, setAddedCount] = useState<number>('');
 
-  const inputHandler = (value: string): void => {
+  const inputHandler = (value: number): void => {
     if (validateValue(value)) {
-      setAddedCount(Number(value));
+      setAddedCount(value);
     }
   };
 
   const addCountHandler = (index: string): void => {
-    handleTopUpCount({ index: index, value: addedCount });
+    dispatch(topUpCountValue({ uid: authContext.uid, countID: index, countValue: addedCount }));
     setAddedCount(0);
     setModalVisible(false);
   };
@@ -60,7 +65,7 @@ const CountModal: FC<CountModalProps> = ({
           placeholder={t('global.placeholderValue')!}
           placeholderTextColor={colors.gray}
           keyboardType='numeric'
-          onChangeText={(input) => inputHandler(input)}
+          onChangeText={(input) => inputHandler(Number(input))}
         />
       </View>
       <View style={[styles.modalPopUpButtonContainer]}>

@@ -1,12 +1,14 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+import { deleteCount } from '../../lib/store/countSlice';
 import CountModal from '../CountModal/CountModal';
 
 import { styles } from './CountBottomSheet.styles';
@@ -21,28 +23,28 @@ interface CountBottomSheetProps {
 }
 const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID }) => {
   const colors = useTheme().colors;
-  const { handleDeleteCount } = useActions();
-  const { count } = useTypedSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const authContext = useContext(AuthContext);
+
+  const count = useTypedSelector((state) => state.count.data);
   const { t } = useTranslation();
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ICount => {
-    const item: ICount | undefined = count.find((item: ICount) => item.index === index);
+    {
+      const item: ICount | undefined = count.find((item: ICount) => item.index === index);
 
-    if (item == undefined) {
-      return {
-        title: '',
-        value: 0,
-        index: '0',
-        monthIncome: {
-          incomeDate: '',
+      if (item == undefined) {
+        return {
+          title: '',
           value: 0,
-        },
-        history: [],
-      };
-    }
+          index: '0',
+          history: [],
+        };
+      }
 
-    return { ...item };
+      return { ...item };
+    }
   };
 
   const countElement = findModalPropByID(countID);
@@ -60,7 +62,7 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
 
   const removeCountHandler = (index: string): void => {
     handleCountClose();
-    handleDeleteCount({ index: index });
+    dispatch(deleteCount({ uid: authContext.uid, countID: index }));
   };
 
   return (
@@ -80,11 +82,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
           <TouchableOpacity onPress={() => setCountModalVisible(true)}>
             <Ionicons name='add-outline' size={35} color={colors.textColor} />
           </TouchableOpacity>
-        </View>
-        <View style={{ marginTop: 40 }}>
-          <Text style={{ color: colors.textColor, fontSize: 20, fontWeight: '600' }}>
-            {t('firstScreen.currentsIncome')} {countElement.monthIncome.value}
-          </Text>
         </View>
         <CountModal
           countElementIndex={countElement.index}

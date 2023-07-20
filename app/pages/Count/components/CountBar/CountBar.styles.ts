@@ -9,10 +9,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    maxHeight: 50,
-    height: '100%',
+    height: 50,
     width: windowWidth / 1.2,
-    marginBottom: 30,
     borderRadius: 0.1,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
@@ -23,8 +21,6 @@ export const styles = StyleSheet.create({
   contentItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
-    height: '100%',
     paddingLeft: 10,
   },
   title: {

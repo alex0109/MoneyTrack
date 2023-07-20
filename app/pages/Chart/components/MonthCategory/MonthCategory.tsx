@@ -1,6 +1,7 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import Pie from 'react-native-pie';
@@ -8,8 +9,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useDispatch } from 'react-redux';
 
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { getCoordinatesForIndex } from '../../lib/helpers/getCoordinates';
 
+import { getCurrentMonthName } from '../../lib/helpers/getCurrentMonthName';
 import { addCategoryAndGetLastIndexThunk } from '../../lib/store/addCategoryAndGetLastIndexThunk';
 
 import { styles } from './MonthCategory.styles';
@@ -29,10 +32,17 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
   const colors = useTheme().colors;
   const navigation = useNavigation();
   const currentMonth = moment().format('YYYY-MM');
-  const dispatch = useDispatch();
+  const { i18n } = useTranslation();
+
+  const monthTitleEN = moment(date).format('MMMM YYYY');
+  const monthTitleUA = `${getCurrentMonthName(moment(date).month())} ${moment(date).format(
+    'YYYY'
+  )}`;
+
+  const dispatch = useAppDispatch();
 
   const addMonthCategoryHandler = async () => {
-    const lastIndex = await dispatch(addCategoryAndGetLastIndexThunk());
+    const lastIndex = dispatch(addCategoryAndGetLastIndexThunk());
     navigation.navigate('CategoryEditStack', { categoryID: lastIndex });
   };
 
@@ -40,7 +50,7 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
     <View style={styles.main}>
       <View style={styles.header}>
         <Text style={[styles.headerText, { color: colors.textColor }]}>
-          {moment(date).format('MMMM YYYY')}
+          {i18n.language == 'uk' ? monthTitleUA : monthTitleEN}
         </Text>
       </View>
       <View style={styles.chart}>

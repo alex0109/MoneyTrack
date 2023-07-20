@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Title from '../Title/Title';
 
@@ -15,7 +16,8 @@ interface StyledTextInputProps {
   maxLength: number;
   onChangeText: (input: string) => void;
   keyboardType: 'numeric' | 'default';
-  onSubmitEditing?: () => void;
+  submitEditing: () => void;
+  submitDisable: boolean;
 }
 
 const StyledTextInput: FC<StyledTextInputProps> = ({
@@ -26,7 +28,8 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
   maxLength,
   onChangeText,
   keyboardType,
-  onSubmitEditing,
+  submitEditing,
+  submitDisable,
 }) => {
   const colors = useTheme().colors;
 
@@ -35,19 +38,43 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
       <View style={{ width: '100%' }}>
         <Title>{label}</Title>
       </View>
-      <TextInput
+      <View
         style={[
-          styles.input,
-          { borderColor: color, color: colors.textColor, backgroundColor: `${color}10` },
-        ]}
-        defaultValue={defaultValue}
-        placeholder={placeholder}
-        placeholderTextColor='gray'
-        onChangeText={onChangeText}
-        maxLength={maxLength}
-        keyboardType={keyboardType}
-        onSubmitEditing={onSubmitEditing}
-      />
+          styles.inputContainer,
+          {
+            borderColor: color,
+            backgroundColor: `${color}10`,
+          },
+        ]}>
+        <TextInput
+          style={[styles.input, { color: colors.textColor }]}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          placeholderTextColor='gray'
+          onChangeText={onChangeText}
+          maxLength={maxLength}
+          keyboardType={keyboardType}
+        />
+        {submitDisable ? (
+          <TouchableOpacity
+            style={{
+              borderLeftWidth: 1,
+              borderLeftColor: colors.warning,
+            }}
+            onPress={() => submitEditing()}>
+            <Ionicons name='checkmark' size={35} color={colors.warning} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            disabled
+            style={{
+              borderLeftWidth: 1,
+              borderLeftColor: colors.warning,
+            }}>
+            <Ionicons name='checkmark-done' size={35} color={colors.gray} />
+          </TouchableOpacity>
+        )}
+      </View>
     </>
   );
 };
@@ -59,12 +86,20 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: 16,
   },
-  input: {
-    width: '80%',
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '90%',
     fontSize: 18,
     fontWeight: '500',
-    paddingLeft: 15,
+    paddingHorizontal: 15,
     borderWidth: 1,
     borderRadius: 10,
+  },
+  input: {
+    width: '90%',
+    fontSize: 18,
+    fontWeight: '500',
   },
 });

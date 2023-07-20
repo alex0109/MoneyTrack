@@ -23,6 +23,7 @@
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.5",
     "@shopify/react-native-skia": "^0.1.193",
+    "@types/redux-thunk": "^2.1.0",
     "appcenter": "4.4.5",
     "appcenter-analytics": "4.4.5",
     "appcenter-crashes": "4.4.5",

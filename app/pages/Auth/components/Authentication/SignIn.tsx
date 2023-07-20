@@ -11,8 +11,6 @@ import { loginUser } from '../../lib/api/restAuth';
 
 import { handleValidEmail } from '../../lib/helpers/handleValidEmail';
 
-import GoogleButton from '../GoogleButton/GoogleButton';
-
 import { styles } from './Auth.styles';
 
 import type { FC } from 'react';
@@ -42,8 +40,8 @@ const SignIn: FC = () => {
     try {
       setLoginDisabled(true);
       setRegisterButtonDisabled(true);
-      const token = await loginUser(inputEmail, inputPass);
-      authContext.authenticate(token);
+      const response = await loginUser(inputEmail, inputPass);
+      authContext.authenticate(response.token, response.uid);
       setLoginDisabled(false);
       setRegisterButtonDisabled(false);
     } catch (error: unknown) {
@@ -160,7 +158,6 @@ const SignIn: FC = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <GoogleButton />
       </View>
     </View>
   );

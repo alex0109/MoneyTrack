@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -12,6 +12,7 @@ import { styles } from './Category.styles';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 
 interface CategoryProps {
   categoryID: string;
@@ -21,8 +22,9 @@ interface CategoryProps {
 
 const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
   const colors = useTheme().colors;
+  const authContext = useContext(AuthContext);
   const { handleDeleteCategory } = useActions();
-  const { category } = useTypedSelector((state) => state);
+  const category = useTypedSelector((state) => state.category.data);
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ICategory => {

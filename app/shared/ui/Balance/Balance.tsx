@@ -7,7 +7,7 @@ import { useTypedSelector } from '../../lib/hooks/useTypedSelector';
 
 const Balance = () => {
   const colors = useTheme().colors;
-  const { count } = useTypedSelector((state) => state);
+  const count = useTypedSelector((state) => state.count.data);
   const { t } = useTranslation();
   const countsSum = count.map((count) => count.value).reduce((a, b) => a + b, 0);
   return (

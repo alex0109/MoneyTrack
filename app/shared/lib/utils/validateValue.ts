@@ -1,5 +1,5 @@
-export const validateValue = (value: string) => {
-  if (!isNaN(Number(value)) && Number(value) >= 0 && value.length < 12) {
+export const validateValue = (value: number) => {
+  if (!isNaN(Number(value)) && Number(value) >= 0) {
     return true;
   }
 
