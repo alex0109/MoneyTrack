@@ -4,15 +4,18 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AlternativeKeyboard from '../../../../modules/Calculator/AlternativeKeyboard';
-import { useActions } from '../../../../shared/lib/hooks/useActions';
 
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+
+import { deleteCategory } from '../../lib/store/categorySlice';
 
 import { styles } from './Category.styles';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 
 interface CategoryProps {
   categoryID: string;
@@ -22,8 +25,8 @@ interface CategoryProps {
 
 const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
   const colors = useTheme().colors;
+  const dispatch = useAppDispatch();
   const authContext = useContext(AuthContext);
-  const { handleDeleteCategory } = useActions();
   const category = useTypedSelector((state) => state.category.data);
   const navigation = useNavigation();
 
@@ -49,7 +52,7 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
 
   const deleteCategoryHandler = (index: string) => {
     handleCategoryClose();
-    handleDeleteCategory({ index: index });
+    dispatch(deleteCategory({ uid: authContext.uid, categoryID: index }));
   };
 
   return (

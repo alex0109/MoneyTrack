@@ -1,19 +1,19 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 
 import Pie from 'react-native-pie';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useDispatch } from 'react-redux';
-
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { getCoordinatesForIndex } from '../../lib/helpers/getCoordinates';
 
 import { getCurrentMonthName } from '../../lib/helpers/getCurrentMonthName';
-import { addCategoryAndGetLastIndexThunk } from '../../lib/store/addCategoryAndGetLastIndexThunk';
+
+import { addNewCategory } from '../../lib/store/categorySlice';
 
 import { styles } from './MonthCategory.styles';
 
@@ -30,7 +30,8 @@ interface MonthCategoryProps {
 
 const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpenCategory }) => {
   const colors = useTheme().colors;
-  const navigation = useNavigation();
+  const authContext = useContext(AuthContext);
+
   const currentMonth = moment().format('YYYY-MM');
   const { i18n } = useTranslation();
 
@@ -40,11 +41,6 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
   )}`;
 
   const dispatch = useAppDispatch();
-
-  const addMonthCategoryHandler = async () => {
-    const lastIndex = dispatch(addCategoryAndGetLastIndexThunk());
-    navigation.navigate('CategoryEditStack', { categoryID: lastIndex });
-  };
 
   return (
     <View style={styles.main}>
@@ -93,7 +89,7 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
             <View style={[styles.addItemCircle, { borderWidth: 0 }]}></View>
           ) : (
             <View style={[styles.addItemCircle, { borderColor: colors.textColor }]}>
-              <Pressable onPress={() => addMonthCategoryHandler()}>
+              <Pressable onPress={() => dispatch(addNewCategory(authContext.uid))}>
                 <Ionicons name={'add-outline'} size={35} color={colors.textColor} />
               </Pressable>
             </View>

@@ -1,11 +1,12 @@
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView, useColorScheme } from 'react-native';
 
 import SplashScreen from 'react-native-splash-screen';
 
+import { fetchCategories } from './pages/Chart/lib/store/categorySlice';
 import { fetchCounts } from './pages/Count/lib/store/countSlice';
+import { fetchTargets } from './pages/Target/lib/store/targetSlice';
 import Colors from './shared/assets/styles/colors';
 import { useAppDispatch } from './shared/lib/hooks/useAppDispatch';
 import { AuthStackNavigator } from './shared/lib/navigation/StackNavigator';
@@ -34,16 +35,14 @@ const Root: FC = () => {
     }
   }
 
-  GoogleSignin.configure({
-    webClientId: '352118646986-2o3q0be4l7htn1tdr8occg474fhvbnp9.apps.googleusercontent.com',
-  });
-
   useEffect(() => {
     async function fetchToken() {
       const storedToken: string = await get('token');
       const storedUid: string = await get('uid');
 
+      dispatch(fetchCategories(storedUid));
       dispatch(fetchCounts(storedUid));
+      dispatch(fetchTargets(storedUid));
 
       if (storedToken) {
         authContext.authenticate(storedToken, storedUid);

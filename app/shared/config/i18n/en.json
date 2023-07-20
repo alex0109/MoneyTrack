@@ -1,5 +1,18 @@
 {
   "translation": {
+    "auth": {
+      "loginTitle": "Login",
+      "registerTitle": "Register",
+      "emailInput": "Email",
+      "passwordInput": "Password",
+      "repasswordInput": "Confirm password",
+      "signInButton": "Sign In",
+      "registerButton": "Register",
+      "serverError": "Oops, we got some error, try again",
+      "emailError": "Enter valid email",
+      "passwordError": "Password must be minimum 6 charachters",
+      "repasswordError": "Passwords need to match"
+    },
     "settings": {
       "settingsTitle": "Settings",
       "languageTitle": "Language",
@@ -9,7 +22,9 @@
       "themeDark": "Dark",
       "themeLight": "Light",
       "themeDefault": "Default",
-      "currencyTitle": "Currency"
+      "currencyTitle": "Currency",
+      "appTitle": "App",
+      "signOut": "Sign Out"
     },
     "firstScreen": {
       "countTitle": "Counts",

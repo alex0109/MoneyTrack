@@ -7,6 +7,7 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import Title from '../../../../shared/ui/Title/Title';
+import { getCurrentWeekendhName } from '../../../Chart/lib/helpers/getCurrentWeekendName';
 import { sortByMonths } from '../../../Chart/lib/helpers/sortByMonths';
 import { getHistory } from '../../lib/helpers/getHistory';
 import { groupByDate } from '../../lib/helpers/groupByDate';
@@ -18,11 +19,12 @@ import type { IMonthsCategory } from '../../../Chart/lib/types/interfaces';
 import type { FC } from 'react';
 
 const AnalyticHistoryList: FC = () => {
-  const { category, count } = useTypedSelector((state) => state);
+  const category = useTypedSelector((state) => state.category.data);
+  const count = useTypedSelector((state) => state.count.data);
   const history = groupByDate(getHistory(category));
   const colors = useTheme().colors;
   const [toggle, setToggle] = useState(false);
-  const { t } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const [sortedOutcomes, setSortedOutcomes] = useState<IMonthsCategory[]>([]);
 
@@ -66,7 +68,11 @@ const AnalyticHistoryList: FC = () => {
               ]}>
               <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
                 <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
-                  {moment(item.date).format('dddd - DD MM YYYY')}
+                  {i18n.language == 'uk'
+                    ? `${getCurrentWeekendhName(moment(item.date).month())} - ${moment(
+                        item.date
+                      ).format('DD.MM.YYYY')}`
+                    : moment(item.date).format('dddd - DD MM YYYY')}
                 </Text>
               </View>
               <AnalyticHistoryItem values={item.values} />

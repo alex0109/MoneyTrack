@@ -6,8 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useDispatch } from 'react-redux';
-
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';

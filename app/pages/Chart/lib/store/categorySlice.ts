@@ -11,92 +11,7 @@ import type { CategoryState, ICategory } from '../types/interfaces';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: CategoryState = {
-  data: [
-    {
-      index: makeid(),
-      title: 'Sport',
-      count: 0,
-      icon: 'ios-basketball',
-      color: '#0E7FC0',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-    {
-      index: makeid(),
-      title: 'House',
-      count: 0,
-      icon: 'home',
-      color: '#09BD0F',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-    {
-      index: makeid(),
-      title: 'Subway',
-      count: 0,
-      icon: 'subway',
-      color: '#CCD50F',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-    {
-      index: makeid(),
-      title: 'Games',
-      count: 0,
-      icon: 'game-controller',
-      color: '#E09B11',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-    {
-      index: makeid(),
-      title: 'Cafe',
-      count: 0,
-      icon: 'cafe',
-      color: '#E05311',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-    {
-      index: makeid(),
-      title: 'Weekends',
-      count: 0,
-      icon: 'airplane',
-      color: '#6511E0',
-      percent: 0,
-      history: [
-        {
-          date: moment().format('YYYY-MM-DD'),
-          value: 0,
-        },
-      ],
-    },
-  ],
+  data: [],
   loading: false,
   error: null,
 };
@@ -124,7 +39,6 @@ export const addNewCategory = createAsyncThunk<ICategory, string, { rejectValue:
   async function (uid, { rejectWithValue }) {
     try {
       const newCategory = {
-        index: '',
         title: 'New Category',
         count: 0,
         icon: 'flask',
@@ -253,7 +167,7 @@ export const topUpCategoryCount = createAsyncThunk<
     await axios.patch(
       `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
       {
-        count: category.value + categoryChanges.categoryValue,
+        count: category.count + categoryChanges.categoryValue,
         history: [...category.history, newHistoryItem],
       }
     );
@@ -267,55 +181,62 @@ export const topUpCategoryCount = createAsyncThunk<
 export const categorySlice = createSlice({
   name: 'category',
   initialState,
-  reducers: {
-    handleAddCategory: (state) => {
-      state.data.push({
-        index: makeid(),
-        title: 'Tests',
-        count: 0,
-        icon: 'flask',
-        color: getRandomColor(),
-        percent: 0,
-        history: [
-          {
-            date: moment().format('YYYY-MM-DD'),
-            value: 0,
-          },
-        ],
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCategories.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCategories.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(addNewCategory.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.data = state.data.filter((category) => category.index !== action.payload);
+      })
+      .addCase(changeCategoryTitle.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (category) => category.index == action.payload.categoryID
+        );
+        if (categoryToChange) {
+          categoryToChange.title = action.payload.categoryTitle;
+        }
+      })
+      .addCase(changeCategoryColor.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (category) => category.index == action.payload.categoryID
+        );
+        if (categoryToChange) {
+          categoryToChange.color = action.payload.categoryColor;
+        }
+      })
+      .addCase(changeCategoryIcon.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (category) => category.index == action.payload.categoryID
+        );
+        if (categoryToChange) {
+          categoryToChange.icon = action.payload.categoryIcon;
+        }
+      })
+      .addCase(topUpCategoryCount.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (count) => action.payload.categoryID === count.index
+        );
+        if (categoryToChange) {
+          categoryToChange.count = categoryToChange.count + action.payload.categoryValue;
+          categoryToChange.history = [
+            ...categoryToChange.history,
+            {
+              date: moment().format('YYYY-MM-DD'),
+              value: action.payload.categoryValue,
+            },
+          ];
+        }
       });
-    },
-    handleDeleteCategory: (state, action: PayloadAction<{ index: string }>) => {
-      state.data.filter((item) => item.index !== action.payload.index);
-    },
-    handleChangeCountCategory: (state, action: PayloadAction<{ index: string; count: number }>) => {
-      const categoryToChange = state.data.find((item) => item.index === action.payload.index);
-      categoryToChange!.count = action.payload.count;
-      return state;
-    },
-    handleChangeCategoryTitle: (state, action: PayloadAction<{ index: string; title: string }>) => {
-      const categoryToChange = state.data.find((count) => count.index === action.payload.index);
-      categoryToChange!.title = action.payload.title;
-      return state;
-    },
-    handleTopUpCategory: (state, action: PayloadAction<{ index: string; value: number }>) => {
-      const categoryToChange = state.data.find((count) => count.index === action.payload.index);
-      categoryToChange!.count += action.payload.value;
-      categoryToChange!.history.push({
-        date: moment().format('YYYY-MM-DD'),
-        value: action.payload.value,
-      });
-      return state;
-    },
-    handleChangeCategoryColor: (state, action: PayloadAction<{ index: string; color: string }>) => {
-      const categoryToChange = state.data.find((count) => count.index === action.payload.index);
-      categoryToChange!.color = action.payload.color;
-      return state;
-    },
-    handleChangeCategoryIcon: (state, action: PayloadAction<{ index: string; icon: string }>) => {
-      const categoryToChange = state.data.find((count) => count.index === action.payload.index);
-      categoryToChange!.icon = action.payload.icon;
-      return state;
-    },
   },
 });
 

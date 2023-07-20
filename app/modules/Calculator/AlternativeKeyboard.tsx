@@ -1,13 +1,17 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../shared/lib/hooks/useActions';
+import { topUpCategoryCount } from '../../pages/Chart/lib/store/categorySlice';
+import { decreaseCountValue } from '../../pages/Count/lib/store/countSlice';
 
+import { useAppDispatch } from '../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../shared/lib/hooks/useTypedSelector';
+
+import { AuthContext } from '../../shared/lib/providers/AuthProvider';
 
 import CalculatorButton from './CalculatorButton';
 
@@ -19,11 +23,12 @@ interface AlternativeKeyboardProps {
 
 const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
   const colors = useTheme().colors;
-  const { handleTopUpCategory, handleDecreaseCount } = useActions();
+  const authContext = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const [calc, setCalc] = useState<string>('');
   const [result, setResult] = useState<string>('');
   const [currentCount, setCurrentCount] = useState(0);
-  const { count } = useTypedSelector((state) => state);
+  const count = useTypedSelector((state) => state.count.data);
 
   const ops: string[] = ['/', '*', '+', '-', '.'];
 
@@ -69,8 +74,20 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
 
   const topUpCategoryHandler = () => {
     if (count.length > 0) {
-      handleTopUpCategory({ index: categoryID, value: Number(result) });
-      handleDecreaseCount({ index: count[currentCount].index, value: Number(result) });
+      dispatch(
+        topUpCategoryCount({
+          uid: authContext.uid,
+          categoryID: categoryID,
+          categoryValue: Number(result),
+        })
+      );
+      dispatch(
+        decreaseCountValue({
+          uid: authContext.uid,
+          countID: count[currentCount].index,
+          countValue: Number(result),
+        })
+      );
       clear();
     }
     return;

@@ -1,12 +1,14 @@
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 
 import { Swipeable } from 'react-native-gesture-handler';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+import { deleteTarget } from '../../lib/store/targetSlice';
 
 import { styles } from './TargetBar.styles';
 
@@ -15,7 +17,8 @@ import type { ITarget } from '../../lib/types/interfaces';
 import type { FC } from 'react';
 
 const TargetBar: FC<ITarget> = (target) => {
-  const { handleDeleteTarget } = useActions();
+  const authContext = useContext(AuthContext);
+  const dispatch = useAppDispatch();
 
   const colors = useTheme().colors;
 
@@ -29,7 +32,8 @@ const TargetBar: FC<ITarget> = (target) => {
         backgroundColor: colors.red,
         height: 50,
       }}>
-      <TouchableOpacity onPress={() => handleDeleteTarget({ index: target.index })}>
+      <TouchableOpacity
+        onPress={() => dispatch(deleteTarget({ uid: authContext.uid, targetID: target.index }))}>
         <Ionicons name='md-close-outline' size={35} color={colors.textColor} />
       </TouchableOpacity>
     </View>

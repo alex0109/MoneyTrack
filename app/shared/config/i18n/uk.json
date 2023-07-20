@@ -1,5 +1,18 @@
 {
   "translation": {
+    "auth": {
+      "loginTitle": "Вхід",
+      "registerTitle": "Зареєструватися",
+      "emailInput": "Пошта",
+      "passwordInput": "Пароль",
+      "repasswordInput": "Підтвердіть пароль",
+      "signInButton": "Увійти",
+      "registerButton": "Зареєструватися",
+      "serverError": "Упс, ми отримали невідому помилку, спробуйте ще раз потім",
+      "emailError": "Пошта має бути правильною",
+      "passwordError": "Пароль мусить бути мінімум з 6 символів",
+      "repasswordError": "Паролі мусять сходитися"
+    },
     "settings": {
       "settingsTitle": "Налаштування",
       "languageTitle": "Мова",
@@ -9,7 +22,9 @@
       "themeDark": "Темна",
       "themeLight": "Світла",
       "themeDefault": "Як на смартфоні",
-      "currencyTitle": "Валюта"
+      "currencyTitle": "Валюта",
+      "appTitle": "Системні налаштуання",
+      "signOut": "Вийти з аккаунту"
     },
     "firstScreen": {
       "countTitle": "Рахунки",

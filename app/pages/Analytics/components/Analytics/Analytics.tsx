@@ -13,7 +13,7 @@ import type { FC } from 'react';
 
 const AnalyticsScreen: FC = () => {
   const colors = useTheme().colors;
-  const { category } = useTypedSelector((state) => state);
+  const category = useTypedSelector((state) => state.category.data);
   const [graphData, setGraphData] = useState<IGraphData>({
     labels: ['0'],
     datasets: [{ data: [0] }],

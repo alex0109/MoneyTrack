@@ -36,7 +36,6 @@ export const addNewCount = createAsyncThunk<ICount, string, { rejectValue: strin
   async function (uid, { rejectWithValue }) {
     try {
       const newCount = {
-        index: '',
         title: 'New title',
         value: 0,
         history: [
@@ -120,6 +119,27 @@ export const changeCountValue = createAsyncThunk<
   }
 });
 
+export const decreaseCountValue = createAsyncThunk<
+  { countID: string; countValue: number },
+  { uid: string; countID: string; countValue: number },
+  { rejectValue: string; state: CountState }
+>('counts/decreaseCountValue', async function (countChanges, { rejectWithValue, getState }) {
+  const count = getState().count.data.find((count) => count.index === countChanges.countID);
+
+  try {
+    await axios.patch(
+      `${root_url}/users/${countChanges.uid}/counts/${countChanges.countID}.json?auth=${db_key}`,
+      {
+        value: count.value - countChanges.countValue,
+      }
+    );
+
+    return countChanges;
+  } catch (error) {
+    return rejectWithValue('Server error');
+  }
+});
+
 export const topUpCountValue = createAsyncThunk<
   { countID: string; countValue: number },
   { uid: string; countID: string; countValue: number },
@@ -161,13 +181,8 @@ export const countSlice = createSlice({
         state.data = action.payload;
         state.loading = false;
       })
-      .addCase(addNewCount.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(addNewCount.fulfilled, (state, action) => {
         state.data.push(action.payload);
-        state.loading = false;
       })
       .addCase(deleteCount.fulfilled, (state, action) => {
         state.data = state.data.filter((count) => count.index !== action.payload);
@@ -189,6 +204,12 @@ export const countSlice = createSlice({
               value: action.payload.historyValue,
             },
           ];
+        }
+      })
+      .addCase(decreaseCountValue.fulfilled, (state, action) => {
+        const countToChange = state.data.find((count) => action.payload.countID === count.index);
+        if (countToChange) {
+          countToChange.value = countToChange.value - action.payload.countValue;
         }
       })
       .addCase(topUpCountValue.fulfilled, (state, action) => {

@@ -1,14 +1,16 @@
 /* eslint-disable no-unused-vars */
 
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import Title from '../../../../shared/ui/Title/Title';
+import { addNewTarget } from '../../lib/store/targetSlice';
 import TargetBar from '../TargetBar/TargetBar';
 
 import type { ITarget } from '../../lib/types/interfaces';
@@ -19,7 +21,8 @@ interface TargetListProps {
 }
 
 const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
-  const { handleAddTarget } = useActions();
+  const authContext = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const target = useTypedSelector((state) => state.target.data);
   const colors = useTheme().colors;
   const { t } = useTranslation();
@@ -32,7 +35,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
           <Text style={[styles.noTargetsdMessageText, { color: colors.textColor }]}>
             {t('firstScreen.noTargetsMessage')}
           </Text>
-          <Pressable onPress={() => handleAddTarget()}>
+          <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
             <Ionicons name='add-outline' size={35} color={colors.textColor} />
           </Pressable>
         </View>
@@ -49,7 +52,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
               </TouchableOpacity>
             ))}
             {target.length < 5 ? (
-              <Pressable onPress={() => handleAddTarget()}>
+              <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
                 <Ionicons name='add-outline' size={35} color={colors.textColor} />
               </Pressable>
             ) : (

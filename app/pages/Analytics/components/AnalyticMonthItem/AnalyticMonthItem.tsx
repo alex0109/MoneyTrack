@@ -1,7 +1,10 @@
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
+
+import { getCurrentMonthName } from '../../../Chart/lib/helpers/getCurrentMonthName';
 
 import type { IMonthsCategory } from '../../../Chart/lib/types/interfaces';
 import type { FC } from 'react';
@@ -12,6 +15,12 @@ type AnalyticMonthItemProps = {
 
 const AnalyticMonthItem: FC<AnalyticMonthItemProps> = ({ month }) => {
   const colors = useTheme().colors;
+  const { i18n } = useTranslation();
+
+  const monthTitleEN = moment(month.month).format('MMMM YYYY');
+  const monthTitleUA = `${getCurrentMonthName(moment(month.month).month())} ${moment(
+    month.month
+  ).format('YYYY')}`;
 
   return (
     <View
@@ -29,7 +38,7 @@ const AnalyticMonthItem: FC<AnalyticMonthItemProps> = ({ month }) => {
           justifyContent: 'space-between',
         }}>
         <Text style={[styles.itemTitle, { color: colors.themeColor }]}>
-          {moment(month.month).format('MMMM YYYY')}
+          {i18n.language == 'uk' ? monthTitleUA : monthTitleEN}
         </Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[styles.itemTitle, { color: colors.success }]}>{month.income} | </Text>

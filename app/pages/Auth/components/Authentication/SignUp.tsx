@@ -1,5 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -18,6 +19,7 @@ const SignIn: FC = () => {
   const colors = useTheme().colors;
   const navigation = useNavigation();
   const authContext = useContext(AuthContext);
+  const { t } = useTranslation();
 
   const [isEmailFocus, setIsEmailFocus] = useState(false);
   const [isPassFocus, setIsPassFocus] = useState(false);
@@ -74,19 +76,19 @@ const SignIn: FC = () => {
     registerButtonDisableHandler();
 
     if (handleValidEmail(inputEmail) == false && inputEmail.length) {
-      setEmailValidError('Enter valid email');
+      setEmailValidError(`${t('auth.emailError')}`);
       return;
     } else {
       setEmailValidError('');
     }
     if (inputPass.length < 6 && inputPass.length) {
-      setPasslValidError('Password must be minimum 6 charachters');
+      setPasslValidError(`${t('auth.passwordError')}`);
       return;
     } else {
       setPasslValidError('');
     }
     if (inputRePass !== inputPass && inputRePass.length) {
-      setRePassValidError('Passwords need to match');
+      setRePassValidError(`${t('auth.repasswordError')}`);
       return;
     } else {
       setRePassValidError('');
@@ -97,14 +99,12 @@ const SignIn: FC = () => {
     <View style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <View style={[styles.inputsContainer, { backgroundColor: colors.themeColor }]}>
         {registerError ? (
-          <Text style={{ marginVertical: 10, color: colors.red }}>
-            Oops, we got some error, try again
-          </Text>
+          <Text style={{ marginVertical: 10, color: colors.red }}>{t('auth.serverError')}</Text>
         ) : (
           <></>
         )}
         <View style={[styles.inputsBlock, { backgroundColor: colors.contrastColor }]}>
-          <Title>Register</Title>
+          <Title>{t('auth.registerTitle')}</Title>
           <View
             style={[
               styles.inputMain,
@@ -118,7 +118,7 @@ const SignIn: FC = () => {
               onFocus={() => setIsEmailFocus(true)}
               onBlur={() => setIsEmailFocus(false)}
               maxLength={30}
-              placeholder='Email'
+              placeholder={`${t('auth.emailInput')}`}
               placeholderTextColor={colors.gray}
             />
           </View>
@@ -138,7 +138,7 @@ const SignIn: FC = () => {
               onFocus={() => setIsPassFocus(true)}
               onBlur={() => setIsPassFocus(false)}
               maxLength={12}
-              placeholder='Password'
+              placeholder={`${t('auth.passwordInput')}`}
               placeholderTextColor={colors.gray}
             />
             <TouchableOpacity
@@ -163,7 +163,7 @@ const SignIn: FC = () => {
               onFocus={() => setIsRePassFocus(true)}
               onBlur={() => setIsRePassFocus(false)}
               maxLength={12}
-              placeholder='Confirm password'
+              placeholder={`${t('auth.repasswordInput')}`}
               placeholderTextColor={colors.gray}
             />
           </View>
@@ -177,7 +177,7 @@ const SignIn: FC = () => {
                   { color: colors.info, marginBottom: 20, fontSize: 20 },
                   registerDisabled ? { color: colors.gray } : null,
                 ]}>
-                Register
+                {t('auth.registerButton')}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -189,7 +189,7 @@ const SignIn: FC = () => {
                   { color: colors.info, fontSize: 16 },
                   loginButtonDisabled ? { color: colors.gray } : null,
                 ]}>
-                Sign in
+                {t('auth.signInButton')}
               </Text>
             </TouchableOpacity>
           </View>

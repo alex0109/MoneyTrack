@@ -1,11 +1,13 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { Easing, runTiming, useFont, useValue } from '@shopify/react-native-skia';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { View, PixelRatio, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+import { deleteTarget } from '../../lib/store/targetSlice';
 import TargetDonut from '../TargetDonut/TargetDonut';
 import TargetValueModal from '../TargetValueModal/TargetValueModal';
 
@@ -25,14 +27,15 @@ interface TargetBottomSheetProps {
 }
 const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targetID }) => {
   const colors = useTheme().colors;
-  const { handleDeleteTarget } = useActions();
+  const authContext = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const target = useTypedSelector((state) => state.target.data);
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ITarget => {
     const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
 
-    return item ? { ...item } : { index: '0', title: '', value: 0, target: 0, history: [] };
+    return item ? { ...item } : { index: '0', title: '', value: 0, target: 0 };
   };
 
   const targetElement = findModalPropByID(targetID);
@@ -61,7 +64,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
 
   const removeTargetHandler = (index: string): void => {
     handleTargetClose();
-    handleDeleteTarget({ index: index });
+    dispatch(deleteTarget({ uid: authContext.uid, targetID: index }));
   };
 
   const font = useFont(

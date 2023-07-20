@@ -1,14 +1,17 @@
 /* eslint-disable no-unused-vars */
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import CustomModal from '../../../../shared/ui/Modal/Modal';
 
 import ModalTitle from '../../../../shared/ui/ModalTitle/ModalTitle';
+
+import { topUpTargetValue } from '../../lib/store/targetSlice';
 
 import { styles } from './TargetValueModal.styles';
 
@@ -29,7 +32,8 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const { handleTopUpTargetValue } = useActions();
+  const authContext = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const [addedValue, setAddedValue] = useState<number>(0);
   const colors = useTheme().colors;
   const { t } = useTranslation();
@@ -41,7 +45,7 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   };
 
   const addValueHandler = (index: string): void => {
-    handleTopUpTargetValue({ index: index, value: addedValue });
+    dispatch(topUpTargetValue({ uid: authContext.uid, targetID: index, targetValue: addedValue }));
     setAddedValue(0);
     setModalVisible(false);
   };

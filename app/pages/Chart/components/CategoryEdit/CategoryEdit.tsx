@@ -1,27 +1,32 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../../shared/lib/hooks/useActions';
+import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
 import StyledTextInput from '../../../../shared/ui/StyledTextInput/StyledTextInput';
 import Title from '../../../../shared/ui/Title/Title';
+import {
+  changeCategoryColor,
+  changeCategoryIcon,
+  changeCategoryTitle,
+} from '../../lib/store/categorySlice';
 import { colorsArray, iconsArray } from '../../lib/store/propertires';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const authContext = useContext(AuthContext);
-  const { handleChangeCategoryTitle, handleChangeCategoryColor, handleChangeCategoryIcon } =
-    useActions();
+  const dispatch = useAppDispatch();
   const category = useTypedSelector((state) => state.category.data);
   const { categoryID }: string = route.params;
+  const [categoryTitleSubmitAvailable, setCategoryTitleSubmitAvailable] = useState(false);
 
   const findModalPropByID = (index: string): ICategory => {
     const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
@@ -43,9 +48,19 @@ const CategoryEdit: FC = ({ route }) => {
 
   const matchedCategory = findModalPropByID(categoryID);
 
-  const changeTitleHandler = (title: string) => {
+  const [inputCategoryTitle, setInputCategoryTitle] = useState(matchedCategory.title);
+
+  const onChangeCategoryTitleHandler = (input: string) => {
+    setInputCategoryTitle(input);
+    setCategoryTitleSubmitAvailable(true);
+  };
+
+  const changeCategoryTitleHandler = (title: string) => {
     if (validateTitle(title)) {
-      handleChangeCategoryTitle({ index: categoryID, title: title });
+      dispatch(
+        changeCategoryTitle({ uid: authContext.uid, categoryID: categoryID, categoryTitle: title })
+      );
+      setCategoryTitleSubmitAvailable(false);
     }
   };
 
@@ -55,11 +70,13 @@ const CategoryEdit: FC = ({ route }) => {
         <StyledTextInput
           label='Category name'
           color={matchedCategory.color}
-          defaultValue={matchedCategory.title}
+          defaultValue={inputCategoryTitle}
           placeholder='Your title...'
-          onChangeText={(input) => changeTitleHandler(input)}
+          onChangeText={(input) => onChangeCategoryTitleHandler(input)}
           maxLength={16}
           keyboardType='default'
+          submitDisable={categoryTitleSubmitAvailable}
+          submitEditing={() => changeCategoryTitleHandler(inputCategoryTitle)}
         />
       </View>
       <Title>Color</Title>
@@ -72,7 +89,15 @@ const CategoryEdit: FC = ({ route }) => {
         {colorsArray.map((color, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => handleChangeCategoryColor({ index: categoryID, color: color })}
+            onPress={() =>
+              dispatch(
+                changeCategoryColor({
+                  uid: authContext.uid,
+                  categoryID: categoryID,
+                  categoryColor: color,
+                })
+              )
+            }
             style={{
               backgroundColor: color,
               height: 40,
@@ -89,7 +114,15 @@ const CategoryEdit: FC = ({ route }) => {
         {iconsArray.map((icon, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => handleChangeCategoryIcon({ index: categoryID, icon: icon })}
+            onPress={() =>
+              dispatch(
+                changeCategoryIcon({
+                  uid: authContext.uid,
+                  categoryID: categoryID,
+                  categoryIcon: icon,
+                })
+              )
+            }
             style={{
               justifyContent: 'center',
               alignItems: 'center',

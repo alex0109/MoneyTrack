@@ -1,15 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import axios from 'axios';
-import moment from 'moment';
 
 import { db_key } from '../../../../shared/lib/constants/DB_KEY';
 import { root_url } from '../../../../shared/lib/constants/REF_URL';
-import { makeid } from '../../../../shared/lib/utils/generateID';
 
 import type { ITarget, TargetState } from '../types/interfaces';
-
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: TargetState = {
   data: [],
@@ -154,50 +150,47 @@ export const topUpTargetValue = createAsyncThunk<
 export const targetSlice = createSlice({
   name: 'target',
   initialState,
-  reducers: {
-    handleAddTarget: (state) => {
-      state.data.push({
-        index: makeid(),
-        title: 'New title',
-        value: 0,
-        target: 0,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTargets.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTargets.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(addNewTarget.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(deleteTarget.fulfilled, (state, action) => {
+        state.data = state.data.filter((target) => target.index !== action.payload);
+      })
+      .addCase(changeTargetTitle.fulfilled, (state, action) => {
+        const targetToChange = state.data.find((target) => action.payload.targetID == target.index);
+        if (targetToChange) {
+          targetToChange.title = action.payload.targetTitle;
+        }
+      })
+      .addCase(changeTargetValue.fulfilled, (state, action) => {
+        const targetToChange = state.data.find((target) => action.payload.targetID == target.index);
+        if (targetToChange) {
+          targetToChange.value = action.payload.targetValue;
+        }
+      })
+      .addCase(changeTarget.fulfilled, (state, action) => {
+        const targetToChange = state.data.find((target) => action.payload.targetID == target.index);
+        if (targetToChange) {
+          targetToChange.target = action.payload.target;
+        }
+      })
+      .addCase(topUpTargetValue.fulfilled, (state, action) => {
+        const targetToChange = state.data.find((target) => action.payload.targetID == target.index);
+        if (targetToChange) {
+          targetToChange.value = targetToChange.value + action.payload.targetValue;
+        }
       });
-    },
-    handleDeleteTarget: (state, action: PayloadAction<{ index: string }>) => {
-      state.data = state.data.filter((item) => item.index !== action.payload.index);
-    },
-    handleChangeTargetTitle: (state, action: PayloadAction<{ index: string; title: string }>) => {
-      const targetToChange = state.data.find((target) => target.index === action.payload.index);
-      targetToChange!.title = action.payload.title;
-      return state;
-    },
-    handleChangeTarget: (state, action: PayloadAction<{ index: string; target: number }>) => {
-      const targetToChange = state.data.find((count) => count.index === action.payload.index);
-      targetToChange!.target = action.payload.target;
-      return state;
-    },
-    handleChangeTargetValue: (state, action: PayloadAction<{ index: string; value: number }>) => {
-      const targetToChange = state.data.find((count) => count.index === action.payload.index);
-      targetToChange!.value = action.payload.value;
-      return state;
-    },
-    handleTopUpTargetValue: (state, action: PayloadAction<{ index: string; value: number }>) => {
-      const targetToChange = state.data.find((count) => count.index === action.payload.index);
-      targetToChange!.value = targetToChange!.value + action.payload.value;
-      targetToChange!.history.push({
-        date: moment().format('YYYY-MM-DD'),
-        value: action.payload.value,
-      });
-      return state;
-    },
-    handleDecreaseTargetValue: (state, action: PayloadAction<{ index: string; value: number }>) => {
-      const targetToChange = state.data.find((target) => target.index === action.payload.index);
-      if (targetToChange!.value !== 0 && targetToChange!.value >= action.payload.value) {
-        targetToChange!.value = targetToChange!.value - action.payload.value;
-        return state;
-      }
-      return state;
-    },
   },
 });
 
