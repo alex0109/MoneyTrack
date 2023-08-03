@@ -36,7 +36,18 @@
       "countModalSetbutton": "Встановити",
       "targetTitle": "Цілі",
       "noTargetsMessage": "У вас немає жодної цілі",
-      "modalTargetTitle": "Яку ціль ви хочете визначити?"
+      "modalTargetTitle": "Яку ціль ви хочете визначити?",
+      "countEditNameTitle": "Назва",
+      "countEditValueTitle": "Значення",
+      "countEditValueWarning": "Якщо ви хочете змінити значення, то пам'ятайте, що різниця між введеним і поточним числом буде занесена в історію",
+      "targetEditNameTitle": "Назва",
+      "targetEditValueTitle": "Значення",
+      "targetEditTargetTitle": "Ціль"
+    },
+    "secondScreen": {
+      "categoryEditNameTitle": "Назва",
+      "categoryEditColorTitle": "Колір",
+      "categoryEditIconTitle": "Іконка"
     },
     "thirdScreen": {
       "historyTitle": "Історія",

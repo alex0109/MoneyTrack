@@ -13,9 +13,11 @@ import { changeTarget, changeTargetTitle, changeTargetValue } from '../../lib/st
 
 import type { ITarget } from '../../lib/types/interfaces';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const TargetEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
+  const { t } = useTranslation();
   const authContext = useContext(AuthContext);
   const dispatch = useAppDispatch();
 
@@ -86,10 +88,10 @@ const TargetEdit: FC = ({ route }) => {
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Count name'
+          label={t('firstScreen.targetEditNameTitle')}
           color={colors.warning}
           defaultValue={inputTargetTitle}
-          placeholder='Your title...'
+          placeholder={t('global.placeholderTitle')}
           onChangeText={(input) => onChangeTargetTitleHandler(input)}
           maxLength={16}
           keyboardType='default'
@@ -99,10 +101,10 @@ const TargetEdit: FC = ({ route }) => {
       </View>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Your current amout'
+          label={t('firstScreen.targetEditValueTitle')}
           color={colors.warning}
           defaultValue={`${inputTargetValue}`}
-          placeholder='Your value...'
+          placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChangeTargetValueHandler(input)}
           maxLength={9}
           keyboardType='numeric'
@@ -112,10 +114,10 @@ const TargetEdit: FC = ({ route }) => {
       </View>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Target'
+          label={t('firstScreen.targetEditTargetTitle')}
           color={colors.warning}
           defaultValue={`${inputTarget}`}
-          placeholder='Your month income...'
+          placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChangeTargetHandler(input)}
           maxLength={9}
           keyboardType='numeric'

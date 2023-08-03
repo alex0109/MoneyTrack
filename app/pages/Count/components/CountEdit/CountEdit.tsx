@@ -13,9 +13,11 @@ import { changeCountTitle, changeCountValue } from '../../lib/store/countSlice';
 
 import type { ICount } from '../../lib/types/interfaces';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CountEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
+  const { t } = useTranslation();
   const { countID } = route.params;
   const count = useTypedSelector((state) => state.count.data);
   const dispatch = useAppDispatch();
@@ -81,10 +83,10 @@ const CountEdit: FC = ({ route }) => {
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Count name'
+          label={t('firstScreen.countEditNameTitle')}
           color={colors.warning}
           defaultValue={inputCountTitle}
-          placeholder='Your title...'
+          placeholder={t('global.placeholderTitle')}
           onChangeText={(input) => onChangeCountNameHandler(input)}
           maxLength={16}
           keyboardType='default'
@@ -94,10 +96,10 @@ const CountEdit: FC = ({ route }) => {
       </View>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Count value'
+          label={t('firstScreen.countEditValueTitle')}
           color={colors.warning}
           defaultValue={`${inputCountValue}`}
-          placeholder='Your value...'
+          placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChnageCountValueHandler(input)}
           maxLength={9}
           keyboardType='numeric'
@@ -105,10 +107,7 @@ const CountEdit: FC = ({ route }) => {
           submitEditing={() => changeCountValueHandler(inputCountValue)}
         />
         <View style={{ width: '80%', marginTop: 5 }}>
-          <Text style={{ color: colors.red }}>
-            If you want to change the number, then remember that the difference between the entered
-            and the current number will be entered into the history
-          </Text>
+          <Text style={{ color: colors.red }}>{t('firstScreen.countEditValueWarning')}</Text>
         </View>
       </View>
     </ScrollView>

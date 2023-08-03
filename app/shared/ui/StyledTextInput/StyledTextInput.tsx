@@ -54,6 +54,7 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
           onChangeText={onChangeText}
           maxLength={maxLength}
           keyboardType={keyboardType}
+          selectTextOnFocus={true}
         />
         {submitDisable ? (
           <TouchableOpacity

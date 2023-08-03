@@ -8,7 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import Title from '../../../../shared/ui/Title/Title';
 
-import { loginUser } from '../../lib/api/restAuth';
+import { loginUser, signInAnonymously } from '../../lib/api/restAuth';
 
 import { handleValidEmail } from '../../lib/helpers/handleValidEmail';
 
@@ -43,6 +43,22 @@ const SignIn: FC = () => {
       setLoginDisabled(true);
       setRegisterButtonDisabled(true);
       const response = await loginUser(inputEmail, inputPass);
+      authContext.authenticate(response.token, response.uid);
+      setLoginDisabled(false);
+      setRegisterButtonDisabled(false);
+    } catch (error: unknown) {
+      setLoginError(true);
+      setRegisterButtonDisabled(false);
+    }
+    setInputEmail('');
+    setInputPass('');
+  };
+
+  const handleLoginAnonymouslyUser = async () => {
+    try {
+      setLoginDisabled(true);
+      setRegisterButtonDisabled(true);
+      const response = await signInAnonymously();
       authContext.authenticate(response.token, response.uid);
       setLoginDisabled(false);
       setRegisterButtonDisabled(false);
@@ -158,6 +174,9 @@ const SignIn: FC = () => {
             </TouchableOpacity>
           </View>
         </View>
+        <TouchableOpacity onPress={() => handleLoginAnonymouslyUser()}>
+          <Text>Continue like a guest</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

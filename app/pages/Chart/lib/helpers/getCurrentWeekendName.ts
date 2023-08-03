@@ -1,24 +1,24 @@
 export const getCurrentWeekendhName = (monthID: number) => {
   switch (monthID) {
-    case 0:
+    case 1:
       return 'Понеділок';
 
-    case 1:
+    case 2:
       return 'Вівторок';
 
-    case 2:
+    case 3:
       return 'Середа';
 
-    case 3:
+    case 4:
       return 'Четвер';
 
-    case 4:
+    case 5:
       return "П'ятниця";
 
-    case 5:
+    case 6:
       return 'Субота';
 
-    case 6:
+    case 7:
       return 'Неділя';
 
     default:

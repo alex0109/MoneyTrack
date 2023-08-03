@@ -69,7 +69,7 @@ const AnalyticHistoryList: FC = () => {
               <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
                 <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
                   {i18n.language == 'uk'
-                    ? `${getCurrentWeekendhName(moment(item.date).month())} - ${moment(
+                    ? `${getCurrentWeekendhName(moment(item.date).isoWeekday())} - ${moment(
                         item.date
                       ).format('DD.MM.YYYY')}`
                     : moment(item.date).format('dddd - DD MM YYYY')}

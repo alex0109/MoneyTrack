@@ -19,9 +19,11 @@ import { colorsArray, iconsArray } from '../../lib/store/propertires';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
+  const { t } = useTranslation();
   const authContext = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const category = useTypedSelector((state) => state.category.data);
@@ -68,10 +70,10 @@ const CategoryEdit: FC = ({ route }) => {
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
-          label='Category name'
+          label={t('secondScreen.categoryEditNameTitle')}
           color={matchedCategory.color}
           defaultValue={inputCategoryTitle}
-          placeholder='Your title...'
+          placeholder={t('global.placeholderTitle')}
           onChangeText={(input) => onChangeCategoryTitleHandler(input)}
           maxLength={16}
           keyboardType='default'
@@ -79,7 +81,7 @@ const CategoryEdit: FC = ({ route }) => {
           submitEditing={() => changeCategoryTitleHandler(inputCategoryTitle)}
         />
       </View>
-      <Title>Color</Title>
+      <Title>{t('secondScreen.categoryEditColorTitle')}</Title>
       <View
         style={{
           flexDirection: 'row',
@@ -109,7 +111,7 @@ const CategoryEdit: FC = ({ route }) => {
             }}></TouchableOpacity>
         ))}
       </View>
-      <Title>Icon</Title>
+      <Title>{t('secondScreen.categoryEditIconTitle')}</Title>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
         {iconsArray.map((icon, index) => (
           <TouchableOpacity

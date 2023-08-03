@@ -36,7 +36,18 @@
       "countModalSetbutton": "Set",
       "targetTitle": "Targets",
       "noTargetsMessage": "You have't any targets",
-      "modalTargetTitle": "What is your target?"
+      "modalTargetTitle": "What is your target?",
+      "countEditNameTitle": "Title",
+      "countEditValueTitle": "Value",
+      "countEditValueWarning": "If you want to change the number, then remember that the difference between the entered and the current number will be entered into the history",
+      "targetEditNameTitle": "Title",
+      "targetEditValueTitle": "Value",
+      "targetEditTargetTitle": "Target"
+    },
+    "secondScreen": {
+      "categoryEditNameTitle": "Title",
+      "categoryEditColorTitle": "Color",
+      "categoryEditIconTitle": "Icon"
     },
     "thirdScreen": {
       "historyTitle": "History",
