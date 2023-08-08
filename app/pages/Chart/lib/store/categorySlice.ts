@@ -4,11 +4,10 @@ import moment from 'moment';
 
 import { db_key } from '../../../../shared/lib/constants/DB_KEY';
 import { root_url } from '../../../../shared/lib/constants/REF_URL';
-import { makeid } from '../../../../shared/lib/utils/generateID';
-import { getRandomColor } from '../helpers/getRandomColor';
+
+import { colorsArray, iconsArray } from './propertires';
 
 import type { CategoryState, ICategory } from '../types/interfaces';
-import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: CategoryState = {
   data: [],
@@ -18,7 +17,7 @@ const initialState: CategoryState = {
 
 export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectValue: string }>(
   'categories/fetchCategories',
-  async function (uid, { rejectWithValue }) {
+  async function (uid) {
     try {
       const response = await axios.get(`${root_url}/users/${uid}/categories.json?auth=${db_key}`);
 
@@ -27,9 +26,11 @@ export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectVal
         index: key,
       }));
 
+      console.log(response.data);
+
       return data;
     } catch (error) {
-      return rejectWithValue('Server error');
+      return [];
     }
   }
 );
@@ -41,8 +42,8 @@ export const addNewCategory = createAsyncThunk<ICategory, string, { rejectValue:
       const newCategory = {
         title: 'New Category',
         count: 0,
-        icon: 'flask',
-        color: getRandomColor(),
+        icon: iconsArray[Math.floor(Math.random() * iconsArray.length)],
+        color: colorsArray[Math.floor(Math.random() * colorsArray.length)],
         percent: 0,
         history: [
           {

@@ -25,7 +25,6 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '500',
     paddingLeft: 10,
   },
   subTitle: {

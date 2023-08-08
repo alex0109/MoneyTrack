@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
@@ -13,7 +14,6 @@ import { changeCountTitle, changeCountValue } from '../../lib/store/countSlice';
 
 import type { ICount } from '../../lib/types/interfaces';
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const CountEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
@@ -107,7 +107,9 @@ const CountEdit: FC = ({ route }) => {
           submitEditing={() => changeCountValueHandler(inputCountValue)}
         />
         <View style={{ width: '80%', marginTop: 5 }}>
-          <Text style={{ color: colors.red }}>{t('firstScreen.countEditValueWarning')}</Text>
+          <Text style={{ color: colors.red, fontFamily: 'NotoSans-Regular' }}>
+            {t('firstScreen.countEditValueWarning')}
+          </Text>
         </View>
       </View>
     </ScrollView>

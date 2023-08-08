@@ -42,7 +42,7 @@ const Language = () => {
             backgroundColor: colors.themeColor,
             width: '90%',
           }}
-          textStyle={{ color: colors.textColor }}
+          textStyle={{ color: colors.textColor, fontFamily: 'NotoSans-Regular' }}
           activeColor={colors.info}
           selectedBtn={(e: string) => changeCurrentLanguage(e.value)}
         />

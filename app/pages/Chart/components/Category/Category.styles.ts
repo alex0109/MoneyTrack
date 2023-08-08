@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'NotoSans-Bold',
     textAlign: 'center',
   },
 });

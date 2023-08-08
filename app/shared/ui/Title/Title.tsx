@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 27,
-    fontWeight: '600',
+    fontFamily: 'NotoSans-SemiBold',
   },
 });

@@ -38,48 +38,48 @@ const AnalyticHistoryList: FC = () => {
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Title>{t('thirdScreen.historyTitle')}</Title>
         <TouchableOpacity style={{ paddingRight: 25 }} onPress={() => setToggle(!toggle)}>
-          <Text style={{ color: colors.info, fontWeight: '500', fontSize: 16 }}>
+          <Text style={{ color: colors.info, fontFamily: 'NotoSans-SemiBold', fontSize: 16 }}>
             {!toggle ? t('thirdScreen.monthHistoryButton') : t('thirdScreen.fullHistoryButton')}
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.historiesContainer}>
-        {toggle ? (
-          sortedOutcomes.map((month, index) => <AnalyticMonthItem key={index} month={month} />)
-        ) : history.length == 0 ? (
-          <View
-            style={[
-              styles.historyItem,
-              { backgroundColor: colors.contrastColor, borderRadius: 5 },
-            ]}>
-            <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
-              <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
-                {t('thirdScreen.noHistoryMessage')}
-              </Text>
-            </View>
+      {history.length > 0 ? (
+        <ScrollView style={styles.historiesContainer}>
+          {toggle
+            ? sortedOutcomes.map((month, index) => <AnalyticMonthItem key={index} month={month} />)
+            : history.map((item, index) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.historyItem,
+                    { backgroundColor: colors.contrastColor, borderRadius: 5 },
+                  ]}>
+                  <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
+                    <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
+                      {i18n.language == 'uk'
+                        ? `${getCurrentWeekendhName(moment(item.date).isoWeekday())} - ${moment(
+                            item.date
+                          ).format('DD.MM.YYYY')}`
+                        : moment(item.date).format('dddd - DD MM YYYY')}
+                    </Text>
+                  </View>
+                  <AnalyticHistoryItem values={item.values} />
+                </View>
+              ))}
+        </ScrollView>
+      ) : (
+        <View
+          style={[
+            styles.historiesContainer,
+            { backgroundColor: colors.contrastColor, borderRadius: 5 },
+          ]}>
+          <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
+            <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
+              {t('thirdScreen.noHistoryMessage')}
+            </Text>
           </View>
-        ) : (
-          history.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.historyItem,
-                { backgroundColor: colors.contrastColor, borderRadius: 5 },
-              ]}>
-              <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
-                <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
-                  {i18n.language == 'uk'
-                    ? `${getCurrentWeekendhName(moment(item.date).isoWeekday())} - ${moment(
-                        item.date
-                      ).format('DD.MM.YYYY')}`
-                    : moment(item.date).format('dddd - DD MM YYYY')}
-                </Text>
-              </View>
-              <AnalyticHistoryItem values={item.values} />
-            </View>
-          ))
-        )}
-      </ScrollView>
+        </View>
+      )}
     </View>
   );
 };
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   historyTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'NotoSans-SemiBold',
   },
   historyItem: {
     marginBottom: 20,

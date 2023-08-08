@@ -58,7 +58,10 @@ const Category: FC<CategoryProps> = ({ categoryID, handleCategoryClose }) => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: matchedCategory?.color }]}>
       <View style={[styles.header, { backgroundColor: matchedCategory?.color }]}>
-        <Text style={[styles.title, { color: colors.themeColor }]}>{matchedCategory.title}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CategoryEditStack', { categoryID: categoryID })}>
+          <Text style={[styles.title, { color: colors.themeColor }]}>{matchedCategory.title}</Text>
+        </TouchableOpacity>
       </View>
       <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         <AlternativeKeyboard categoryID={categoryID} />

@@ -12,6 +12,7 @@ import {
 } from './StackNavigator';
 
 import type { RootStackParamList } from './StackNavigator';
+import CategoryCircleSkeleton from '../../../pages/Chart/components/CategoryCircleSkeleton/CategoryCircleSkeleton';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -39,6 +40,7 @@ const TabNavigator = () => {
         }}
         component={AccountsStackNavigator}
       />
+
       <Tab.Screen
         name='ChartTab'
         options={{

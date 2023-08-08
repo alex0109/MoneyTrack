@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     width: '90%',
+    fontFamily: 'NotoSans-Regular',
     padding: 0,
     paddingLeft: 5,
   },
@@ -40,14 +41,14 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   inputButton: {
-    fontWeight: '500',
+    fontFamily: 'NotoSans-Regular',
   },
   socialLog: {
     width: '80%',
   },
   socialLogText: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: 'NotoSans-Regular',
     paddingHorizontal: 40,
     paddingVertical: 10,
     borderRadius: 20,

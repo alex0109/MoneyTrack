@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'left',
     fontSize: 16,
+    fontFamily: 'NotoSans-Regular',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '90%',
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: 'NotoSans-Regular',
     paddingHorizontal: 15,
     borderWidth: 1,
     borderRadius: 10,
@@ -101,6 +102,6 @@ const styles = StyleSheet.create({
   input: {
     width: '90%',
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: 'NotoSans-Regular',
   },
 });

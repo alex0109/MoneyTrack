@@ -25,12 +25,13 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '500',
     paddingLeft: 10,
+    fontFamily: 'NotoSans-Regular',
   },
   subTitle: {
     paddingLeft: 10,
     color: Colors.light.colors.success,
     fontSize: 18,
+    fontFamily: 'NotoSans-Regular',
   },
 });

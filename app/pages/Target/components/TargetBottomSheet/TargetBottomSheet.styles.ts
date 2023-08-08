@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: 'NotoSans-Bold',
     textAlign: 'center',
   },
   subTitleContainer: {
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   subTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NotoSans-Bold',
     textAlign: 'center',
     marginLeft: '1%',
     marginRight: '1%',

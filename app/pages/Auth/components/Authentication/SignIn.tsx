@@ -100,7 +100,9 @@ const SignIn: FC = () => {
     <View style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <View style={[styles.inputsContainer, { backgroundColor: colors.themeColor }]}>
         {loginError ? (
-          <Text style={{ marginVertical: 10, color: colors.red }}>{t('auth.serverError')}</Text>
+          <Text style={{ marginVertical: 10, color: colors.red, fontFamily: 'NotoSans-Regular' }}>
+            {t('auth.serverError')}
+          </Text>
         ) : (
           <></>
         )}
@@ -122,7 +124,13 @@ const SignIn: FC = () => {
               placeholderTextColor={colors.gray}
             />
           </View>
-          {emailValidError ? <Text style={{ color: colors.red }}>{emailValidError}</Text> : <></>}
+          {emailValidError ? (
+            <Text style={{ color: colors.red, fontFamily: 'NotoSans-Regular' }}>
+              {emailValidError}
+            </Text>
+          ) : (
+            <></>
+          )}
 
           <View
             style={[
@@ -141,9 +149,7 @@ const SignIn: FC = () => {
               placeholder={`${t('auth.passwordInput')}`}
               placeholderTextColor={colors.gray}
             />
-            <TouchableOpacity
-              onPressIn={() => setSecurePass(false)}
-              onPressOut={() => setSecurePass(true)}>
+            <TouchableOpacity onPress={() => setSecurePass((state) => !state)}>
               <Ionicons name='eye' size={25} color={colors.textColor} />
             </TouchableOpacity>
           </View>
@@ -175,7 +181,9 @@ const SignIn: FC = () => {
           </View>
         </View>
         <TouchableOpacity onPress={() => handleLoginAnonymouslyUser()}>
-          <Text>Continue like a guest</Text>
+          <Text style={{ color: colors.textColor, fontFamily: 'NotoSans-SemiBold' }}>
+            {t('auth.guest')}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

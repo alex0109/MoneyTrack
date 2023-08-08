@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
@@ -13,7 +14,6 @@ import { changeTarget, changeTargetTitle, changeTargetValue } from '../../lib/st
 
 import type { ITarget } from '../../lib/types/interfaces';
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const TargetEdit: FC = ({ route }) => {
   const colors = useTheme().colors;

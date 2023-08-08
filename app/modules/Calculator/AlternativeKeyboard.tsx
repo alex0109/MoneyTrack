@@ -109,10 +109,13 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
             style={{
               color: colors.textColor,
               marginRight: 20,
+              fontFamily: 'NotoSans-Regular',
               fontSize: calc.length > 6 ? 26 : 32,
             }}>
             {calc == '' ? (
-              <Text style={{ fontSize: 16, color: 'gray' }}>Type your value...</Text>
+              <Text style={{ fontSize: 16, color: 'gray', fontFamily: 'NotoSans-Regular' }}>
+                Type your value...
+              </Text>
             ) : (
               calc
             )}
@@ -120,11 +123,13 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
         </View>
         <View style={{ justifyContent: 'flex-start', height: '100%' }}>
           <TouchableOpacity onPress={() => changeCountHandler()}>
-            <Text style={{ textAlign: 'center', fontWeight: 'bold', color: colors.textColor }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: colors.textColor,
+                fontFamily: 'NotoSans-Bold',
+              }}>
               {count.length > 0 ? count[currentCount].title : 'No counts'}
-            </Text>
-            <Text style={{ textAlign: 'center', color: colors.textColor }}>
-              {count.length > 0 ? count[currentCount].value : ''}
             </Text>
           </TouchableOpacity>
         </View>

@@ -15,7 +15,7 @@ const initialState: CountState = {
 
 export const fetchCounts = createAsyncThunk<ICount[], string, { rejectValue: string }>(
   'counts/fetchCounts',
-  async function (uid, { rejectWithValue }) {
+  async function (uid) {
     try {
       const response = await axios.get(`${root_url}/users/${uid}/counts.json?auth=${db_key}`);
 
@@ -26,7 +26,7 @@ export const fetchCounts = createAsyncThunk<ICount[], string, { rejectValue: str
 
       return data;
     } catch (error) {
-      return rejectWithValue('Server error');
+      return [];
     }
   }
 );

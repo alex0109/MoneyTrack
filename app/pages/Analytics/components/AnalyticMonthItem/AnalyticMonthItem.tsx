@@ -49,8 +49,8 @@ const AnalyticMonthItem: FC<AnalyticMonthItemProps> = ({ month }) => {
       </View>
       {month.actions.map((action, index) =>
         action.amount > 0 ? (
-          <View key={action.index} style={{ padding: 5 }}>
-            <Text style={{ color: colors.textColor }}>
+          <View key={action.index} style={{ padding: 5, marginVertical: 5 }}>
+            <Text style={{ color: colors.textColor, fontSize: 16, fontFamily: 'NotoSans-Regular' }}>
               - {action.title} {action.amount}
             </Text>
           </View>
@@ -67,6 +67,6 @@ export default AnalyticMonthItem;
 const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: 'NotoSans-SemiBold',
   },
 });

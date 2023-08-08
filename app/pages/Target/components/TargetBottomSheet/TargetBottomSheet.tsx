@@ -67,10 +67,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
     dispatch(deleteTarget({ uid: authContext.uid, targetID: index }));
   };
 
-  const font = useFont(
-    require('../../../../shared/assets/fonts/Assistant/Assistant-Light.ttf'),
-    50
-  );
+  const font = useFont(require('../../../../shared/assets/fonts/NotoSans-Regular.ttf'), 50);
 
   if (!font) {
     return <View />;
@@ -79,7 +76,10 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
   return (
     <View style={[styles.container, { backgroundColor: 'green' }]}>
       <View style={[styles.header, { backgroundColor: 'green' }]}>
-        <Text style={[styles.title, { color: colors.themeColor }]}>{targetElement.title}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('TargetEditStack', { targetID: targetID })}>
+          <Text style={[styles.title, { color: colors.themeColor }]}>{targetElement.title}</Text>
+        </TouchableOpacity>
       </View>
       <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         <View style={[styles.belt]}>

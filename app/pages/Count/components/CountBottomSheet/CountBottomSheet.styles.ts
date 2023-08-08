@@ -14,17 +14,18 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 28,
+    fontFamily: 'NotoSans-Bold',
     textAlign: 'center',
   },
   subTitleContainer: {
     flexDirection: 'row',
+    fontFamily: 'NotoSans-Regular',
     paddingVertical: 10,
   },
   subTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'NotoSans-Bold',
     textAlign: 'center',
     marginLeft: '1%',
     marginRight: '1%',

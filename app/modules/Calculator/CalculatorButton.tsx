@@ -16,7 +16,9 @@ const CalculatorButton: FC<CalculatorButtonProps> = ({ onPress, title, color }) 
   const colors = useTheme().colors;
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, { backgroundColor: color }]}>
-      <Text style={{ color: colors.textColor, fontSize: 20 }}>{title}</Text>
+      <Text style={{ color: colors.textColor, fontSize: 20, fontFamily: 'NotoSans-Regular' }}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };

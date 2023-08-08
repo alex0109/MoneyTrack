@@ -30,9 +30,9 @@ const styles = StyleSheet.create({
   item: {
     marginVertical: 5,
     padding: 5,
-    borderRadius: 5,
   },
   category: {
     fontSize: 16,
+    fontFamily: 'NotoSans-Regular',
   },
 });

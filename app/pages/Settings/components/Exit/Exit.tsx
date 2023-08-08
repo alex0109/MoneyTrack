@@ -24,7 +24,7 @@ const Exit: FC = () => {
         <TouchableOpacity
           onPress={() => authContext.logout()}
           style={{ borderRadius: 5, padding: 15, backgroundColor: '#ED0F0F20' }}>
-          <Text style={{ color: colors.red, fontSize: 20, fontWeight: '500' }}>
+          <Text style={{ color: colors.red, fontSize: 20, fontFamily: 'NotoSans-Regular' }}>
             {t('settings.signOut')}
           </Text>
         </TouchableOpacity>

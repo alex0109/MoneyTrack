@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
@@ -15,7 +14,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: SCREEN_HEIGHT / 3,
     width: SCREEN_WIDTH / 1.5,
     borderRadius: 20,
     padding: 15,

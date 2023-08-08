@@ -3,13 +3,21 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import Title from '../../../../shared/ui/Title/Title';
+import BarSkeleton from '../../../Count/components/BarSkeleton/BarSkeleton';
 import { addNewTarget } from '../../lib/store/targetSlice';
 import TargetBar from '../TargetBar/TargetBar';
 
@@ -24,6 +32,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   const authContext = useContext(AuthContext);
   const dispatch = useAppDispatch();
   const target = useTypedSelector((state) => state.target.data);
+  const targetLoading = useTypedSelector((state) => state.target.loading);
   const colors = useTheme().colors;
   const { t } = useTranslation();
 
@@ -32,33 +41,48 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
       <Title>{t('firstScreen.targetTitle')}</Title>
       {target.length == 0 ? (
         <View style={styles.noTargetsdMessage}>
-          <Text style={[styles.noTargetsdMessageText, { color: colors.textColor }]}>
+          <Text
+            style={[
+              styles.noTargetsdMessageText,
+              { color: colors.textColor, fontFamily: 'NotoSans-Regular' },
+            ]}>
             {t('firstScreen.noTargetsMessage')}
           </Text>
-          <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
-            <Ionicons name='add-outline' size={35} color={colors.textColor} />
-          </Pressable>
+          {!targetLoading ? (
+            <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
+              <Ionicons name='add-outline' size={35} color={colors.textColor} />
+            </Pressable>
+          ) : (
+            <ActivityIndicator size='large' color={colors.textColor} />
+          )}
         </View>
       ) : (
         <View>
-          <View style={styles.targetsContent}>
-            {target.map((item: ITarget) => (
-              <TouchableOpacity
-                key={item.index}
-                onPress={() => {
-                  handleModalOpen(item.index);
-                }}>
-                <TargetBar key={item.index} {...item} />
-              </TouchableOpacity>
-            ))}
-            {target.length < 5 ? (
-              <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
-                <Ionicons name='add-outline' size={35} color={colors.textColor} />
-              </Pressable>
-            ) : (
-              <></>
-            )}
-          </View>
+          {!targetLoading ? (
+            <View style={styles.targetsContent}>
+              {target.map((item: ITarget) => (
+                <TouchableOpacity
+                  key={item.index}
+                  onPress={() => {
+                    handleModalOpen(item.index);
+                  }}>
+                  <TargetBar key={item.index} {...item} />
+                </TouchableOpacity>
+              ))}
+              {target.length < 5 ? (
+                <Pressable onPress={() => dispatch(addNewTarget(authContext.uid))}>
+                  <Ionicons name='add-outline' size={35} color={colors.textColor} />
+                </Pressable>
+              ) : (
+                <></>
+              )}
+            </View>
+          ) : (
+            <>
+              <BarSkeleton />
+              <BarSkeleton />
+            </>
+          )}
         </View>
       )}
     </View>
@@ -81,6 +105,5 @@ const styles = StyleSheet.create({
   noTargetsdMessageText: {
     fontSize: 20,
     marginBottom: 30,
-    fontWeight: '400',
   },
 });

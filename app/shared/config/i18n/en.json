@@ -11,7 +11,8 @@
       "serverError": "Oops, we got some error, try again",
       "emailError": "Enter valid email",
       "passwordError": "Password must be minimum 6 charachters",
-      "repasswordError": "Passwords need to match"
+      "repasswordError": "Passwords need to match",
+      "guest": "Continue like a guest"
     },
     "settings": {
       "settingsTitle": "Settings",
@@ -47,7 +48,8 @@
     "secondScreen": {
       "categoryEditNameTitle": "Title",
       "categoryEditColorTitle": "Color",
-      "categoryEditIconTitle": "Icon"
+      "categoryEditIconTitle": "Icon",
+      "quitTheApp": "Do you want to quit the app?"
     },
     "thirdScreen": {
       "historyTitle": "History",
@@ -59,7 +61,8 @@
       "back": "Back",
       "placeholderValue": "Your value...",
       "placeholderTitle": "Your title...",
-      "headerBalance": "Balance"
+      "headerBalance": "Balance",
+      "exitApp": "Exit"
     }
   }
 }

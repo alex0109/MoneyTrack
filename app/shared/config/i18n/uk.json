@@ -11,7 +11,8 @@
       "serverError": "Упс, ми отримали невідому помилку, спробуйте ще раз потім",
       "emailError": "Пошта має бути правильною",
       "passwordError": "Пароль мусить бути мінімум з 6 символів",
-      "repasswordError": "Паролі мусять сходитися"
+      "repasswordError": "Паролі мусять сходитися",
+      "guest": "Продовжити як гість"
     },
     "settings": {
       "settingsTitle": "Налаштування",
@@ -47,7 +48,8 @@
     "secondScreen": {
       "categoryEditNameTitle": "Назва",
       "categoryEditColorTitle": "Колір",
-      "categoryEditIconTitle": "Іконка"
+      "categoryEditIconTitle": "Іконка",
+      "quitTheApp": "Ти дійсно хочеш вийти з MoneyTrack?"
     },
     "thirdScreen": {
       "historyTitle": "Історія",
@@ -59,7 +61,8 @@
       "back": "Назад",
       "placeholderValue": "Ваше число...",
       "placeholderTitle": "Ваша назва...",
-      "headerBalance": "Баланс"
+      "headerBalance": "Баланс",
+      "exitApp": "Вийти"
     }
   }
 }

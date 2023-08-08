@@ -15,7 +15,7 @@ const initialState: TargetState = {
 
 export const fetchTargets = createAsyncThunk<ITarget[], string, { rejectValue: string }>(
   'targets/fetchTargets',
-  async function (uid, { rejectWithValue }) {
+  async function (uid) {
     try {
       const response = await axios.get(`${root_url}/users/${uid}/targets.json?auth=${db_key}`);
 
@@ -26,7 +26,7 @@ export const fetchTargets = createAsyncThunk<ITarget[], string, { rejectValue: s
 
       return data;
     } catch (error) {
-      return rejectWithValue('Server error');
+      return [];
     }
   }
 );

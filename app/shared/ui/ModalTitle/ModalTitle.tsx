@@ -22,7 +22,7 @@ export default ModalTitle;
 const styles = StyleSheet.create({
   title: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: 'NotoSans-SemiBold',
     textAlign: 'center',
   },
 });

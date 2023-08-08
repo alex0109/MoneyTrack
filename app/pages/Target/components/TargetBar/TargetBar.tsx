@@ -44,8 +44,11 @@ const TargetBar: FC<ITarget> = (target) => {
       <Swipeable renderRightActions={onRightSwipe}>
         <SafeAreaView style={[styles.contentContainer, { borderBottomColor: colors.textColor }]}>
           <View style={styles.contentItem}>
-            <Text style={[styles.title, { color: colors.textColor }]}>{target.title}</Text>
-            <Text style={[styles.subTitle]}>
+            <Text
+              style={[styles.title, { color: colors.textColor, fontFamily: 'NotoSans-Regular' }]}>
+              {target.title}
+            </Text>
+            <Text style={[styles.subTitle, { fontFamily: 'NotoSans-Regular' }]}>
               {target.value} / {target.target}
             </Text>
           </View>

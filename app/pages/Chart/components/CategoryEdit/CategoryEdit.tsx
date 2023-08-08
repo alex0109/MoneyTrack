@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,7 +20,6 @@ import { colorsArray, iconsArray } from '../../lib/store/propertires';
 
 import type { ICategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;

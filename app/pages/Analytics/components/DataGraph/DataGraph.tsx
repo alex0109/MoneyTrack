@@ -18,9 +18,9 @@ const DataGraph: FC<DataGraphProps> = ({ data }) => {
     backgroundGradientTo: colors.textColor,
     backgroundGradientToOpacity: 0,
     color: () => colors.textColor,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2,
     barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
+    useShadowColorFromDataset: false,
   };
 
   return (

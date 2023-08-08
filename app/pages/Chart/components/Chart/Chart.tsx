@@ -4,11 +4,12 @@ import Analytics from 'appcenter-analytics';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
+import { BackHandler, SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../../modules/BottomSheet/BottomSheet';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+import BackModal from '../../../../shared/ui/BackModal/BackModal';
 import { sortByCurrentMonth } from '../../lib/helpers/getByCurrentMonth';
 import { getPercantageForCategory } from '../../lib/helpers/getPercent';
 import Category from '../Category/Category';
@@ -16,6 +17,7 @@ import Category from '../Category/Category';
 import MonthCategory from '../MonthCategory/MonthCategory';
 
 import type { BottomSheetRefProps } from '../../../../modules/BottomSheet/BottomSheet';
+import type { ModalRefProps } from '../../../../shared/ui/Modal/Modal';
 import type { IMonthsCategory } from '../../lib/types/interfaces';
 import type { FC } from 'react';
 
@@ -34,6 +36,17 @@ const Chart: FC = () => {
 
   const categoryBottomSheetRef = useRef<BottomSheetRefProps>(null);
 
+  const refBackModal = useRef<ModalRefProps>(null);
+
+  const setBackModalVisible = useCallback((modalVisible: boolean) => {
+    const setModalVisible = refBackModal.current?.setModalVisible(modalVisible);
+    if (setModalVisible) {
+      refBackModal.current?.setModalVisible(modalVisible);
+    }
+  }, []);
+
+  const backModalVisible = refBackModal.current?.modalVisible;
+
   const handleOpenCategory = useCallback((index: string) => {
     setCategoryID(index);
     categoryBottomSheetRef.current!.expand();
@@ -48,6 +61,13 @@ const Chart: FC = () => {
 
     const currMonth = sortByCurrentMonth(category, count);
     setSortedByCurrentMonth(...currMonth);
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      setBackModalVisible(true);
+      return true;
+    });
+
+    return () => backHandler.remove();
   }, [category, count]);
 
   return (
@@ -66,6 +86,11 @@ const Chart: FC = () => {
           backDropColor={'black'}>
           <Category categoryID={categoryID} handleCategoryClose={handleCategoryClose} />
         </BottomSheet>
+        <BackModal
+          refModal={refBackModal}
+          modalVisible={backModalVisible}
+          setModalVisible={setBackModalVisible}
+        />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

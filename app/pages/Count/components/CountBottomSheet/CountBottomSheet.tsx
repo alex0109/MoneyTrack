@@ -1,7 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useCallback, useContext, useRef } from 'react';
 
-import { useTranslation } from 'react-i18next';
 import { View, TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -27,7 +26,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   const authContext = useContext(AuthContext);
 
   const count = useTypedSelector((state) => state.count.data);
-  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ICount => {
@@ -68,7 +66,10 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   return (
     <View style={[styles.container, { backgroundColor: 'green' }]}>
       <View style={[styles.header, { backgroundColor: 'green' }]}>
-        <Text style={[styles.title, { color: colors.themeColor }]}>{countElement.title}</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CountEditStack', { countID: countID })}>
+          <Text style={[styles.title, { color: colors.themeColor }]}>{countElement.title}</Text>
+        </TouchableOpacity>
       </View>
       <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
         <View style={[styles.belt]}>

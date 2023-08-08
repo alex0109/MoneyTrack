@@ -1,10 +1,11 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
+import { BackHandler, SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../modules/BottomSheet/BottomSheet';
+
 import CountBottomSheet from '../../Count/components/CountBottomSheet/CountBottomSheet';
 import CountList from '../../Count/components/CountList/CountList';
 import TargetBottomSheet from '../../Target/components/TargetBottomSheet/TargetBottomSheet';
@@ -12,16 +13,12 @@ import TargetList from '../../Target/components/TargetList/TargetList';
 
 import type { BottomSheetRefProps } from '../../../modules/BottomSheet/BottomSheet';
 import type { FC } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchCount } from '../../Count/lib/store/countSlice';
-import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 const Accounts: FC = () => {
   const [accountID, setAccountID] = useState<string>('');
-  const dispatch = useDispatch();
-  const count = useTypedSelector((state) => state.count.data);
 
   const colors = useTheme().colors;
+  const navigation = useNavigation();
 
   const { height } = useWindowDimensions();
   const countBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -47,6 +44,13 @@ const Accounts: FC = () => {
 
   useEffect(() => {
     void Analytics.trackEvent('Counts/Targets opened');
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.navigate('ChartTab', {});
+      return true;
+    });
+
+    return () => backHandler.remove();
   }, []);
 
   return (
