@@ -43,7 +43,8 @@
       "countEditValueWarning": "Якщо ви хочете змінити значення, то пам'ятайте, що різниця між введеним і поточним числом буде занесена в історію",
       "targetEditNameTitle": "Назва",
       "targetEditValueTitle": "Значення",
-      "targetEditTargetTitle": "Ціль"
+      "targetEditTargetTitle": "Ціль",
+      "noInternetConnection": "Підключіться до Інтернету :D"
     },
     "secondScreen": {
       "categoryEditNameTitle": "Назва",
@@ -62,6 +63,7 @@
       "placeholderValue": "Ваше число...",
       "placeholderTitle": "Ваша назва...",
       "headerBalance": "Баланс",
+      "noInternet": "Немає інтернету",
       "exitApp": "Вийти"
     }
   }

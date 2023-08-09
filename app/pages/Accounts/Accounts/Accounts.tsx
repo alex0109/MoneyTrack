@@ -1,7 +1,16 @@
+import NetInfo from '@react-native-community/netinfo';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BackHandler, SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import {
+  BackHandler,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../modules/BottomSheet/BottomSheet';
@@ -15,10 +24,12 @@ import type { BottomSheetRefProps } from '../../../modules/BottomSheet/BottomShe
 import type { FC } from 'react';
 
 const Accounts: FC = () => {
+  const { isConnected } = NetInfo.useNetInfo();
   const [accountID, setAccountID] = useState<string>('');
 
   const colors = useTheme().colors;
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const { height } = useWindowDimensions();
   const countBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -59,8 +70,18 @@ const Accounts: FC = () => {
         <ScrollView
           style={[{ backgroundColor: colors.themeColor, flex: 1 }]}
           alwaysBounceVertical={false}>
-          <CountList handleModalOpen={handleOpenCount} />
-          <TargetList handleModalOpen={handleOpenTarget} />
+          {isConnected ? (
+            <>
+              <CountList handleModalOpen={handleOpenCount} />
+              <TargetList handleModalOpen={handleOpenTarget} />
+            </>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: 'center', marginTop: 50, fontFamily: 'NotoSans-Regular' }}>
+                {t('firstScreen.noInternetConnection')}
+              </Text>
+            </View>
+          )}
         </ScrollView>
         <BottomSheet
           ref={countBottomSheetRef}

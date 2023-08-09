@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 import { save, get } from '../utils/asyncMethods';
 
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface ThemeContextType {
   theme: string;
@@ -23,7 +23,7 @@ interface ThemeProviderProps {
 
 const ThemeContext = createContext<ThemeContextType>(defaultThemeContext);
 
-const ThemeProvider = ({ children }: ThemeProviderProps) => {
+const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<string>('default');
   const [themeIndex, setThemeIndex] = useState<number>(3);
 

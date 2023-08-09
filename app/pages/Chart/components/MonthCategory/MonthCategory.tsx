@@ -1,6 +1,7 @@
+import NetInfo from '@react-native-community/netinfo';
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View, ActivityIndicator } from 'react-native';
 
@@ -34,11 +35,12 @@ interface MonthCategoryProps {
 }
 
 const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpenCategory }) => {
+  const { isConnected } = NetInfo.useNetInfo();
+
   const colors = useTheme().colors;
   const authContext = useContext(AuthContext);
   const categoryLoading = useTypedSelector((state) => state.category.loading);
 
-  const currentMonth = moment().format('YYYY-MM');
   const { i18n } = useTranslation();
 
   const [isCategoryDelete, setIsCategoryDelete] = useState(false);
@@ -80,7 +82,27 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
                 <></>
               );
             })}
-            {isCategoryDelete || currentMonth !== date ? (
+            {isConnected ? (
+              isCategoryDelete ? (
+                <View
+                  style={[
+                    styles.addItemCircle,
+                    {
+                      borderWidth: 0,
+                    },
+                  ]}>
+                  <Pressable>
+                    <Ionicons name={'trash'} size={35} color={colors.red} />
+                  </Pressable>
+                </View>
+              ) : (
+                <View style={[styles.addItemCircle, { borderColor: colors.textColor }]}>
+                  <Pressable onPress={() => dispatch(addNewCategory(authContext.uid))}>
+                    <Ionicons name={'add-outline'} size={35} color={colors.textColor} />
+                  </Pressable>
+                </View>
+              )
+            ) : (
               <View
                 style={[
                   styles.addItemCircle,
@@ -88,22 +110,14 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
                     borderWidth: 0,
                   },
                 ]}>
-                <Pressable>
-                  <Ionicons name={'trash'} size={35} color={colors.red} />
-                </Pressable>
-              </View>
-            ) : (
-              <View style={[styles.addItemCircle, { borderColor: colors.textColor }]}>
-                <Pressable onPress={() => dispatch(addNewCategory(authContext.uid))}>
-                  <Ionicons name={'add-outline'} size={35} color={colors.textColor} />
-                </Pressable>
+                <Ionicons name={'cloud-offline'} size={35} color={colors.textColor} />
               </View>
             )}
           </View>
         ) : (
           <View style={[styles.categoriesCircle]}>
-            {[1, 2, 3, 4, 5].map((_, index) => {
-              const { x, y } = getCoordinatesForIndex(-index + 1, 5);
+            {[1, 2, 3, 4, 5, 6].map((_, index) => {
+              const { x, y } = getCoordinatesForIndex(-index + 1, 6);
 
               return <CategoryCircleSkeleton key={index} x={x} y={y} />;
             })}

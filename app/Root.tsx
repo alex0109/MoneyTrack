@@ -1,6 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native';
+import NetInfo from '@react-native-community/netinfo';
+import { NavigationContainer, useTheme } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { SafeAreaView, useColorScheme } from 'react-native';
+import { ImageBackground, SafeAreaView, useColorScheme } from 'react-native';
 
 import SplashScreen from 'react-native-splash-screen';
 
@@ -17,12 +18,23 @@ import { get } from './shared/lib/utils/asyncMethods';
 
 import type { FC } from 'react';
 
+import dinoDarkBackground from './shared/assets/images/dinodark.png';
+import dinoLightBackground from './shared/assets/images/dinolight.png';
+
 const Root: FC = () => {
+  const { isConnected } = NetInfo.useNetInfo();
+
+  const colors = useTheme().colors;
+
   const { theme } = useContext(ThemeContext);
   const authContext = useContext(AuthContext);
-  const deviceTheme = useColorScheme();
-  const [isTryingLogin, setIsTryingLogin] = useState(true);
+
   const dispatch = useAppDispatch();
+
+  const deviceTheme = useColorScheme();
+
+  const [isTryingLogin, setIsTryingLogin] = useState(true);
+  const [backgroundImageSource, setBackgroundImageSource] = useState(dinoDarkBackground);
 
   function currentTheme(theme: string) {
     if (theme === 'light') {
@@ -35,14 +47,30 @@ const Root: FC = () => {
     }
   }
 
+  function getImageSource(theme: string) {
+    if (theme === 'light') {
+      setBackgroundImageSource(dinoLightBackground);
+    }
+    if (theme === 'dark') {
+      setBackgroundImageSource(dinoDarkBackground);
+    } else {
+      deviceTheme === 'dark'
+        ? setBackgroundImageSource(dinoDarkBackground)
+        : setBackgroundImageSource(dinoLightBackground);
+    }
+  }
+
   useEffect(() => {
+    currentTheme(theme);
     async function fetchToken() {
       const storedToken: string = await get('token');
       const storedUid: string = await get('uid');
 
-      dispatch(fetchCategories(storedUid));
-      dispatch(fetchCounts(storedUid));
-      dispatch(fetchTargets(storedUid));
+      if (isConnected) {
+        dispatch(fetchCategories(storedUid));
+        dispatch(fetchCounts(storedUid));
+        dispatch(fetchTargets(storedUid));
+      }
 
       if (storedToken) {
         authContext.authenticate(storedToken, storedUid);
@@ -52,14 +80,18 @@ const Root: FC = () => {
     }
 
     void fetchToken();
-  }, [authContext.isAuthenticated, dispatch]);
+  }, [authContext.isAuthenticated, dispatch, isConnected, backgroundImageSource]);
 
   if (!isTryingLogin) {
     SplashScreen.hide();
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: colors.themeColor,
+      }}>
       <NavigationContainer theme={currentTheme(theme)}>
         {authContext.isAuthenticated && <TabNavigator />}
         {!authContext.isAuthenticated && <AuthStackNavigator />}

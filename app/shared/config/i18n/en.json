@@ -43,7 +43,8 @@
       "countEditValueWarning": "If you want to change the number, then remember that the difference between the entered and the current number will be entered into the history",
       "targetEditNameTitle": "Title",
       "targetEditValueTitle": "Value",
-      "targetEditTargetTitle": "Target"
+      "targetEditTargetTitle": "Target",
+      "noInternetConnection": "Please connect to the Internet :D"
     },
     "secondScreen": {
       "categoryEditNameTitle": "Title",
@@ -62,6 +63,7 @@
       "placeholderValue": "Your value...",
       "placeholderTitle": "Your title...",
       "headerBalance": "Balance",
+      "noInternet": "No internet",
       "exitApp": "Exit"
     }
   }

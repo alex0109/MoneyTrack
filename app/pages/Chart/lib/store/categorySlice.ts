@@ -17,7 +17,7 @@ const initialState: CategoryState = {
 
 export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectValue: string }>(
   'categories/fetchCategories',
-  async function (uid) {
+  async function (uid, { rejectWithValue }) {
     try {
       const response = await axios.get(`${root_url}/users/${uid}/categories.json?auth=${db_key}`);
 
@@ -26,11 +26,12 @@ export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectVal
         index: key,
       }));
 
-      console.log(response.data);
-
       return data;
     } catch (error) {
-      return [];
+      if (error.toJSON().message === 'Network Error') {
+        console.log('No Internet');
+      }
+      return rejectWithValue('Server error');
     }
   }
 );
@@ -191,6 +192,10 @@ export const categorySlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(addNewCategory.fulfilled, (state, action) => {
