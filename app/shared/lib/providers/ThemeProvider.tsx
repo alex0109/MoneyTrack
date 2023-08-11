@@ -12,8 +12,8 @@ interface ThemeContextType {
 }
 
 const defaultThemeContext: ThemeContextType = {
-  theme: 'default',
-  themeIndex: 3,
+  theme: 'light',
+  themeIndex: 2,
   changeTheme: () => {},
 };
 
@@ -24,8 +24,8 @@ interface ThemeProviderProps {
 const ThemeContext = createContext<ThemeContextType>(defaultThemeContext);
 
 const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<string>('default');
-  const [themeIndex, setThemeIndex] = useState<number>(3);
+  const [theme, setTheme] = useState<string>('light');
+  const [themeIndex, setThemeIndex] = useState<number>(2);
 
   const saveTheme = useCallback(async (themeValue: string) => {
     await save('Theme', themeValue);

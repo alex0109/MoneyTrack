@@ -32,7 +32,7 @@ const Language = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.themeColor }]}>
+    <View style={[styles.container]}>
       <Title>{t('settings.languageTitle')}</Title>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <RadioButtonRN
@@ -45,6 +45,7 @@ const Language = () => {
           textStyle={{ color: colors.textColor, fontFamily: 'NotoSans-Regular' }}
           activeColor={colors.info}
           selectedBtn={(e: string) => changeCurrentLanguage(e.value)}
+          animationTypes={['pulse']}
         />
       </View>
     </View>

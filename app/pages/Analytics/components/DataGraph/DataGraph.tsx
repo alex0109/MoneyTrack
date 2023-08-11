@@ -24,7 +24,13 @@ const DataGraph: FC<DataGraphProps> = ({ data }) => {
   };
 
   return (
-    <View style={{ marginTop: 10 }}>
+    <View
+      style={{
+        paddingTop: 10,
+        borderBottomLeftRadius: 50,
+        borderBottomRightRadius: 50,
+        backgroundColor: colors.themeColor,
+      }}>
       <LineChart
         data={data}
         width={Dimensions.get('window').width - 20}

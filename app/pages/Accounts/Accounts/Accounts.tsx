@@ -15,6 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../modules/BottomSheet/BottomSheet';
 
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import CountBottomSheet from '../../Count/components/CountBottomSheet/CountBottomSheet';
 import CountList from '../../Count/components/CountList/CountList';
 import TargetBottomSheet from '../../Target/components/TargetBottomSheet/TargetBottomSheet';
@@ -26,6 +27,9 @@ import type { FC } from 'react';
 const Accounts: FC = () => {
   const { isConnected } = NetInfo.useNetInfo();
   const [accountID, setAccountID] = useState<string>('');
+
+  const countError = useTypedSelector((state) => state.count.error);
+  const targetError = useTypedSelector((state) => state.target.error);
 
   const colors = useTheme().colors;
   const navigation = useNavigation();
@@ -64,20 +68,26 @@ const Accounts: FC = () => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {}, [countError, targetError]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView
-          style={[{ backgroundColor: colors.themeColor, flex: 1 }]}
-          alwaysBounceVertical={false}>
-          {isConnected ? (
+        <ScrollView style={[{ flex: 1 }]} alwaysBounceVertical={false}>
+          {!isConnected || targetError === null || countError === null ? (
             <>
               <CountList handleModalOpen={handleOpenCount} />
               <TargetList handleModalOpen={handleOpenTarget} />
             </>
           ) : (
             <View style={{ flex: 1 }}>
-              <Text style={{ textAlign: 'center', marginTop: 50, fontFamily: 'NotoSans-Regular' }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 50,
+                  fontFamily: 'NotoSans-Regular',
+                  color: colors.textColor,
+                }}>
                 {t('firstScreen.noInternetConnection')}
               </Text>
             </View>

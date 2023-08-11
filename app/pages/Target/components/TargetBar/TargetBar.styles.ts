@@ -12,11 +12,8 @@ export const styles = StyleSheet.create({
     height: 50,
     width: windowWidth / 1.2,
     borderRadius: 0.1,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
     borderRightWidth: 3,
     borderRightColor: Colors.light.colors.red,
-    backgroundColor: 'rgba(228, 229, 231, 0.2)',
   },
   contentItem: {
     flexDirection: 'row',

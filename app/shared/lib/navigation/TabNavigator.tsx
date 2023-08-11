@@ -12,7 +12,6 @@ import {
 } from './StackNavigator';
 
 import type { RootStackParamList } from './StackNavigator';
-import CategoryCircleSkeleton from '../../../pages/Chart/components/CategoryCircleSkeleton/CategoryCircleSkeleton';
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
@@ -26,6 +25,8 @@ const TabNavigator = () => {
         tabBarStyle: {
           backgroundColor: colors.contrastColor,
           borderTopWidth: 0,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
         },
         tabBarActiveTintColor: colors.warning,
         tabBarInactiveTintColor: colors.textColor,

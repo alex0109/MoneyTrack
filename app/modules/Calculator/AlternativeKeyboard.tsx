@@ -1,4 +1,4 @@
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -29,6 +29,7 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
   const [result, setResult] = useState<string>('');
   const [currentCount, setCurrentCount] = useState(0);
   const count = useTypedSelector((state) => state.count.data);
+  const navigation = useNavigation();
 
   const ops: string[] = ['/', '*', '+', '-', '.'];
 
@@ -104,7 +105,7 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
   return (
     <View style={styles.container}>
       <View style={styles.result}>
-        <View style={{ width: '70%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ width: '70%', height: 65, justifyContent: 'center', alignItems: 'center' }}>
           <Text
             style={{
               color: colors.textColor,
@@ -162,6 +163,11 @@ const AlternativeKeyboard: FC<AlternativeKeyboardProps> = ({ categoryID }) => {
         </View>
         <View style={styles.row}>
           <CalculatorButton onPress={() => updateCalc('0')} title='0' />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('CategoryEditStack', { categoryID: categoryID })}
+            style={styles.iconButton}>
+            <Ionicons name='md-construct' size={35} color={colors.textColor} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

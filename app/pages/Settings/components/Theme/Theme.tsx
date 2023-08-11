@@ -25,15 +25,10 @@ const Theme = () => {
       value: 'light',
       index: 2,
     },
-    {
-      label: t('settings.themeDefault'),
-      value: 'default',
-      index: 3,
-    },
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.themeColor }]}>
+    <View style={[styles.container]}>
       <Title>{t('settings.themeTitle')}</Title>
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <RadioButtonRN
@@ -46,6 +41,7 @@ const Theme = () => {
           textStyle={{ color: colors.textColor, fontFamily: 'NotoSans-Regular' }}
           activeColor={colors.info}
           selectedBtn={(e: IRadioData) => changeTheme(e.value, e.index)}
+          animationTypes={['pulse']}
         />
       </View>
     </View>

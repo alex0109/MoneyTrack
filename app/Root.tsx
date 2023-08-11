@@ -1,30 +1,24 @@
 import NetInfo from '@react-native-community/netinfo';
-import { NavigationContainer, useTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
-import { ImageBackground, SafeAreaView, useColorScheme } from 'react-native';
+import { SafeAreaView, useColorScheme } from 'react-native';
 
 import SplashScreen from 'react-native-splash-screen';
 
+import BGImageLayer from './BGImageLayer';
 import { fetchCategories } from './pages/Chart/lib/store/categorySlice';
 import { fetchCounts } from './pages/Count/lib/store/countSlice';
 import { fetchTargets } from './pages/Target/lib/store/targetSlice';
 import Colors from './shared/assets/styles/colors';
 import { useAppDispatch } from './shared/lib/hooks/useAppDispatch';
-import { AuthStackNavigator } from './shared/lib/navigation/StackNavigator';
-import TabNavigator from './shared/lib/navigation/TabNavigator';
 import { AuthContext } from './shared/lib/providers/AuthProvider';
 import { ThemeContext } from './shared/lib/providers/ThemeProvider';
 import { get } from './shared/lib/utils/asyncMethods';
 
 import type { FC } from 'react';
 
-import dinoDarkBackground from './shared/assets/images/dinodark.png';
-import dinoLightBackground from './shared/assets/images/dinolight.png';
-
 const Root: FC = () => {
   const { isConnected } = NetInfo.useNetInfo();
-
-  const colors = useTheme().colors;
 
   const { theme } = useContext(ThemeContext);
   const authContext = useContext(AuthContext);
@@ -34,7 +28,6 @@ const Root: FC = () => {
   const deviceTheme = useColorScheme();
 
   const [isTryingLogin, setIsTryingLogin] = useState(true);
-  const [backgroundImageSource, setBackgroundImageSource] = useState(dinoDarkBackground);
 
   function currentTheme(theme: string) {
     if (theme === 'light') {
@@ -47,21 +40,7 @@ const Root: FC = () => {
     }
   }
 
-  function getImageSource(theme: string) {
-    if (theme === 'light') {
-      setBackgroundImageSource(dinoLightBackground);
-    }
-    if (theme === 'dark') {
-      setBackgroundImageSource(dinoDarkBackground);
-    } else {
-      deviceTheme === 'dark'
-        ? setBackgroundImageSource(dinoDarkBackground)
-        : setBackgroundImageSource(dinoLightBackground);
-    }
-  }
-
   useEffect(() => {
-    currentTheme(theme);
     async function fetchToken() {
       const storedToken: string = await get('token');
       const storedUid: string = await get('uid');
@@ -80,7 +59,7 @@ const Root: FC = () => {
     }
 
     void fetchToken();
-  }, [authContext.isAuthenticated, dispatch, isConnected, backgroundImageSource]);
+  }, [authContext.isAuthenticated, dispatch, isConnected]);
 
   if (!isTryingLogin) {
     SplashScreen.hide();
@@ -90,11 +69,9 @@ const Root: FC = () => {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: colors.themeColor,
       }}>
       <NavigationContainer theme={currentTheme(theme)}>
-        {authContext.isAuthenticated && <TabNavigator />}
-        {!authContext.isAuthenticated && <AuthStackNavigator />}
+        <BGImageLayer />
       </NavigationContainer>
     </SafeAreaView>
   );

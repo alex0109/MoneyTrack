@@ -9,6 +9,7 @@ import Language from '../Language/Language';
 import Theme from '../Theme/Theme';
 
 import type { FC } from 'react';
+import BGImage from '../BGImage/BGImage';
 
 const Settings: FC = () => {
   const colors = useTheme().colors;
@@ -16,6 +17,7 @@ const Settings: FC = () => {
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
       <Theme />
+      <BGImage />
       <Language />
       <Exit />
     </ScrollView>

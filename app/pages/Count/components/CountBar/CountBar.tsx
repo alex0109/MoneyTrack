@@ -36,7 +36,7 @@ const CountBar: FC<ICount> = (count) => {
   );
 
   return (
-    <View style={{ marginBottom: 30 }}>
+    <View style={{ marginBottom: 30, backgroundColor: colors.contrastColor, borderRadius: 10 }}>
       <Swipeable renderRightActions={onRightSwipe}>
         <View style={[styles.contentContainer, { borderBottomColor: colors.textColor }]}>
           <View style={styles.contentItem}>

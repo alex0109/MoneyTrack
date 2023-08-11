@@ -15,7 +15,7 @@ const initialState: TargetState = {
 
 export const fetchTargets = createAsyncThunk<ITarget[], string, { rejectValue: string }>(
   'targets/fetchTargets',
-  async function (uid) {
+  async function (uid, { rejectWithValue }) {
     try {
       const response = await axios.get(`${root_url}/users/${uid}/targets.json?auth=${db_key}`);
 
@@ -26,7 +26,10 @@ export const fetchTargets = createAsyncThunk<ITarget[], string, { rejectValue: s
 
       return data;
     } catch (error) {
-      return [];
+      if (error.toJSON().message === 'Network Error') {
+        return rejectWithValue('Network error');
+      }
+      return rejectWithValue('Server error');
     }
   }
 );
@@ -159,6 +162,10 @@ export const targetSlice = createSlice({
       })
       .addCase(fetchTargets.fulfilled, (state, action) => {
         state.data = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchTargets.rejected, (state, action) => {
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(addNewTarget.fulfilled, (state, action) => {

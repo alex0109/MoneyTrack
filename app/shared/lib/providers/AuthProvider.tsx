@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createContext, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 
 import { save } from '../utils/asyncMethods';
 
@@ -28,22 +28,22 @@ interface AuthContextProviderProps {
 const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
 const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
-  const [authToken, setAuthToken] = useState();
-  const [userID, setUserID] = useState();
+  const [authToken, setAuthToken] = useState('');
+  const [userID, setUserID] = useState('');
 
-  const authenticate = (token, uid) => {
+  const authenticate = useCallback((token: string, uid: string) => {
     setAuthToken(token);
     setUserID(uid);
     void save('token', token);
     void save('uid', uid);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setAuthToken(null);
     setUserID(null);
     void AsyncStorage.removeItem('token');
     void AsyncStorage.removeItem('uid');
-  };
+  }, []);
 
   const value = {
     token: authToken,

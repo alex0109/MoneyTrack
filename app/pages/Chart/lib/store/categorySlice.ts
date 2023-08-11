@@ -29,7 +29,7 @@ export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectVal
       return data;
     } catch (error) {
       if (error.toJSON().message === 'Network Error') {
-        console.log('No Internet');
+        return rejectWithValue('Network error');
       }
       return rejectWithValue('Server error');
     }

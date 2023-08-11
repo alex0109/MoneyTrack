@@ -12,7 +12,6 @@ import type { IGraphData } from '../../lib/types/interfaces';
 import type { FC } from 'react';
 
 const AnalyticsScreen: FC = () => {
-  const colors = useTheme().colors;
   const navigation = useNavigation();
 
   const category = useTypedSelector((state) => state.category.data);
@@ -35,7 +34,7 @@ const AnalyticsScreen: FC = () => {
   }, [category]);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.themeColor }]}>
+    <View style={[styles.container]}>
       <DataGraph data={graphData} />
       <AnalyticHistoryList />
     </View>

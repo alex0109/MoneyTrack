@@ -1,7 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, Text, View, ActivityIndicator } from 'react-native';
 
@@ -40,6 +40,7 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
   const colors = useTheme().colors;
   const authContext = useContext(AuthContext);
   const categoryLoading = useTypedSelector((state) => state.category.loading);
+  const categoryError = useTypedSelector((state) => state.category.error);
 
   const { i18n } = useTranslation();
 
@@ -51,6 +52,8 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
   )}`;
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {}, [categoryError]);
 
   return (
     <View style={styles.main}>
@@ -82,7 +85,7 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
                 <></>
               );
             })}
-            {isConnected ? (
+            {!isConnected || categoryError == null ? (
               isCategoryDelete ? (
                 <View
                   style={[

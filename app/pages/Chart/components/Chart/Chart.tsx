@@ -52,10 +52,6 @@ const Chart: FC = () => {
     categoryBottomSheetRef.current!.expand();
   }, []);
 
-  const handleCategoryClose = useCallback(() => {
-    categoryBottomSheetRef.current!.close();
-  }, []);
-
   useEffect(() => {
     void Analytics.trackEvent('Chart opened');
 
@@ -72,7 +68,7 @@ const Chart: FC = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={[styles.main, { backgroundColor: colors.themeColor }]}>
+      <SafeAreaView style={[styles.main]}>
         <MonthCategory
           date={sortedByCurrentMonth.month}
           actions={sortedByCurrentMonth.actions}
@@ -84,7 +80,7 @@ const Chart: FC = () => {
           activeHeight={height}
           backgroundColor={colors.themeColor}
           backDropColor={'black'}>
-          <Category categoryID={categoryID} handleCategoryClose={handleCategoryClose} />
+          <Category categoryID={categoryID} />
         </BottomSheet>
         <BackModal
           refModal={refBackModal}
