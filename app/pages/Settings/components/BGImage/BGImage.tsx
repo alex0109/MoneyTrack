@@ -1,7 +1,16 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { BGImageContext } from '../../../../shared/lib/providers/BGImageProvider';
 import { ThemeContext } from '../../../../shared/lib/providers/ThemeProvider';
@@ -39,8 +48,20 @@ const BGImage: FC = () => {
 
   return (
     <View style={[styles.container]}>
-      <Title>BGImage</Title>
+      <Title>{t('settings.bgImage')}</Title>
       <ScrollView horizontal>
+        <TouchableOpacity
+          onPress={() => changeImage('none', 0)}
+          style={[
+            styles.imageButton,
+            { borderColor: imageIndex == 0 ? colors.warning : colors.textColor },
+          ]}>
+          <ImageBackground
+            source={require('../../../../shared/assets/images/none.png')}
+            style={[styles.image, { justifyContent: 'center', alignItems: 'center' }]}>
+            <Ionicons name={'close-circle-outline'} size={35} color={colors.textColor} />
+          </ImageBackground>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => changeImage('anim', 1)}
           style={[

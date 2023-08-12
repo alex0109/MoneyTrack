@@ -23,6 +23,7 @@
       "themeDark": "Dark",
       "themeLight": "Light",
       "themeDefault": "Default",
+      "bgImage": "Background image",
       "currencyTitle": "Currency",
       "appTitle": "App",
       "signOut": "Sign Out"

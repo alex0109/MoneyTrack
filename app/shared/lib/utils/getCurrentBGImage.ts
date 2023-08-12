@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 export const getCurrentBGImage = (theme: string, image: string) => {
+  if (image == 'none') {
+    return require('../../assets/images/none.png');
+  }
   if (theme == 'light' && image == 'anim') {
     return require('../../assets/images/animlt.png');
   }
