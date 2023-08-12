@@ -12,8 +12,8 @@ interface BGImageContextType {
 }
 
 const defaultBGImageContext: BGImageContextType = {
-  imageName: 'anim',
-  imageIndex: 1,
+  imageName: 'none',
+  imageIndex: 0,
   changeImage: () => {},
 };
 
@@ -24,7 +24,7 @@ interface BGImageProviderProps {
 const BGImageContext = createContext<BGImageContextType>(defaultBGImageContext);
 
 const BGImageProvider: FC<BGImageProviderProps> = ({ children }) => {
-  const [imageName, setImageName] = useState('anim');
+  const [imageName, setImageName] = useState('none');
   const [imageIndex, setImageIndex] = useState(1);
 
   const saveImageName = useCallback(async (imageValue: string) => {

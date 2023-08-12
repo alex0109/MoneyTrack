@@ -84,7 +84,7 @@ const CountEdit: FC = ({ route }) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
           label={t('firstScreen.countEditNameTitle')}
-          color={colors.warning}
+          color={colors.info}
           defaultValue={inputCountTitle}
           placeholder={t('global.placeholderTitle')}
           onChangeText={(input) => onChangeCountNameHandler(input)}
@@ -97,7 +97,7 @@ const CountEdit: FC = ({ route }) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
           label={t('firstScreen.countEditValueTitle')}
-          color={colors.warning}
+          color={colors.info}
           defaultValue={`${inputCountValue}`}
           placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChnageCountValueHandler(input)}

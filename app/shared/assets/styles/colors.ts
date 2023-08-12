@@ -5,7 +5,7 @@ const commonColors = {
   red: '#FA3D16',
   success: '#38CA35',
   warning: '#FABD16',
-  info: '#36BCF2',
+  info: '#0F6DED',
   themeBlack: '#161719',
   black: '#26282C',
   contrast: '#19191c',

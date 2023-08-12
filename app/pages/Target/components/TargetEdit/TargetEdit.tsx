@@ -89,7 +89,7 @@ const TargetEdit: FC = ({ route }) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
           label={t('firstScreen.targetEditNameTitle')}
-          color={colors.warning}
+          color={colors.info}
           defaultValue={inputTargetTitle}
           placeholder={t('global.placeholderTitle')}
           onChangeText={(input) => onChangeTargetTitleHandler(input)}
@@ -102,7 +102,7 @@ const TargetEdit: FC = ({ route }) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
           label={t('firstScreen.targetEditValueTitle')}
-          color={colors.warning}
+          color={colors.info}
           defaultValue={`${inputTargetValue}`}
           placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChangeTargetValueHandler(input)}
@@ -115,7 +115,7 @@ const TargetEdit: FC = ({ route }) => {
       <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <StyledTextInput
           label={t('firstScreen.targetEditTargetTitle')}
-          color={colors.warning}
+          color={colors.info}
           defaultValue={`${inputTarget}`}
           placeholder={t('global.placeholderValue')}
           onChangeText={(input) => onChangeTargetHandler(input)}

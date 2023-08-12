@@ -17,7 +17,7 @@ const BGImageLayer = () => {
   const deviceTheme = useColorScheme();
 
   const [backgroundImage, setBackgraoundImage] = useState(
-    require(`./shared/assets/images/animlt.png`)
+    require(`./shared/assets/images/none.png`)
   );
 
   function currentTheme() {

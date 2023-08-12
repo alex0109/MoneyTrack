@@ -37,7 +37,15 @@ const AnalyticHistoryList: FC = () => {
     <View style={[styles.container, { paddingLeft: 25 }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Title>{t('thirdScreen.historyTitle')}</Title>
-        <TouchableOpacity style={{ paddingRight: 25 }} onPress={() => setToggle(!toggle)}>
+        <TouchableOpacity
+          style={{
+            marginRight: 25,
+            paddingHorizontal: 5,
+            paddingBottom: 5,
+            backgroundColor: colors.textColor,
+            borderRadius: 10,
+          }}
+          onPress={() => setToggle(!toggle)}>
           <Text style={{ color: colors.info, fontFamily: 'NotoSans-SemiBold', fontSize: 16 }}>
             {!toggle ? t('thirdScreen.monthHistoryButton') : t('thirdScreen.fullHistoryButton')}
           </Text>

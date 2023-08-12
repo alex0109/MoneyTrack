@@ -132,7 +132,8 @@ const CategoryEdit: FC = ({ route }) => {
               width: 50,
               borderRadius: 30,
               margin: 10,
-              backgroundColor: icon == matchedCategory.icon ? colors.warning : colors.themeColor,
+              backgroundColor:
+                icon == matchedCategory.icon ? matchedCategory.color : colors.themeColor,
             }}>
             <Ionicons size={35} name={icon} color={colors.textColor} />
           </TouchableOpacity>

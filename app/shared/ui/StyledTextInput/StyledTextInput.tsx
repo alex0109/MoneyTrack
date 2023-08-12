@@ -60,17 +60,17 @@ const StyledTextInput: FC<StyledTextInputProps> = ({
           <TouchableOpacity
             style={{
               borderLeftWidth: 1,
-              borderLeftColor: colors.warning,
+              borderLeftColor: color,
             }}
             onPress={() => submitEditing()}>
-            <Ionicons name='checkmark' size={35} color={colors.warning} />
+            <Ionicons name='checkmark' size={35} color={color} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             disabled
             style={{
               borderLeftWidth: 1,
-              borderLeftColor: colors.warning,
+              borderLeftColor: color,
             }}>
             <Ionicons name='checkmark-done' size={35} color={colors.gray} />
           </TouchableOpacity>
