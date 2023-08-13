@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import type { ICount } from '../../../Count/lib/types/interfaces';
 import type { ICategory, IMonthsCategory } from '../types/interfaces';
+import { makeid } from '../../../../shared/lib/utils/generateID';
 
 export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): IMonthsCategory[] {
   const currentMonth = moment().format('YYYY-MM');
@@ -22,8 +23,11 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
           );
           if (existingAction) {
             existingAction.history.push({
+              index: categories[i].history[j].index,
               date: categories[i].history[j].date,
               value: categories[i].history[j].value,
+              fromCount: categories[i].history[j].fromCount,
+              note: categories[i].history[j].note,
             });
             existingAction.amount += categories[i].history[j].value;
           } else {
@@ -35,8 +39,11 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
               icon: categories[i].icon,
               history: [
                 {
+                  index: categories[i].history[j].index,
                   date: categories[i].history[j].date,
                   value: categories[i].history[j].value,
+                  fromCount: categories[i].history[j].fromCount,
+                  note: categories[i].history[j].note,
                 },
               ],
             });
@@ -54,14 +61,41 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
                 icon: categories[i].icon,
                 history: [
                   {
+                    index: categories[i].history[j].index,
                     date: categories[i].history[j].date,
                     value: categories[i].history[j].value,
+                    fromCount: categories[i].history[j].fromCount,
+                    note: categories[i].history[j].note,
                   },
                 ],
               },
             ],
           });
         }
+      }
+    }
+    const existingMonth = monthsActions.find((month) => month.month === currentMonth);
+    if (existingMonth) {
+      const existingAction = existingMonth.actions.find(
+        (action) => action.index === categories[i].index
+      );
+      if (!existingAction) {
+        existingMonth.actions.push({
+          index: categories[i].index,
+          title: categories[i].title,
+          amount: 0,
+          color: categories[i].color,
+          icon: categories[i].icon,
+          history: [
+            {
+              index: makeid(),
+              date: moment().format('YYYY-MM-01'),
+              value: 0,
+              fromCount: '',
+              note: '',
+            },
+          ],
+        });
       }
     }
   }

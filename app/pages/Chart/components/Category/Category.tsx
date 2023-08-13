@@ -2,9 +2,9 @@ import { useNavigation, useTheme } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
-import AlternativeKeyboard from '../../../../modules/Calculator/AlternativeKeyboard';
-
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
+
+import CategorySpendForm from '../CategorySpendForm/CategorySpendForm';
 
 import { styles } from './Category.styles';
 
@@ -46,11 +46,10 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('CategoryEditStack', { categoryID: categoryID })}>
           <Text style={[styles.title, { color: colors.themeColor }]}>{matchedCategory.title}</Text>
+          <Text style={[styles.title, { color: colors.themeColor }]}>{matchedCategory.count}</Text>
         </TouchableOpacity>
       </View>
-      <View style={[styles.content, { backgroundColor: colors.themeColor }]}>
-        <AlternativeKeyboard categoryID={categoryID} />
-      </View>
+      <CategorySpendForm categoryID={categoryID} />
     </SafeAreaView>
   );
 };

@@ -5,6 +5,12 @@ export interface IPoint {
   y: number;
 }
 
+export interface IHistoryCategory extends IHistory {
+  index: string;
+  fromCount: string;
+  note: string;
+}
+
 export interface ICategory {
   index: string;
   title: string;
@@ -12,7 +18,7 @@ export interface ICategory {
   icon: string;
   color: string;
   percent: number;
-  history: IHistory[];
+  history: IHistoryCategory[];
 }
 
 export interface CategoryState {
@@ -27,7 +33,7 @@ export interface IAction {
   amount: number;
   color: string;
   icon: string;
-  history: IHistory[];
+  history: IHistoryCategory[];
 }
 
 export interface IMonthsCategory {

@@ -5,6 +5,8 @@ import moment from 'moment';
 import { db_key } from '../../../../shared/lib/constants/DB_KEY';
 import { root_url } from '../../../../shared/lib/constants/REF_URL';
 
+import { makeid } from '../../../../shared/lib/utils/generateID';
+
 import { colorsArray, iconsArray } from './propertires';
 
 import type { CategoryState, ICategory } from '../types/interfaces';
@@ -48,8 +50,11 @@ export const addNewCategory = createAsyncThunk<ICategory, string, { rejectValue:
         percent: 0,
         history: [
           {
+            index: makeid(),
             date: moment().format('YYYY-MM-DD'),
             value: 0,
+            fromCount: '',
+            note: '',
           },
         ],
       };
@@ -152,8 +157,14 @@ export const changeCategoryIcon = createAsyncThunk<
 });
 
 export const topUpCategoryCount = createAsyncThunk<
-  { categoryID: string; categoryValue: number },
-  { uid: string; categoryID: string; categoryValue: number },
+  { categoryID: string; categoryValue: number; categoryFromCount: string; categoryNote: string },
+  {
+    uid: string;
+    categoryID: string;
+    categoryValue: number;
+    categoryFromCount: string;
+    categoryNote: string;
+  },
   { rejectValue: string; state: CategoryState }
 >('categories/topUpCategoryCount', async function (categoryChanges, { rejectWithValue, getState }) {
   const category = getState().category.data.find(
@@ -161,8 +172,11 @@ export const topUpCategoryCount = createAsyncThunk<
   );
 
   const newHistoryItem = {
+    index: makeid(),
     date: moment().format('YYYY-MM-DD'),
     value: categoryChanges.categoryValue,
+    fromCount: categoryChanges.categoryFromCount,
+    note: categoryChanges.categoryNote,
   };
 
   try {
@@ -237,8 +251,11 @@ export const categorySlice = createSlice({
           categoryToChange.history = [
             ...categoryToChange.history,
             {
+              index: makeid(),
               date: moment().format('YYYY-MM-DD'),
               value: action.payload.categoryValue,
+              fromCount: action.payload.categoryFromCount,
+              note: action.payload.categoryNote,
             },
           ];
         }

@@ -24,8 +24,11 @@ export function sortByMonths(categories: ICategory[], counts: ICount[]): IMonths
 
           if (existingAction) {
             existingAction.history.push({
+              index: categories[i].history[j].index,
               date: categories[i].history[j].date,
               value: categories[i].history[j].value,
+              fromCount: categories[i].history[j].fromCount,
+              note: categories[i].history[j].note,
             });
 
             existingAction.amount += categories[i].history[j].value;
@@ -38,8 +41,11 @@ export function sortByMonths(categories: ICategory[], counts: ICount[]): IMonths
               icon: categories[i].icon,
               history: [
                 {
+                  index: categories[i].history[j].index,
                   date: categories[i].history[j].date,
                   value: categories[i].history[j].value,
+                  fromCount: categories[i].history[j].fromCount,
+                  note: categories[i].history[j].note,
                 },
               ],
             });

@@ -11,6 +11,7 @@ interface AnalyticHistoryItemProps {
 
 const AnalyticHistoryItem: FC<AnalyticHistoryItemProps> = ({ values }) => {
   const colros = useTheme().colors;
+
   return (
     <>
       {values.map((item, index) => (

@@ -1,6 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native';
 
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,13 +12,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  content: {
-    height: height * 0.8,
-    width: width,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    padding: 30,
   },
   belt: {
     flexDirection: 'row',

@@ -1,10 +1,9 @@
 import moment from 'moment';
 
-import type { IHistory } from '../../../../shared/types/IHistory';
-
+import type { IHistoryCategory } from '../../../Chart/lib/types/interfaces';
 import type { IDateGroupes } from '../types/interfaces';
 
-export const groupByDate = (inputArray: IHistory[]): IDateGroupes[] => {
+export const groupByDate = (inputArray: IHistoryCategory[]): IDateGroupes[] => {
   const groupedData = {};
 
   inputArray.forEach((obj) => {
@@ -19,7 +18,10 @@ export const groupByDate = (inputArray: IHistory[]): IDateGroupes[] => {
 
     groupedData[date].values.push({
       title: obj.title,
+      index: obj.index,
       value: obj.value,
+      fromCount: obj.fromCount,
+      note: obj.note,
     });
   });
 

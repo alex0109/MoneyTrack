@@ -68,7 +68,7 @@ const AnalyticHistoryList: FC = () => {
                         ? `${getCurrentWeekendhName(moment(item.date).isoWeekday())} - ${moment(
                             item.date
                           ).format('DD.MM.YYYY')}`
-                        : moment(item.date).format('dddd - DD MM YYYY')}
+                        : moment(item.date).format('dddd - DD.MM.YYYY')}
                     </Text>
                   </View>
                   <AnalyticHistoryItem values={item.values} />

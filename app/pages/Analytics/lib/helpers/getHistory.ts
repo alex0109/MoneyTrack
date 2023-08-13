@@ -1,9 +1,8 @@
 import moment from 'moment';
 
-import type { IHistory } from '../../../../shared/types/IHistory';
-import type { ICategory } from '../../../Chart/lib/types/interfaces';
+import type { ICategory, IHistoryCategory } from '../../../Chart/lib/types/interfaces';
 
-export const getHistory = (arr: ICategory[]): IHistory[] => {
+export const getHistory = (arr: ICategory[]): IHistoryCategory[] => {
   const res = [];
 
   for (let i = 0; i < arr.length; i++) {
