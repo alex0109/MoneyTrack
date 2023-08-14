@@ -1,11 +1,11 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import React, { useEffect, useState } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import { getGraphHistory } from '../../lib/helpers/getGraphHistory';
-import AnalyticHistoryList from '../AnalyticHistoryList/AnalyticHistoryList';
+import AnalyticHistory from '../AnalyticHistory/AnalyticHistory';
 import DataGraph from '../DataGraph/DataGraph';
 
 import type { IGraphData } from '../../lib/types/interfaces';
@@ -36,7 +36,7 @@ const AnalyticsScreen: FC = () => {
   return (
     <View style={[styles.container]}>
       <DataGraph data={graphData} />
-      <AnalyticHistoryList />
+      <AnalyticHistory />
     </View>
   );
 };

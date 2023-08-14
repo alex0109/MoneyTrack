@@ -15,9 +15,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
 import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+import { makeid } from '../../../../shared/lib/utils/generateID';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import { decreaseCountValue } from '../../../Count/lib/store/countSlice';
-import { topUpCategoryCount } from '../../lib/store/categorySlice';
+import { addCategoryHistory, topUpCategoryCount } from '../../lib/store/categorySlice';
 
 import type { FC } from 'react';
 
@@ -51,9 +52,19 @@ const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
         topUpCategoryCount({
           uid,
           categoryID,
+          categoryHistoryID: makeid(),
           categoryFromCount: count[currentCount].index,
           categoryValue: value,
           categoryNote: notes,
+        })
+      );
+      dispatch(
+        addCategoryHistory({
+          uid,
+          categoryID,
+          categoryValue: value,
+          categoryNote: notes,
+          categoryFromCount: count[currentCount],
         })
       );
       dispatch(decreaseCountValue({ uid, countID: count[currentCount].index, countValue: value }));

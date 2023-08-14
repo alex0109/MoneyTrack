@@ -1,8 +1,9 @@
 import moment from 'moment';
 
+import { makeid } from '../../../../shared/lib/utils/generateID';
+
 import type { ICount } from '../../../Count/lib/types/interfaces';
 import type { ICategory, IMonthsCategory } from '../types/interfaces';
-import { makeid } from '../../../../shared/lib/utils/generateID';
 
 export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): IMonthsCategory[] {
   const currentMonth = moment().format('YYYY-MM');
@@ -97,6 +98,30 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
           ],
         });
       }
+    } else {
+      hasCurrentMonthData = true;
+      monthsActions.push({
+        month: currentMonth,
+        income: 0,
+        actions: [
+          {
+            index: categories[i].index,
+            title: categories[i].title,
+            amount: 0,
+            color: categories[i].color,
+            icon: categories[i].icon,
+            history: [
+              {
+                index: makeid(),
+                date: moment().format('YYYY-MM-01'),
+                value: 0,
+                fromCount: '',
+                note: '',
+              },
+            ],
+          },
+        ],
+      });
     }
   }
 

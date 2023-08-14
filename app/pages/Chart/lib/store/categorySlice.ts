@@ -7,9 +7,12 @@ import { root_url } from '../../../../shared/lib/constants/REF_URL';
 
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
+import { getHistoryArray } from '../helpers/getHistoryArray';
+import { type CategoryState, type ICategory } from '../types/interfaces';
+
 import { colorsArray, iconsArray } from './propertires';
 
-import type { CategoryState, ICategory } from '../types/interfaces';
+import type { IHistoryCategory } from '../types/interfaces';
 
 const initialState: CategoryState = {
   data: [],
@@ -25,6 +28,7 @@ export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectVal
 
       const data = Object.entries(response.data).map(([key, value]) => ({
         ...value,
+        history: getHistoryArray(value.history),
         index: key,
       }));
 
@@ -157,13 +161,14 @@ export const changeCategoryIcon = createAsyncThunk<
 });
 
 export const topUpCategoryCount = createAsyncThunk<
-  { categoryID: string; categoryValue: number; categoryFromCount: string; categoryNote: string },
+  {
+    categoryID: string;
+    categoryValue: number;
+  },
   {
     uid: string;
     categoryID: string;
     categoryValue: number;
-    categoryFromCount: string;
-    categoryNote: string;
   },
   { rejectValue: string; state: CategoryState }
 >('categories/topUpCategoryCount', async function (categoryChanges, { rejectWithValue, getState }) {
@@ -171,21 +176,64 @@ export const topUpCategoryCount = createAsyncThunk<
     (category) => category.index === categoryChanges.categoryID
   );
 
-  const newHistoryItem = {
-    index: makeid(),
-    date: moment().format('YYYY-MM-DD'),
-    value: categoryChanges.categoryValue,
-    fromCount: categoryChanges.categoryFromCount,
-    note: categoryChanges.categoryNote,
-  };
-
   try {
     await axios.patch(
       `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
       {
         count: category.count + categoryChanges.categoryValue,
-        history: [...category.history, newHistoryItem],
       }
+    );
+
+    return categoryChanges;
+  } catch (error) {
+    return rejectWithValue('Server error');
+  }
+});
+
+export const addCategoryHistory = createAsyncThunk<
+  { categoryID: string; historyItem: IHistoryCategory },
+  {
+    uid: string;
+    categoryID: string;
+    categoryValue: number;
+    categoryFromCount: string;
+    categoryNote: string;
+  },
+  { rejectValue: string }
+>('categories/addCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
+  try {
+    const historyItem = {
+      date: moment().format('YYYY-MM-DD'),
+      value: categoryChanges.categoryValue,
+      fromCount: categoryChanges.categoryFromCount,
+      note: categoryChanges.categoryNote,
+    };
+
+    const response = await axios.post(
+      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}/history.json?auth=${db_key}`,
+      historyItem
+    );
+
+    historyItem.index = response.data.name;
+
+    return { categoryID: categoryChanges.categoryID, historyItem: historyItem };
+  } catch (error) {
+    return rejectWithValue('Server error');
+  }
+});
+
+export const deleteCategoryHistory = createAsyncThunk<
+  { categoryID: string; historyID: string },
+  {
+    uid: string;
+    categoryID: string;
+    historyID: string;
+  },
+  { rejectValue: string }
+>('categories/deleteCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
+  try {
+    await axios.patch(
+      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}/history/${categoryChanges.historyID}.json?auth=${db_key}`
     );
 
     return categoryChanges;
@@ -248,16 +296,22 @@ export const categorySlice = createSlice({
         );
         if (categoryToChange) {
           categoryToChange.count = categoryToChange.count + action.payload.categoryValue;
-          categoryToChange.history = [
-            ...categoryToChange.history,
-            {
-              index: makeid(),
-              date: moment().format('YYYY-MM-DD'),
-              value: action.payload.categoryValue,
-              fromCount: action.payload.categoryFromCount,
-              note: action.payload.categoryNote,
-            },
-          ];
+        }
+      })
+      .addCase(addCategoryHistory.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (count) => action.payload.categoryID === count.index
+        );
+        if (categoryToChange) {
+          categoryToChange.history.push(action.payload.historyItem);
+        }
+      })
+      .addCase(deleteCategoryHistory.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (count) => action.payload.categoryID === count.index
+        );
+        if (categoryToChange) {
+          categoryToChange.history.filter((history) => history.index !== action.payload.historyID);
         }
       });
   },

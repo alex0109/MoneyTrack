@@ -4,12 +4,12 @@ import { StyleSheet } from 'react-native';
 
 import { ScrollView } from 'react-native-gesture-handler';
 
+import BGImage from '../BGImage/BGImage';
 import Exit from '../Exit/Exit';
 import Language from '../Language/Language';
 import Theme from '../Theme/Theme';
 
 import type { FC } from 'react';
-import BGImage from '../BGImage/BGImage';
 
 const Settings: FC = () => {
   const colors = useTheme().colors;
