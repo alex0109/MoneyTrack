@@ -47,7 +47,7 @@ const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
   };
 
   const sendSpends = (value: number, notes: string) => {
-    if (validateValue(value)) {
+    if (validateValue(value) && count[currentCount]) {
       dispatch(
         topUpCategoryCount({
           uid,

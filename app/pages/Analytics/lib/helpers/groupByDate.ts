@@ -22,6 +22,8 @@ export const groupByDate = (inputArray: IHistoryCategory[]): IDateGroupes[] => {
       value: obj.value,
       fromCount: obj.fromCount,
       note: obj.note,
+      date: obj.date,
+      categoryIndex: obj.categoryIndex,
     });
   });
 

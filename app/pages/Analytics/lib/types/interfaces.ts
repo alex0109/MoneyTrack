@@ -4,6 +4,8 @@ export interface IDateGroupItem {
   value: number;
   fromCount: string;
   note: string;
+  date: string;
+  categoryIndex: string;
 }
 
 export interface IDateGroupes {

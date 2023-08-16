@@ -109,22 +109,29 @@ export const changeCategoryTitle = createAsyncThunk<
   }
 });
 
-export const changeCategoryCount = createAsyncThunk<
-  { categoryID: string; categoryCount: string },
-  { uid: string; categoryID: string; categoryCount: string },
-  { rejectValue: string }
->('categories/changeCategoryCount', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.patch(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-      { count: categoryChanges.categoryCount }
+export const decreaseCategoryCount = createAsyncThunk<
+  { categoryID: string; decreaseValue: number },
+  { uid: string; categoryID: string; decreaseValue: number },
+  { rejectValue: string; state: CategoryState }
+>(
+  'categories/decreaseCategoryCount',
+  async function (categoryChanges, { rejectWithValue, getState }) {
+    const category = getState().category.data.find(
+      (category) => category.index === categoryChanges.categoryID
     );
 
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
+    try {
+      await axios.patch(
+        `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
+        { count: category.count - categoryChanges.decreaseValue }
+      );
+
+      return categoryChanges;
+    } catch (error) {
+      return rejectWithValue('Server error');
+    }
   }
-});
+);
 
 export const changeCategoryColor = createAsyncThunk<
   { categoryID: string; categoryColor: string },
@@ -203,7 +210,7 @@ export const addCategoryHistory = createAsyncThunk<
 >('categories/addCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
   try {
     const historyItem = {
-      date: moment().format('YYYY-MM-DD'),
+      date: moment().format('YYYY-MM-DD hh:mm'),
       value: categoryChanges.categoryValue,
       fromCount: categoryChanges.categoryFromCount,
       note: categoryChanges.categoryNote,
@@ -232,7 +239,7 @@ export const deleteCategoryHistory = createAsyncThunk<
   { rejectValue: string }
 >('categories/deleteCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
   try {
-    await axios.patch(
+    await axios.delete(
       `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}/history/${categoryChanges.historyID}.json?auth=${db_key}`
     );
 
@@ -290,6 +297,14 @@ export const categorySlice = createSlice({
           categoryToChange.icon = action.payload.categoryIcon;
         }
       })
+      .addCase(decreaseCategoryCount.fulfilled, (state, action) => {
+        const categoryToChange = state.data.find(
+          (count) => action.payload.categoryID === count.index
+        );
+        if (categoryToChange) {
+          categoryToChange.count = categoryToChange.count - action.payload.decreaseValue;
+        }
+      })
       .addCase(topUpCategoryCount.fulfilled, (state, action) => {
         const categoryToChange = state.data.find(
           (count) => action.payload.categoryID === count.index
@@ -311,7 +326,9 @@ export const categorySlice = createSlice({
           (count) => action.payload.categoryID === count.index
         );
         if (categoryToChange) {
-          categoryToChange.history.filter((history) => history.index !== action.payload.historyID);
+          categoryToChange.history = categoryToChange.history.filter(
+            (history) => history.index !== action.payload.historyID
+          );
         }
       });
   },

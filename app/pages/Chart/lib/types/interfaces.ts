@@ -6,6 +6,8 @@ export interface IPoint {
 }
 
 export interface IHistoryCategory extends IHistory {
+  title: string;
+  categoryIndex: string;
   index: string;
   fromCount: string;
   note: string;

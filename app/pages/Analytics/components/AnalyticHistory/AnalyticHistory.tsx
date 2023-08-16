@@ -27,8 +27,6 @@ const AnalyticHistory: FC = () => {
   const [allTimeHistory, setAllTimeHistory] = useState<IMonthsCategory[]>([]);
 
   useEffect(() => {
-    console.log(oneMonthHistory);
-
     const sortCategories = sortByMonths(category, count).reverse();
     setAllTimeHistory(sortCategories);
   }, [category, count]);
