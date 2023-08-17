@@ -9,7 +9,7 @@ import { useTypedSelector } from '../../lib/hooks/useTypedSelector';
 const Balance = () => {
   const { isConnected } = NetInfo.useNetInfo();
   const colors = useTheme().colors;
-  const count = useTypedSelector((state) => state.count.data);
+  const { count } = useTypedSelector((state) => state);
   const navigation = useNavigation();
   const { t } = useTranslation();
 

@@ -1,19 +1,12 @@
 import { useTheme } from '@react-navigation/native';
 
 import moment from 'moment';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 // import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import {
-  decreaseCategoryCount,
-  deleteCategoryHistory,
-} from '../../../Chart/lib/store/categorySlice';
-
-import { topUpCountValue } from '../../../Count/lib/store/countSlice';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 
 import type { IDateGroupItem } from '../../lib/types/interfaces';
 import type { FC } from 'react';
@@ -26,31 +19,21 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
   const colors = useTheme().colors;
   //   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const dispatch = useAppDispatch();
-  const { uid } = useContext(AuthContext);
+  const { decreaseCategoryCount, deleteCategoryHistory, topUpCountValue } = useActions();
 
   const onDeleteHistory = () => {
-    dispatch(
-      deleteCategoryHistory({
-        uid: uid,
-        categoryID: dayValues.categoryIndex,
-        historyID: dayValues.index,
-      })
-    );
-    dispatch(
-      decreaseCategoryCount({
-        uid: uid,
-        categoryID: dayValues.categoryIndex,
-        decreaseValue: dayValues.value,
-      })
-    );
-    dispatch(
-      topUpCountValue({
-        uid: uid,
-        countID: dayValues.fromCount,
-        countValue: dayValues.value,
-      })
-    );
+    topUpCountValue({
+      index: dayValues.fromCount,
+      value: dayValues.value,
+    });
+    decreaseCategoryCount({
+      index: dayValues.categoryIndex,
+      count: dayValues.value,
+    });
+    deleteCategoryHistory({
+      index: dayValues.categoryIndex,
+      historyIndex: dayValues.index,
+    });
   };
 
   return (

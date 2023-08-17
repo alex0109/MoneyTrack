@@ -10,9 +10,6 @@ export const getHistory = (arr: ICategory[]): IHistoryCategory[] => {
       if (arr[i].history[j].value > 0) {
         res.push({
           ...arr[i].history[j],
-          fromCount: arr[i].history[j].fromCount.index,
-          categoryIndex: arr[i].index,
-          title: arr[i].title,
         });
       }
     }

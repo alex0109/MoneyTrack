@@ -1,16 +1,15 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
+
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+
 import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import StyledTextInput from '../../../../shared/ui/StyledTextInput/StyledTextInput';
-
-import { changeCountTitle, changeCountValue } from '../../lib/store/countSlice';
 
 import type { ICount } from '../../lib/types/interfaces';
 import type { FC } from 'react';
@@ -19,9 +18,8 @@ const CountEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
   const { countID } = route.params;
-  const count = useTypedSelector((state) => state.count.data);
-  const dispatch = useAppDispatch();
-  const authContext = useContext(AuthContext);
+  const { count } = useTypedSelector((state) => state);
+  const { changeCountTitle, changeCountValue } = useActions();
   const [titleSubmitDisable, setTitleSubmitDisable] = useState(false);
   const [countValueSubmitDisable, setCountValueSubmitDisable] = useState(false);
 
@@ -59,7 +57,7 @@ const CountEdit: FC = ({ route }) => {
 
   const changeCountTitleHandler = (newTitle: string): void => {
     if (validateTitle(newTitle)) {
-      dispatch(changeCountTitle({ uid: authContext.uid, countID: countID, countTitle: newTitle }));
+      changeCountTitle({ index: countID, title: newTitle });
       setTitleSubmitDisable(false);
     }
   };
@@ -67,14 +65,11 @@ const CountEdit: FC = ({ route }) => {
   const changeCountValueHandler = (newValue: number) => {
     if (validateValue(newValue)) {
       const historyValue: number = newValue - countElement.value;
-      dispatch(
-        changeCountValue({
-          uid: authContext.uid,
-          countID: countID,
-          countValue: newValue,
-          historyValue: historyValue,
-        })
-      );
+      changeCountValue({
+        index: countID,
+        value: newValue,
+        historyValue: historyValue,
+      });
       setCountValueSubmitDisable(false);
     }
   };

@@ -1,13 +1,13 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { Easing, runTiming, useFont, useValue } from '@shopify/react-native-skia';
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { View, PixelRatio, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
+
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import { deleteTarget } from '../../lib/store/targetSlice';
+
 import TargetDonut from '../TargetDonut/TargetDonut';
 import TargetValueModal from '../TargetValueModal/TargetValueModal';
 
@@ -27,9 +27,8 @@ interface TargetBottomSheetProps {
 }
 const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targetID }) => {
   const colors = useTheme().colors;
-  const authContext = useContext(AuthContext);
-  const dispatch = useAppDispatch();
-  const target = useTypedSelector((state) => state.target.data);
+  const { target } = useTypedSelector((state) => state);
+  const { deleteTarget } = useActions();
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ITarget => {
@@ -64,7 +63,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
 
   const removeTargetHandler = (index: string): void => {
     handleTargetClose();
-    dispatch(deleteTarget({ uid: authContext.uid, targetID: index }));
+    deleteTarget({ index: index });
   };
 
   const font = useFont(require('../../../../shared/assets/fonts/NotoSans-Regular.ttf'), 50);
@@ -74,8 +73,8 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: 'green' }]}>
-      <View style={[styles.header, { backgroundColor: 'green' }]}>
+    <View style={[styles.container, { backgroundColor: colors.info }]}>
+      <View style={[styles.header, { backgroundColor: colors.info }]}>
         <TouchableOpacity
           onPress={() => navigation.navigate('TargetEditStack', { targetID: targetID })}>
           <Text style={[styles.title, { color: colors.themeColor }]}>{targetElement.title}</Text>

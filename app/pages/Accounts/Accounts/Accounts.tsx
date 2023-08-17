@@ -74,24 +74,8 @@ const Accounts: FC = () => {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={[{ flex: 1 }]} alwaysBounceVertical={false}>
-          {!isConnected || targetError === null || countError === null ? (
-            <>
-              <CountList handleModalOpen={handleOpenCount} />
-              <TargetList handleModalOpen={handleOpenTarget} />
-            </>
-          ) : (
-            <View style={{ flex: 1 }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 50,
-                  fontFamily: 'NotoSans-Regular',
-                  color: colors.textColor,
-                }}>
-                {t('firstScreen.noInternetConnection')}
-              </Text>
-            </View>
-          )}
+          <CountList handleModalOpen={handleOpenCount} />
+          <TargetList handleModalOpen={handleOpenTarget} />
         </ScrollView>
         <BottomSheet
           ref={countBottomSheetRef}

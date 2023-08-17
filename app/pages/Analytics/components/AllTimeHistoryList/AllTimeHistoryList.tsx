@@ -3,6 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { getCurrentMonthName } from '../../../Chart/lib/helpers/getCurrentMonthName';
 
@@ -26,8 +27,9 @@ const AllTimeHistoryList: FC<AllTimeHistoryListProps> = ({ allTimeHistory }) => 
             month.month
           ).format('YYYY')}`;
           return (
-            <View
+            <Animated.View
               key={index}
+              entering={FadeIn}
               style={{
                 backgroundColor: colors.contrastColor,
                 marginBottom: 20,
@@ -59,21 +61,22 @@ const AllTimeHistoryList: FC<AllTimeHistoryListProps> = ({ allTimeHistory }) => 
                     <Text
                       style={{
                         color: colors.textColor,
-                        fontSize: 16,
-                        fontFamily: 'NotoSans-Regular',
+                        fontSize: 18,
+                        fontFamily: 'NotoSans-SemiBold',
                       }}>
-                      - {action.title} {action.amount}
+                      {action.title} {action.amount}
                     </Text>
                   </View>
                 ) : (
                   <View key={index}></View>
                 )
               )}
-            </View>
+            </Animated.View>
           );
         })
       ) : (
-        <View
+        <Animated.View
+          entering={FadeIn}
           style={[
             styles.historiesContainer,
             { backgroundColor: colors.contrastColor, borderRadius: 5 },
@@ -83,7 +86,7 @@ const AllTimeHistoryList: FC<AllTimeHistoryListProps> = ({ allTimeHistory }) => 
               {t('thirdScreen.noHistoryMessage')}
             </Text>
           </View>
-        </View>
+        </Animated.View>
       )}
     </>
   );

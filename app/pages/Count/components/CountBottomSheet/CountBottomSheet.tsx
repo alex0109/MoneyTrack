@@ -1,13 +1,11 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { View, TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import { deleteCount } from '../../lib/store/countSlice';
 import CountModal from '../CountModal/CountModal';
 
 import { styles } from './CountBottomSheet.styles';
@@ -22,10 +20,9 @@ interface CountBottomSheetProps {
 }
 const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID }) => {
   const colors = useTheme().colors;
-  const dispatch = useAppDispatch();
-  const authContext = useContext(AuthContext);
+  const { deleteCount } = useActions();
 
-  const count = useTypedSelector((state) => state.count.data);
+  const { count } = useTypedSelector((state) => state);
   const navigation = useNavigation();
 
   const findModalPropByID = (index: string): ICount => {
@@ -60,12 +57,12 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
 
   const removeCountHandler = (index: string): void => {
     handleCountClose();
-    dispatch(deleteCount({ uid: authContext.uid, countID: index }));
+    deleteCount({ index: index });
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: 'green' }]}>
-      <View style={[styles.header, { backgroundColor: 'green' }]}>
+    <View style={[styles.container, { backgroundColor: colors.info }]}>
+      <View style={[styles.header, { backgroundColor: colors.info }]}>
         <TouchableOpacity
           onPress={() => navigation.navigate('CountEditStack', { countID: countID })}>
           <Text style={[styles.title, { color: colors.themeColor }]}>{countElement.title}</Text>

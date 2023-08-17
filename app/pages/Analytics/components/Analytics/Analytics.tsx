@@ -14,7 +14,7 @@ import type { FC } from 'react';
 const AnalyticsScreen: FC = () => {
   const navigation = useNavigation();
 
-  const category = useTypedSelector((state) => state.category.data);
+  const { category } = useTypedSelector((state) => state);
   const [graphData, setGraphData] = useState<IGraphData>({
     labels: ['0'],
     datasets: [{ data: [0] }],

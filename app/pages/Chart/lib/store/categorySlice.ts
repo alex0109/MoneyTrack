@@ -1,337 +1,106 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import moment from 'moment';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { db_key } from '../../../../shared/lib/constants/DB_KEY';
-import { root_url } from '../../../../shared/lib/constants/REF_URL';
+import moment from 'moment';
 
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
-import { getHistoryArray } from '../helpers/getHistoryArray';
-import { type CategoryState, type ICategory } from '../types/interfaces';
+import { type ICategory } from '../types/interfaces';
 
 import { colorsArray, iconsArray } from './propertires';
 
-import type { IHistoryCategory } from '../types/interfaces';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: CategoryState = {
-  data: [],
-  loading: false,
-  error: null,
-};
+const initialState: ICategory[] = [];
 
-export const fetchCategories = createAsyncThunk<ICategory[], string, { rejectValue: string }>(
-  'categories/fetchCategories',
-  async function (uid, { rejectWithValue }) {
-    try {
-      const response = await axios.get(`${root_url}/users/${uid}/categories.json?auth=${db_key}`);
-
-      const data = Object.entries(response.data).map(([key, value]) => ({
-        ...value,
-        history: getHistoryArray(value.history),
-        index: key,
-      }));
-
-      return data;
-    } catch (error) {
-      if (error.toJSON().message === 'Network Error') {
-        return rejectWithValue('Network error');
-      }
-      return rejectWithValue('Server error');
-    }
-  }
-);
-
-export const addNewCategory = createAsyncThunk<ICategory, string, { rejectValue: string }>(
-  'categories/addNewCategory',
-  async function (uid, { rejectWithValue }) {
-    try {
-      const newCategory = {
+export const categorySlice = createSlice({
+  name: 'category',
+  initialState,
+  reducers: {
+    addNewCategory: (state) => {
+      state.push({
+        index: makeid(),
         title: 'New Category',
         count: 0,
         icon: iconsArray[Math.floor(Math.random() * iconsArray.length)],
         color: colorsArray[Math.floor(Math.random() * colorsArray.length)],
         percent: 0,
-        history: [
-          {
-            index: makeid(),
-            date: moment().format('YYYY-MM-DD'),
-            value: 0,
-            fromCount: '',
-            note: '',
-          },
-        ],
-      };
-      const response = await axios.post(
-        `${root_url}/users/${uid}/categories.json?auth=${db_key}`,
-        newCategory
-      );
-
-      newCategory.index = response.data.name;
-
-      return newCategory;
-    } catch (error) {
-      return rejectWithValue('Server error');
-    }
-  }
-);
-
-export const deleteCategory = createAsyncThunk<
-  string,
-  { uid: string; categoryID: string },
-  { rejectValue: string }
->('categories/deleteCategory', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.delete(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`
-    );
-
-    return categoryChanges.categoryID;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const changeCategoryTitle = createAsyncThunk<
-  { categoryID: string; categoryTitle: string },
-  { uid: string; categoryID: string; categoryTitle: string },
-  { rejectValue: string }
->('categories/changeCategoryTitle', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.patch(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-      { title: categoryChanges.categoryTitle }
-    );
-
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const decreaseCategoryCount = createAsyncThunk<
-  { categoryID: string; decreaseValue: number },
-  { uid: string; categoryID: string; decreaseValue: number },
-  { rejectValue: string; state: CategoryState }
->(
-  'categories/decreaseCategoryCount',
-  async function (categoryChanges, { rejectWithValue, getState }) {
-    const category = getState().category.data.find(
-      (category) => category.index === categoryChanges.categoryID
-    );
-
-    try {
-      await axios.patch(
-        `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-        { count: category.count - categoryChanges.decreaseValue }
-      );
-
-      return categoryChanges;
-    } catch (error) {
-      return rejectWithValue('Server error');
-    }
-  }
-);
-
-export const changeCategoryColor = createAsyncThunk<
-  { categoryID: string; categoryColor: string },
-  { uid: string; categoryID: string; categoryColor: string },
-  { rejectValue: string }
->('categories/changeCategoryColor', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.patch(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-      { color: categoryChanges.categoryColor }
-    );
-
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const changeCategoryIcon = createAsyncThunk<
-  { categoryID: string; categoryIcon: string },
-  { uid: string; categoryID: string; categoryIcon: string },
-  { rejectValue: string }
->('categories/changeCategoryIcon', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.patch(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-      { icon: categoryChanges.categoryIcon }
-    );
-
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const topUpCategoryCount = createAsyncThunk<
-  {
-    categoryID: string;
-    categoryValue: number;
-  },
-  {
-    uid: string;
-    categoryID: string;
-    categoryValue: number;
-  },
-  { rejectValue: string; state: CategoryState }
->('categories/topUpCategoryCount', async function (categoryChanges, { rejectWithValue, getState }) {
-  const category = getState().category.data.find(
-    (category) => category.index === categoryChanges.categoryID
-  );
-
-  try {
-    await axios.patch(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}.json?auth=${db_key}`,
-      {
-        count: category.count + categoryChanges.categoryValue,
-      }
-    );
-
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const addCategoryHistory = createAsyncThunk<
-  { categoryID: string; historyItem: IHistoryCategory },
-  {
-    uid: string;
-    categoryID: string;
-    categoryValue: number;
-    categoryFromCount: string;
-    categoryNote: string;
-  },
-  { rejectValue: string }
->('categories/addCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    const historyItem = {
-      date: moment().format('YYYY-MM-DD hh:mm'),
-      value: categoryChanges.categoryValue,
-      fromCount: categoryChanges.categoryFromCount,
-      note: categoryChanges.categoryNote,
-    };
-
-    const response = await axios.post(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}/history.json?auth=${db_key}`,
-      historyItem
-    );
-
-    historyItem.index = response.data.name;
-
-    return { categoryID: categoryChanges.categoryID, historyItem: historyItem };
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const deleteCategoryHistory = createAsyncThunk<
-  { categoryID: string; historyID: string },
-  {
-    uid: string;
-    categoryID: string;
-    historyID: string;
-  },
-  { rejectValue: string }
->('categories/deleteCategoryHistory', async function (categoryChanges, { rejectWithValue }) {
-  try {
-    await axios.delete(
-      `${root_url}/users/${categoryChanges.uid}/categories/${categoryChanges.categoryID}/history/${categoryChanges.historyID}.json?auth=${db_key}`
-    );
-
-    return categoryChanges;
-  } catch (error) {
-    return rejectWithValue('Server error');
-  }
-});
-
-export const categorySlice = createSlice({
-  name: 'category',
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchCategories.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.loading = false;
-      })
-      .addCase(fetchCategories.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(addNewCategory.fulfilled, (state, action) => {
-        state.data.push(action.payload);
-      })
-      .addCase(deleteCategory.fulfilled, (state, action) => {
-        state.data = state.data.filter((category) => category.index !== action.payload);
-      })
-      .addCase(changeCategoryTitle.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (category) => category.index == action.payload.categoryID
-        );
-        if (categoryToChange) {
-          categoryToChange.title = action.payload.categoryTitle;
-        }
-      })
-      .addCase(changeCategoryColor.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (category) => category.index == action.payload.categoryID
-        );
-        if (categoryToChange) {
-          categoryToChange.color = action.payload.categoryColor;
-        }
-      })
-      .addCase(changeCategoryIcon.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (category) => category.index == action.payload.categoryID
-        );
-        if (categoryToChange) {
-          categoryToChange.icon = action.payload.categoryIcon;
-        }
-      })
-      .addCase(decreaseCategoryCount.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (count) => action.payload.categoryID === count.index
-        );
-        if (categoryToChange) {
-          categoryToChange.count = categoryToChange.count - action.payload.decreaseValue;
-        }
-      })
-      .addCase(topUpCategoryCount.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (count) => action.payload.categoryID === count.index
-        );
-        if (categoryToChange) {
-          categoryToChange.count = categoryToChange.count + action.payload.categoryValue;
-        }
-      })
-      .addCase(addCategoryHistory.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (count) => action.payload.categoryID === count.index
-        );
-        if (categoryToChange) {
-          categoryToChange.history.push(action.payload.historyItem);
-        }
-      })
-      .addCase(deleteCategoryHistory.fulfilled, (state, action) => {
-        const categoryToChange = state.data.find(
-          (count) => action.payload.categoryID === count.index
-        );
-        if (categoryToChange) {
-          categoryToChange.history = categoryToChange.history.filter(
-            (history) => history.index !== action.payload.historyID
-          );
-        }
+        history: [],
       });
+    },
+    deleteCategory: (state, action: PayloadAction<{ index: string }>) =>
+      state.filter((item) => item.index !== action.payload.index),
+    changeCategoryTitle: (state, action: PayloadAction<{ index: string; title: string }>) => {
+      const categoryToChange = state.find((count) => count.index === action.payload.index);
+      if (categoryToChange) {
+        categoryToChange.title = action.payload.title;
+        return state;
+      }
+    },
+    changeCategoryColor: (state, action: PayloadAction<{ index: string; color: string }>) => {
+      const categoryToChange = state.find((count) => count.index === action.payload.index);
+      if (categoryToChange) {
+        categoryToChange.color = action.payload.color;
+        return state;
+      }
+    },
+    changeCategoryIcon: (state, action: PayloadAction<{ index: string; icon: string }>) => {
+      const categoryToChange = state.find((count) => count.index === action.payload.index);
+      if (categoryToChange) {
+        categoryToChange.icon = action.payload.icon;
+        return state;
+      }
+    },
+    topUpCategoryCount: (state, action: PayloadAction<{ index: string; count: number }>) => {
+      const categoryToChange = state.find((item) => item.index === action.payload.index);
+      if (categoryToChange && action.payload.count > 0) {
+        categoryToChange.count = categoryToChange.count + action.payload.count;
+        return state;
+      }
+    },
+    decreaseCategoryCount: (state, action: PayloadAction<{ index: string; count: number }>) => {
+      const categoryToChange = state.find((item) => item.index === action.payload.index);
+      if (categoryToChange && action.payload.count > 0) {
+        categoryToChange.count = categoryToChange.count - action.payload.count;
+        return state;
+      }
+    },
+    addCategoryHistory: (
+      state,
+      action: PayloadAction<{ index: string; value: number; fromCount: string; note: string }>
+    ) => {
+      const categoryToChange = state.find((item) => item.index === action.payload.index);
+      if (categoryToChange) {
+        const appp = {
+          index: makeid(),
+          title: categoryToChange.title,
+          date: moment().format('YYYY-MM-DD hh:mm'),
+          value: action.payload.value,
+          fromCount: action.payload.fromCount,
+          categoryIndex: categoryToChange.index,
+          note: action.payload.note,
+        };
+
+        categoryToChange.history.push(appp);
+        return state;
+      }
+    },
+    deleteCategoryHistory: (
+      state,
+      action: PayloadAction<{ index: string; historyIndex: string }>
+    ) => {
+      const categoryToChange = state.find((count) => count.index === action.payload.index);
+
+      if (categoryToChange) {
+        for (let i = 0; i < categoryToChange.history.length; i++) {
+          if (categoryToChange.history[i].index === action.payload.historyIndex) {
+            categoryToChange.history.splice(i, 1);
+            return state;
+          }
+        }
+      }
+    },
   },
+  extraReducers: () => {},
 });
 
 export const categoryReducer = categorySlice.reducer;

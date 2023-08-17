@@ -7,7 +7,7 @@ export const groupByDate = (inputArray: IHistoryCategory[]): IDateGroupes[] => {
   const groupedData = {};
 
   inputArray.forEach((obj) => {
-    const date = obj.date;
+    const date = moment(obj.date).format('YYYY-MM-DD');
 
     if (!groupedData[date]) {
       groupedData[date] = {

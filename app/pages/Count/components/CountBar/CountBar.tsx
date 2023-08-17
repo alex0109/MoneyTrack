@@ -1,12 +1,10 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import { deleteCount } from '../../lib/store/countSlice';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 
 import { styles } from './CountBar.styles';
 
@@ -14,8 +12,7 @@ import type { ICount } from '../../lib/types/interfaces';
 import type { FC } from 'react';
 
 const CountBar: FC<ICount> = (count) => {
-  const dispatch = useAppDispatch();
-  const authContext = useContext(AuthContext);
+  const { deleteCount } = useActions();
 
   const colors = useTheme().colors;
 
@@ -28,8 +25,7 @@ const CountBar: FC<ICount> = (count) => {
         borderBottomRightRadius: 5,
         backgroundColor: colors.red,
       }}>
-      <TouchableOpacity
-        onPress={() => dispatch(deleteCount({ uid: authContext.uid, countID: count.index }))}>
+      <TouchableOpacity onPress={() => deleteCount({ index: count.index })}>
         <Ionicons name='md-close-outline' size={35} color={colors.textColor} />
       </TouchableOpacity>
     </View>

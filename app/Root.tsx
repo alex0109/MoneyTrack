@@ -6,11 +6,9 @@ import { SafeAreaView, useColorScheme } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import BGImageLayer from './BGImageLayer';
-import { fetchCategories } from './pages/Chart/lib/store/categorySlice';
-import { fetchCounts } from './pages/Count/lib/store/countSlice';
-import { fetchTargets } from './pages/Target/lib/store/targetSlice';
+
 import Colors from './shared/assets/styles/colors';
-import { useAppDispatch } from './shared/lib/hooks/useAppDispatch';
+
 import { AuthContext } from './shared/lib/providers/AuthProvider';
 import { ThemeContext } from './shared/lib/providers/ThemeProvider';
 import { get } from './shared/lib/utils/asyncMethods';
@@ -22,8 +20,6 @@ const Root: FC = () => {
 
   const { theme } = useContext(ThemeContext);
   const authContext = useContext(AuthContext);
-
-  const dispatch = useAppDispatch();
 
   const deviceTheme = useColorScheme();
 
@@ -45,12 +41,6 @@ const Root: FC = () => {
       const storedToken: string = await get('token');
       const storedUid: string = await get('uid');
 
-      if (isConnected) {
-        dispatch(fetchCategories(storedUid));
-        dispatch(fetchCounts(storedUid));
-        dispatch(fetchTargets(storedUid));
-      }
-
       if (storedToken) {
         authContext.authenticate(storedToken, storedUid);
       }
@@ -59,7 +49,7 @@ const Root: FC = () => {
     }
 
     void fetchToken();
-  }, [authContext.isAuthenticated, dispatch, isConnected]);
+  }, [authContext.isAuthenticated, isConnected]);
 
   if (!isTryingLogin) {
     SplashScreen.hide();

@@ -14,12 +14,13 @@ import AllTimeHistoryList from '../AllTimeHistoryList/AllTimeHistoryList';
 import MonthHistoryList from '../MonthHistoryList/MonthHistoryList';
 
 import type { IMonthsCategory } from '../../../Chart/lib/types/interfaces';
+import type { IDateGroupes } from '../../lib/types/interfaces';
 import type { FC } from 'react';
 
 const AnalyticHistory: FC = () => {
-  const category = useTypedSelector((state) => state.category.data);
-  const count = useTypedSelector((state) => state.count.data);
-  const oneMonthHistory = groupByDate(getHistory(category));
+  const { category } = useTypedSelector((state) => state);
+  const { count } = useTypedSelector((state) => state);
+  const [oneMonthHistory, setOneMonthHistory] = useState<IDateGroupes[]>([]);
   const colors = useTheme().colors;
   const { t } = useTranslation();
   const [toggle, setToggle] = useState(false);
@@ -27,8 +28,10 @@ const AnalyticHistory: FC = () => {
   const [allTimeHistory, setAllTimeHistory] = useState<IMonthsCategory[]>([]);
 
   useEffect(() => {
+    const oneMonth = groupByDate(getHistory(category));
     const sortCategories = sortByMonths(category, count).reverse();
     setAllTimeHistory(sortCategories);
+    setOneMonthHistory(oneMonth);
   }, [category, count]);
 
   return (

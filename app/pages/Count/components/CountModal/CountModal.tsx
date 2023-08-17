@@ -6,14 +6,11 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import CustomModal from '../../../../shared/ui/Modal/Modal';
 import ModalTitle from '../../../../shared/ui/ModalTitle/ModalTitle';
-
-import { topUpCountValue } from '../../lib/store/countSlice';
 
 import { styles } from './CountModal.styles';
 
@@ -33,10 +30,9 @@ const CountModal: FC<CountModalProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const dispatch = useAppDispatch();
-  const authContext = useContext(AuthContext);
   const colors = useTheme().colors;
   const { t } = useTranslation();
+  const { topUpCountValue } = useActions();
 
   const [addedCount, setAddedCount] = useState<number>('');
 
@@ -47,7 +43,7 @@ const CountModal: FC<CountModalProps> = ({
   };
 
   const addCountHandler = (index: string): void => {
-    dispatch(topUpCountValue({ uid: authContext.uid, countID: index, countValue: addedCount }));
+    topUpCountValue({ index: index, value: addedCount });
     setAddedCount(0);
     setModalVisible(false);
   };

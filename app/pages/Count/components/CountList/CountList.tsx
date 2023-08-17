@@ -1,24 +1,16 @@
 /* eslint-disable no-unused-vars */
 
 import { useTheme } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+
 import Title from '../../../../shared/ui/Title/Title';
-import { addNewCount } from '../../lib/store/countSlice';
-import BarSkeleton from '../BarSkeleton/BarSkeleton';
+
 import CountBar from '../CountBar/CountBar';
 
 import type { ICount } from '../../lib/types/interfaces';
@@ -29,15 +21,15 @@ interface CountListProps {
 }
 
 const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
-  const count = useTypedSelector((state) => state.count.data);
-  const countLoading = useTypedSelector((state) => state.count.loading);
-  const dispatch = useAppDispatch();
+  const { count } = useTypedSelector((state) => state);
+
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const authContext = useContext(AuthContext);
+
+  const { addNewCount } = useActions();
 
   const addNewCountHandler = () => {
-    dispatch(addNewCount(authContext.uid));
+    addNewCount();
   };
 
   return (
@@ -49,41 +41,30 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
           <Text style={[styles.noCountsMessageText, { color: colors.textColor }]}>
             {t('firstScreen.noCountsMessage')}
           </Text>
-          {!countLoading ? (
-            <Pressable onPress={() => addNewCountHandler()}>
-              <Ionicons name='add-outline' size={35} color={colors.textColor} />
-            </Pressable>
-          ) : (
-            <ActivityIndicator size='large' color={colors.textColor} />
-          )}
+          <Pressable onPress={() => addNewCountHandler()}>
+            <Ionicons name='add-outline' size={35} color={colors.textColor} />
+          </Pressable>
         </View>
       ) : (
         <View>
-          {!countLoading ? (
-            <View style={styles.countsContent}>
-              {count.map((item: ICount) => (
-                <TouchableOpacity
-                  key={item.index}
-                  onPress={() => {
-                    handleModalOpen(item.index);
-                  }}>
-                  <CountBar key={item.index} {...item} />
-                </TouchableOpacity>
-              ))}
-              {count.length < 4 ? (
-                <Pressable onPress={() => addNewCountHandler()}>
-                  <Ionicons name='add-outline' size={35} color={colors.textColor} />
-                </Pressable>
-              ) : (
-                <></>
-              )}
-            </View>
-          ) : (
-            <>
-              <BarSkeleton />
-              <BarSkeleton />
-            </>
-          )}
+          <View style={styles.countsContent}>
+            {count.map((item: ICount) => (
+              <TouchableOpacity
+                key={item.index}
+                onPress={() => {
+                  handleModalOpen(item.index);
+                }}>
+                <CountBar key={item.index} {...item} />
+              </TouchableOpacity>
+            ))}
+            {count.length < 4 ? (
+              <Pressable onPress={() => addNewCountHandler()}>
+                <Ionicons name='add-outline' size={35} color={colors.textColor} />
+              </Pressable>
+            ) : (
+              <></>
+            )}
+          </View>
         </View>
       )}
     </View>

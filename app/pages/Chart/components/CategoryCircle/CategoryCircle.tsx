@@ -1,9 +1,11 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import Animated, {
+  FadeIn,
+  FadeOut,
   getRelativeCoords,
   runOnJS,
   useAnimatedGestureHandler,
@@ -14,9 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import { deleteCategory } from '../../lib/store/categorySlice';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 
 import type { FC } from 'react';
 import type { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler';
@@ -55,11 +55,10 @@ const CategoryCircle: FC<CategoryCircleProps> = ({
   const translateY = useSharedValue(0);
   const categoryRef = useAnimatedRef<Animated.View>();
 
-  const authContext = useContext(AuthContext);
-  const dispatch = useAppDispatch();
+  const { deleteCategory } = useActions();
 
   const onEndMovingDelete = () => {
-    dispatch(deleteCategory({ uid: authContext.uid, categoryID: categoryIndex }));
+    deleteCategory({ index: categoryIndex });
   };
 
   const onEndMoving = () => {
@@ -107,6 +106,8 @@ const CategoryCircle: FC<CategoryCircleProps> = ({
     <PanGestureHandler onGestureEvent={eventHandler}>
       <Animated.View
         ref={categoryRef}
+        entering={FadeIn}
+        exiting={FadeOut}
         style={[styles.categoryItem, { left: x, top: y, backgroundColor: color }, rStyle]}>
         <TouchableOpacity
           onPress={() => handleOpenCategory(categoryIndex)}

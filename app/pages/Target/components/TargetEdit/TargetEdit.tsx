@@ -1,16 +1,13 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
 import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import StyledTextInput from '../../../../shared/ui/StyledTextInput/StyledTextInput';
-
-import { changeTarget, changeTargetTitle, changeTargetValue } from '../../lib/store/targetSlice';
 
 import type { ITarget } from '../../lib/types/interfaces';
 import type { FC } from 'react';
@@ -18,10 +15,9 @@ import type { FC } from 'react';
 const TargetEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const authContext = useContext(AuthContext);
-  const dispatch = useAppDispatch();
+  const { changeTarget, changeTargetTitle, changeTargetValue } = useActions();
 
-  const target = useTypedSelector((state) => state.target.data);
+  const { target } = useTypedSelector((state) => state);
   const { targetID } = route.params;
 
   const [targetTitleSubmitAvailable, setTargetTitleSubmitAvailable] = useState(false);
@@ -61,25 +57,23 @@ const TargetEdit: FC = ({ route }) => {
 
   const changeTargetTitleHandler = (newTitle: string): void => {
     if (validateTitle(newTitle)) {
-      dispatch(
-        changeTargetTitle({ uid: authContext.uid, targetID: targetID, targetTitle: newTitle })
-      );
+      changeTargetTitle({ index: targetID, title: newTitle });
+
       setTargetTitleSubmitAvailable(false);
     }
   };
 
   const changeTargetValueHandler = (newTargetValue: number): void => {
     if (validateValue(newTargetValue)) {
-      dispatch(
-        changeTargetValue({ uid: authContext.uid, targetID: targetID, targetValue: newTargetValue })
-      );
+      changeTargetValue({ index: targetID, value: newTargetValue });
+
       setTargetValueSubmitAvailable(false);
     }
   };
 
   const changeTargetHandler = (newTarget: number): void => {
     if (validateValue(newTarget)) {
-      dispatch(changeTarget({ uid: authContext.uid, targetID: targetID, target: newTarget }));
+      changeTarget({ index: targetID, value: newTarget });
       setTargetSubmitAvailable(false);
     }
   };

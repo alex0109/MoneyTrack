@@ -4,14 +4,11 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
 import CustomModal from '../../../../shared/ui/Modal/Modal';
 
 import ModalTitle from '../../../../shared/ui/ModalTitle/ModalTitle';
-
-import { topUpTargetValue } from '../../lib/store/targetSlice';
 
 import { styles } from './TargetValueModal.styles';
 
@@ -32,11 +29,10 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const authContext = useContext(AuthContext);
-  const dispatch = useAppDispatch();
   const [addedValue, setAddedValue] = useState<number>(0);
   const colors = useTheme().colors;
   const { t } = useTranslation();
+  const { topUpTargetValue } = useActions();
 
   const inputHandler = (value: string) => {
     if (validateValue(value)) {
@@ -45,7 +41,7 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   };
 
   const addValueHandler = (index: string): void => {
-    dispatch(topUpTargetValue({ uid: authContext.uid, targetID: index, targetValue: addedValue }));
+    topUpTargetValue({ index: index, value: addedValue });
     setAddedValue(0);
     setModalVisible(false);
   };

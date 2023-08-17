@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -12,13 +12,10 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
-import { makeid } from '../../../../shared/lib/utils/generateID';
+
 import { validateValue } from '../../../../shared/lib/utils/validateValue';
-import { decreaseCountValue } from '../../../Count/lib/store/countSlice';
-import { addCategoryHistory, topUpCategoryCount } from '../../lib/store/categorySlice';
 
 import type { FC } from 'react';
 
@@ -30,10 +27,9 @@ const { width, height } = Dimensions.get('window');
 
 const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
   const colors = useTheme().colors;
-  const dispatch = useAppDispatch();
-  const { uid } = useContext(AuthContext);
   const [currentCount, setCurrentCount] = useState(0);
-  const count = useTypedSelector((state) => state.count.data);
+  const { count } = useTypedSelector((state) => state);
+  const { addCategoryHistory, topUpCategoryCount, decreaseCountValue } = useActions();
 
   const [inputFormValue, setInputFormValue] = useState(0);
   const [inputFormNotes, setInputFormNotes] = useState('');
@@ -48,26 +44,17 @@ const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
 
   const sendSpends = (value: number, notes: string) => {
     if (validateValue(value) && count[currentCount]) {
-      dispatch(
-        topUpCategoryCount({
-          uid,
-          categoryID,
-          categoryHistoryID: makeid(),
-          categoryFromCount: count[currentCount].index,
-          categoryValue: value,
-          categoryNote: notes,
-        })
-      );
-      dispatch(
-        addCategoryHistory({
-          uid,
-          categoryID,
-          categoryValue: value,
-          categoryNote: notes,
-          categoryFromCount: count[currentCount],
-        })
-      );
-      dispatch(decreaseCountValue({ uid, countID: count[currentCount].index, countValue: value }));
+      topUpCategoryCount({
+        index: categoryID,
+        count: value,
+      });
+      addCategoryHistory({
+        index: categoryID,
+        value: value,
+        note: notes,
+        fromCount: count[currentCount].index,
+      });
+      decreaseCountValue({ index: count[currentCount].index, value: value });
       setInputFormValue(0);
       setInputFormNotes('');
     }

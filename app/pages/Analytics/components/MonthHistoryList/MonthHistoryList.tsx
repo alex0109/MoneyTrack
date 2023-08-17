@@ -5,6 +5,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
+import Animated, { FadeIn } from 'react-native-reanimated';
+
 import { getCurrentWeekendhName } from '../../../Chart/lib/helpers/getCurrentWeekendName';
 import MonthHistoryItem from '../MonthHistoryItem/MonthHistoryItem';
 
@@ -23,8 +25,9 @@ const MonthHistoryList: FC<MonthHistoryListProps> = ({ oneMonthHistory }) => {
     <>
       {oneMonthHistory.length > 0 ? (
         oneMonthHistory.map((day, index) => (
-          <View
+          <Animated.View
             key={index}
+            entering={FadeIn}
             style={[
               styles.historyItem,
               { backgroundColor: colors.contrastColor, borderRadius: 5 },
@@ -41,10 +44,11 @@ const MonthHistoryList: FC<MonthHistoryListProps> = ({ oneMonthHistory }) => {
             {day.values.map((item) => (
               <MonthHistoryItem key={item.index} dayValues={item} />
             ))}
-          </View>
+          </Animated.View>
         ))
       ) : (
-        <View
+        <Animated.View
+          entering={FadeIn}
           style={[
             styles.historiesContainer,
             { backgroundColor: colors.contrastColor, borderRadius: 5 },
@@ -54,7 +58,7 @@ const MonthHistoryList: FC<MonthHistoryListProps> = ({ oneMonthHistory }) => {
               {t('thirdScreen.noHistoryMessage')}
             </Text>
           </View>
-        </View>
+        </Animated.View>
       )}
     </>
   );

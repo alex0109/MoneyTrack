@@ -1,21 +1,18 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useAppDispatch } from '../../../../shared/lib/hooks/useAppDispatch';
+import { useActions } from '../../../../shared/lib/hooks/useActions';
+
 import { useTypedSelector } from '../../../../shared/lib/hooks/useTypedSelector';
-import { AuthContext } from '../../../../shared/lib/providers/AuthProvider';
+
 import { validateTitle } from '../../../../shared/lib/utils/titleFormValidate';
 import StyledTextInput from '../../../../shared/ui/StyledTextInput/StyledTextInput';
 import Title from '../../../../shared/ui/Title/Title';
-import {
-  changeCategoryColor,
-  changeCategoryIcon,
-  changeCategoryTitle,
-} from '../../lib/store/categorySlice';
+
 import { colorsArray, iconsArray } from '../../lib/store/propertires';
 
 import type { ICategory } from '../../lib/types/interfaces';
@@ -24,9 +21,8 @@ import type { FC } from 'react';
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const authContext = useContext(AuthContext);
-  const dispatch = useAppDispatch();
-  const category = useTypedSelector((state) => state.category.data);
+  const { category } = useTypedSelector((state) => state);
+  const { changeCategoryColor, changeCategoryIcon, changeCategoryTitle } = useActions();
   const { categoryID }: string = route.params;
   const [categoryTitleSubmitAvailable, setCategoryTitleSubmitAvailable] = useState(false);
 
@@ -59,9 +55,8 @@ const CategoryEdit: FC = ({ route }) => {
 
   const changeCategoryTitleHandler = (title: string) => {
     if (validateTitle(title)) {
-      dispatch(
-        changeCategoryTitle({ uid: authContext.uid, categoryID: categoryID, categoryTitle: title })
-      );
+      changeCategoryTitle({ index: categoryID, title: title });
+
       setCategoryTitleSubmitAvailable(false);
     }
   };
@@ -92,13 +87,10 @@ const CategoryEdit: FC = ({ route }) => {
           <TouchableOpacity
             key={index}
             onPress={() =>
-              dispatch(
-                changeCategoryColor({
-                  uid: authContext.uid,
-                  categoryID: categoryID,
-                  categoryColor: color,
-                })
-              )
+              changeCategoryColor({
+                index: categoryID,
+                color: color,
+              })
             }
             style={{
               backgroundColor: color,
@@ -117,13 +109,10 @@ const CategoryEdit: FC = ({ route }) => {
           <TouchableOpacity
             key={index}
             onPress={() =>
-              dispatch(
-                changeCategoryIcon({
-                  uid: authContext.uid,
-                  categoryID: categoryID,
-                  categoryIcon: icon,
-                })
-              )
+              changeCategoryIcon({
+                index: categoryID,
+                icon: icon,
+              })
             }
             style={{
               justifyContent: 'center',

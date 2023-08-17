@@ -24,8 +24,8 @@ import type { FC } from 'react';
 const Chart: FC = () => {
   const colors = useTheme().colors;
   const { height } = useWindowDimensions();
-  const category = useTypedSelector((state) => state.category.data);
-  const count = useTypedSelector((state) => state.count.data);
+  const { category } = useTypedSelector((state) => state);
+  const { count } = useTypedSelector((state) => state);
   const [categoryID, setCategoryID] = useState<string>('');
 
   const [sortedByCurrentMonth, setSortedByCurrentMonth] = useState<IMonthsCategory>({
