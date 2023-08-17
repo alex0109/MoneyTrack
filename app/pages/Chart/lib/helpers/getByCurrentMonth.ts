@@ -8,136 +8,107 @@ import type { ICategory, IMonthsCategory } from '../types/interfaces';
 export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): IMonthsCategory[] {
   const currentMonth = moment().format('YYYY-MM');
 
-  let hasCurrentMonthData = false;
-
   const monthsActions: IMonthsCategory[] = [];
 
-  for (let i = 0; i < categories.length; i++) {
-    for (let j = 0; j < categories[i].history.length; j++) {
-      const historyDate = categories[i].history[j].date.split('-').slice(0, -1).join('-');
-      if (historyDate === currentMonth) {
-        hasCurrentMonthData = true;
-        const existingMonth = monthsActions.find((month) => month.month === currentMonth);
-        if (existingMonth) {
-          const existingAction = existingMonth.actions.find(
-            (action) => action.index === categories[i].index
-          );
-          if (existingAction) {
-            existingAction.history.push({
-              index: categories[i].history[j].index,
-              date: categories[i].history[j].date,
-              value: categories[i].history[j].value,
-              fromCount: categories[i].history[j].fromCount,
-              note: categories[i].history[j].note,
-            });
-            existingAction.amount += categories[i].history[j].value;
-          } else {
-            existingMonth.actions.push({
-              index: categories[i].index,
-              title: categories[i].title,
-              amount: categories[i].history[j].value,
-              color: categories[i].color,
-              icon: categories[i].icon,
-              history: [
-                {
-                  index: categories[i].history[j].index,
-                  date: categories[i].history[j].date,
-                  value: categories[i].history[j].value,
-                  fromCount: categories[i].history[j].fromCount,
-                  note: categories[i].history[j].note,
-                },
-              ],
-            });
-          }
-        } else {
-          monthsActions.push({
-            month: currentMonth,
-            income: 0,
-            actions: [
-              {
-                index: categories[i].index,
-                title: categories[i].title,
-                amount: categories[i].history[j].value,
-                color: categories[i].color,
-                icon: categories[i].icon,
+  if (categories.length > 0) {
+    categories.forEach((category) => {
+      if (category.history && category.history.length > 0) {
+        category.history.forEach((history) => {
+          const historyDate = history.date.split('-').slice(0, -1).join('-');
+          if (historyDate === currentMonth) {
+            let existingMonth = monthsActions.find((month) => month.month === currentMonth);
+            if (!existingMonth) {
+              existingMonth = {
+                month: currentMonth,
+                income: 0,
+                actions: [],
+              };
+              monthsActions.push(existingMonth);
+            }
+
+            let existingAction = existingMonth.actions.find(
+              (action) => action.index === category.index
+            );
+            if (existingAction) {
+              existingAction.history.push({
+                index: history.index,
+                title: category.title,
+                date: history.date,
+                value: history.value,
+                fromCount: history.fromCount,
+                categoryIndex: history.categoryIndex,
+                note: history.note,
+              });
+              existingAction.amount += history.value;
+            } else {
+              existingMonth.actions.push({
+                index: category.index,
+                title: category.title,
+                amount: history.value,
+                color: category.color,
+                icon: category.icon,
                 history: [
                   {
-                    index: categories[i].history[j].index,
-                    date: categories[i].history[j].date,
-                    value: categories[i].history[j].value,
-                    fromCount: categories[i].history[j].fromCount,
-                    note: categories[i].history[j].note,
+                    index: history.index,
+                    title: category.title,
+                    date: history.date,
+                    value: history.value,
+                    fromCount: history.fromCount,
+                    categoryIndex: history.categoryIndex,
+                    note: history.note,
                   },
                 ],
-              },
-            ],
-          });
-        }
+              });
+            }
+          }
+        });
       }
-    }
-    const existingMonth = monthsActions.find((month) => month.month === currentMonth);
-    if (existingMonth) {
-      const existingAction = existingMonth.actions.find(
-        (action) => action.index === categories[i].index
-      );
+
+      let existingMonth = monthsActions.find((month) => month.month === currentMonth);
+      if (!existingMonth) {
+        existingMonth = {
+          month: currentMonth,
+          income: 0,
+          actions: [],
+        };
+        monthsActions.push(existingMonth);
+      }
+
+      let existingAction = existingMonth.actions.find((action) => action.index === category.index);
       if (!existingAction) {
         existingMonth.actions.push({
-          index: categories[i].index,
-          title: categories[i].title,
+          index: category.index,
+          title: category.title,
           amount: 0,
-          color: categories[i].color,
-          icon: categories[i].icon,
+          color: category.color,
+          icon: category.icon,
           history: [
             {
               index: makeid(),
+              title: '',
               date: moment().format('YYYY-MM-01'),
               value: 0,
               fromCount: '',
+              categoryIndex: '',
               note: '',
             },
           ],
         });
       }
-    } else {
-      hasCurrentMonthData = true;
-      monthsActions.push({
-        month: currentMonth,
-        income: 0,
-        actions: [
-          {
-            index: categories[i].index,
-            title: categories[i].title,
-            amount: 0,
-            color: categories[i].color,
-            icon: categories[i].icon,
-            history: [
-              {
-                index: makeid(),
-                date: moment().format('YYYY-MM-01'),
-                value: 0,
-                fromCount: '',
-                note: '',
-              },
-            ],
-          },
-        ],
-      });
-    }
+    });
   }
 
-  for (let i = 0; i < counts.length; i++) {
-    for (let j = 0; j < counts[i].history.length; j++) {
-      for (let k = 0; k < monthsActions.length; k++) {
-        if (counts[i].history[j].date.split('-').slice(0, -1).join('-') == monthsActions[k].month) {
-          monthsActions[k].income += counts[i].history[j].value;
+  counts.forEach((count) => {
+    count.history.forEach((history) => {
+      monthsActions.forEach((monthAction) => {
+        if (history.date.split('-').slice(0, -1).join('-') === monthAction.month) {
+          monthAction.income += history.value;
         }
-      }
-    }
-  }
+      });
+    });
+  });
 
-  if (!hasCurrentMonthData) {
-    return [{ month: currentMonth, income: 0, actions: [] }];
-  }
-
-  return monthsActions;
+  return monthsActions.length === 0
+    ? [{ month: currentMonth, income: 0, actions: [] }]
+    : monthsActions;
 }

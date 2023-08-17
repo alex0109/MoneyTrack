@@ -2,7 +2,7 @@ import { useTheme } from '@react-navigation/native';
 
 import Analytics from 'appcenter-analytics';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { BackHandler, SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -53,6 +53,8 @@ const Chart: FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log(category);
+
     void Analytics.trackEvent('Chart opened');
 
     const currMonth = sortByCurrentMonth(category, count);

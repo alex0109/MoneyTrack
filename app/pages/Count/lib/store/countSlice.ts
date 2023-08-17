@@ -14,6 +14,7 @@ export const countSlice = createSlice({
   name: 'count',
   initialState,
   reducers: {
+    setCountsData: (state, action) => action.payload,
     addNewCount: (state) => {
       state.push({
         index: makeid(),

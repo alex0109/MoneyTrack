@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import BGImage from '../BGImage/BGImage';
+import Cloud from '../Cloud/Cloud';
 import Exit from '../Exit/Exit';
 import Language from '../Language/Language';
 import Theme from '../Theme/Theme';
@@ -16,6 +17,7 @@ const Settings: FC = () => {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
+      <Cloud />
       <Theme />
       <BGImage />
       <Language />

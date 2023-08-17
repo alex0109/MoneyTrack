@@ -14,16 +14,20 @@ export function getGraphHistory(arr: ICategory[]): IGraphData {
   const dateValueMap = {};
 
   arr.forEach((item) => {
-    item.history.forEach((historyItem) => {
-      const { date, value } = historyItem;
-      if (moment(date).isSame(moment(), 'month')) {
-        if (dateValueMap[date]) {
-          dateValueMap[date] += value;
-        } else {
-          dateValueMap[date] = value;
+    if (item.history) {
+      item.history.forEach((historyItem) => {
+        const { date, value } = historyItem;
+        if (moment(date).isSame(moment(), 'month')) {
+          if (dateValueMap[date]) {
+            dateValueMap[date] += value;
+          } else {
+            dateValueMap[date] = value;
+          }
         }
-      }
-    });
+      });
+    } else {
+      return { labels: [], datasets: [{ data: [0] }] };
+    }
   });
 
   const startDate = moment().startOf('month');

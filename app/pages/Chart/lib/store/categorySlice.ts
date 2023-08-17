@@ -16,6 +16,7 @@ export const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
+    setCategoriesData: (state, action) => action.payload,
     addNewCategory: (state) => {
       state.push({
         index: makeid(),
@@ -70,18 +71,32 @@ export const categorySlice = createSlice({
     ) => {
       const categoryToChange = state.find((item) => item.index === action.payload.index);
       if (categoryToChange) {
-        const appp = {
-          index: makeid(),
-          title: categoryToChange.title,
-          date: moment().format('YYYY-MM-DD hh:mm'),
-          value: action.payload.value,
-          fromCount: action.payload.fromCount,
-          categoryIndex: categoryToChange.index,
-          note: action.payload.note,
-        };
+        if (!categoryToChange.history) {
+          categoryToChange.history = [];
+          categoryToChange.history.push({
+            index: makeid(),
+            title: categoryToChange.title,
+            date: moment().format('YYYY-MM-DD hh:mm'),
+            value: action.payload.value,
+            fromCount: action.payload.fromCount,
+            categoryIndex: categoryToChange.index,
+            note: action.payload.note,
+          });
 
-        categoryToChange.history.push(appp);
-        return state;
+          return state;
+        } else {
+          categoryToChange.history.push({
+            index: makeid(),
+            title: categoryToChange.title,
+            date: moment().format('YYYY-MM-DD hh:mm'),
+            value: action.payload.value,
+            fromCount: action.payload.fromCount,
+            categoryIndex: categoryToChange.index,
+            note: action.payload.note,
+          });
+
+          return state;
+        }
       }
     },
     deleteCategoryHistory: (

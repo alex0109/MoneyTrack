@@ -11,6 +11,7 @@ export const targetSlice = createSlice({
   name: 'target',
   initialState,
   reducers: {
+    setTargetsData: (state, action) => action.payload,
     addNewTarget: (state) => {
       state.push({
         index: makeid(),

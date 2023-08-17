@@ -14,6 +14,7 @@ import { ThemeContext } from './shared/lib/providers/ThemeProvider';
 import { get } from './shared/lib/utils/asyncMethods';
 
 import type { FC } from 'react';
+import { persistor } from './shared/lib/store/store';
 
 const Root: FC = () => {
   const { isConnected } = NetInfo.useNetInfo();
@@ -40,15 +41,17 @@ const Root: FC = () => {
     async function fetchToken() {
       const storedToken: string = await get('token');
       const storedUid: string = await get('uid');
+      const isGuest: boolean = await get('isGuest');
 
       if (storedToken) {
-        authContext.authenticate(storedToken, storedUid);
+        authContext.authenticate(storedToken, storedUid, isGuest);
       }
 
       setIsTryingLogin(false);
     }
 
     void fetchToken();
+    // persistor.purge();
   }, [authContext.isAuthenticated, isConnected]);
 
   if (!isTryingLogin) {

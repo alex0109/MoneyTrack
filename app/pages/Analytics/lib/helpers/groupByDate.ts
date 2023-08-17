@@ -3,10 +3,18 @@ import moment from 'moment';
 import type { IHistoryCategory } from '../../../Chart/lib/types/interfaces';
 import type { IDateGroupes } from '../types/interfaces';
 
-export const groupByDate = (inputArray: IHistoryCategory[]): IDateGroupes[] => {
+export const groupByDate = (inputArray: IHistoryCategory[] = []): IDateGroupes[] => {
+  if (!Array.isArray(inputArray) || inputArray.length === 0) {
+    return [];
+  }
+
   const groupedData = {};
 
   inputArray.forEach((obj) => {
+    if (!obj || !obj.date) {
+      return;
+    }
+
     const date = moment(obj.date).format('YYYY-MM-DD');
 
     if (!groupedData[date]) {

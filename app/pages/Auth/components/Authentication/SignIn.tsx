@@ -43,7 +43,7 @@ const SignIn: FC = () => {
       setLoginDisabled(true);
       setRegisterButtonDisabled(true);
       const response = await loginUser(inputEmail, inputPass);
-      authContext.authenticate(response.token, response.uid);
+      authContext.authenticate(response.token, response.uid, false);
       setLoginDisabled(false);
       setRegisterButtonDisabled(false);
     } catch (error: unknown) {
@@ -59,7 +59,7 @@ const SignIn: FC = () => {
       setLoginDisabled(true);
       setRegisterButtonDisabled(true);
       const response = await signInAnonymously();
-      authContext.authenticate(response.token, response.uid);
+      authContext.authenticate(response.token, response.uid, true);
       setLoginDisabled(false);
       setRegisterButtonDisabled(false);
     } catch (error: unknown) {

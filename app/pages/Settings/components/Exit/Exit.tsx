@@ -10,7 +10,7 @@ import type { FC } from 'react';
 
 const Exit: FC = () => {
   const colors = useTheme().colors;
-  const authContext = useContext(AuthContext);
+  const { logout, isGuest } = useContext(AuthContext);
   const { t } = useTranslation();
 
   return (
@@ -21,13 +21,23 @@ const Exit: FC = () => {
           width: '100%',
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          onPress={() => authContext.logout()}
-          style={{ borderRadius: 5, padding: 15, backgroundColor: '#ED0F0F20' }}>
-          <Text style={{ color: colors.red, fontSize: 20, fontFamily: 'NotoSans-Regular' }}>
-            {t('settings.signOut')}
-          </Text>
-        </TouchableOpacity>
+        {isGuest ? (
+          <TouchableOpacity
+            onPress={() => logout()}
+            style={{ borderRadius: 5, padding: 15, backgroundColor: `${colors.info}20` }}>
+            <Text style={{ color: colors.info, fontSize: 20, fontFamily: 'NotoSans-Regular' }}>
+              Log In
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => logout()}
+            style={{ borderRadius: 5, padding: 15, backgroundColor: '#ED0F0F20' }}>
+            <Text style={{ color: colors.red, fontSize: 20, fontFamily: 'NotoSans-Regular' }}>
+              {t('settings.signOut')}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

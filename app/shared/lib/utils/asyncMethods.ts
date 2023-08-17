@@ -9,7 +9,8 @@ export const saveString = async (key: string, value: string) => {
   }
 };
 
-export const save = async (key: string, value: string) => saveString(key, JSON.stringify(value));
+export const save = async (key: string, value: string | boolean) =>
+  saveString(key, JSON.stringify(value));
 
 export const get = async (key: string) => {
   try {

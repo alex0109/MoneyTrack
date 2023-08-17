@@ -2,72 +2,124 @@ import type { ICount } from '../../../Count/lib/types/interfaces';
 import type { ICategory, IMonthsCategory } from '../types/interfaces';
 
 export function sortByMonths(categories: ICategory[], counts: ICount[]): IMonthsCategory[] {
+  if (!Array.isArray(categories) || categories.length === 0) {
+    return [];
+  }
+
   const dates = categories
+    .filter((category) => category.history && category.history.length > 0)
     .map((category) => category.history.map((history) => history.date))
     .flat()
     .map((date) => date.split('-').slice(0, -1).join('-'));
 
-  const monthsActions: IMonthsCategory[] = dates
-    .filter((element, index) => dates.indexOf(element) === index)
-    .sort((a, b) => Number(new Date(a)) - Number(new Date(b)))
-    .map((date) => ({ month: date, income: 0, actions: [] }));
+  if (dates.length === 0) {
+    return [];
+  }
 
-  for (let i = 0; i < categories.length; i++) {
-    for (let j = 0; j < categories[i].history.length; j++) {
-      for (let q = 0; q < monthsActions.length; q++) {
-        if (
-          categories[i].history[j].date.split('-').slice(0, -1).join('-') == monthsActions[q].month
-        ) {
-          const existingAction = monthsActions[q].actions.find(
-            (action) => action.index === categories[i].index
+  const uniqueMonthsMap: { [month: string]: boolean } = {};
+  categories.forEach((category) => {
+    if (category.history && category.history.length > 0) {
+      category.history.forEach((history) => {
+        const month = history.date.split('-').slice(0, -1).join('-');
+        uniqueMonthsMap[month] = true;
+      });
+    }
+  });
+
+  counts.forEach((count) => {
+    if (count.history && count.history.length > 0) {
+      count.history.forEach((history) => {
+        const month = history.date.split('-').slice(0, -1).join('-');
+        uniqueMonthsMap[month] = true;
+      });
+    }
+  });
+
+  const uniqueMonths = Object.keys(uniqueMonthsMap);
+
+  const monthsActions: IMonthsCategory[] = uniqueMonths.map((month) => ({
+    month,
+    income: 0,
+    actions: [],
+  }));
+
+  const categoryIndexMap: { [index: number]: ICategory } = {};
+  categories.forEach((category) => {
+    categoryIndexMap[category.index] = category;
+  });
+
+  categories.forEach((category) => {
+    if (category.history && category.history.length > 0) {
+      category.history.forEach((history) => {
+        const month = history.date.split('-').slice(0, -1).join('-');
+        const monthAction = monthsActions.find((action) => action.month === month);
+
+        if (monthAction && category.history && category.history.length > 0) {
+          const existingAction = monthAction.actions.find(
+            (action) => action.index === category.index
           );
 
           if (existingAction) {
-            existingAction.history.push({
-              index: categories[i].history[j].index,
-              date: categories[i].history[j].date,
-              value: categories[i].history[j].value,
-              fromCount: categories[i].history[j].fromCount,
-              note: categories[i].history[j].note,
-            });
+            // Обновляем существующую запись
+            if (history.value !== 0) {
+              existingAction.history.push({
+                index: history.index,
+                title: category.title,
+                date: history.date,
+                value: history.value,
+                fromCount: history.fromCount,
+                categoryIndex: history.categoryIndex,
+                note: history.note,
+              });
 
-            existingAction.amount += categories[i].history[j].value;
-          } else {
-            monthsActions[q].actions.push({
-              index: categories[i].index,
-              title: categories[i].title,
-              amount: categories[i].history[j].value,
-              color: categories[i].color,
-              icon: categories[i].icon,
+              existingAction.amount += history.value;
+            }
+          } else if (history.value !== 0) {
+            // Добавляем новую запись, если value не равен нулю
+            if (!monthAction.actions) {
+              monthAction.actions = [];
+            }
+
+            monthAction.actions.push({
+              index: category.index,
+              title: category.title,
+              amount: history.value,
+              color: category.color,
+              icon: category.icon,
               history: [
                 {
-                  index: categories[i].history[j].index,
-                  date: categories[i].history[j].date,
-                  value: categories[i].history[j].value,
-                  fromCount: categories[i].history[j].fromCount,
-                  note: categories[i].history[j].note,
+                  index: history.index,
+                  title: category.title,
+                  date: history.date,
+                  value: history.value,
+                  fromCount: history.fromCount,
+                  categoryIndex: history.categoryIndex,
+                  note: history.note,
                 },
               ],
             });
-          }
 
-          if (monthsActions[q].actions.length > 12) {
-            monthsActions[q].actions.shift();
+            if (monthAction.actions.length > 12) {
+              monthAction.actions.shift();
+            }
           }
         }
-      }
+      });
     }
-  }
+  });
 
-  for (let i = 0; i < counts.length; i++) {
-    for (let j = 0; j < counts[i].history.length; j++) {
-      for (let k = 0; k < monthsActions.length; k++) {
-        if (counts[i].history[j].date.split('-').slice(0, -1).join('-') == monthsActions[k].month) {
-          monthsActions[k].income += counts[i].history[j].value;
+  counts.forEach((count) => {
+    if (count.history && count.history.length > 0) {
+      count.history.forEach((history) => {
+        const month = history.date.split('-').slice(0, -1).join('-');
+        const monthAction = monthsActions.find((action) => action.month === month);
+
+        if (monthAction) {
+          monthAction.income += history.value;
         }
-      }
+      });
     }
-  }
+  });
 
   return monthsActions;
 }
