@@ -26,7 +26,13 @@
       "bgImage": "Background image",
       "currencyTitle": "Currency",
       "appTitle": "App",
-      "signOut": "Sign Out"
+      "signOut": "Sign Out",
+      "cloudTitle": "Cloud",
+      "cloudWarning": "You need to register to interact with the cloud",
+      "downloadData": "Download data from cloud",
+      "saveData": "Save data to cloud",
+      "deleteData": "Delete data from cloud",
+      "logInButton": "Log In"
     },
     "firstScreen": {
       "countTitle": "Counts",
@@ -45,19 +51,31 @@
       "targetEditNameTitle": "Title",
       "targetEditValueTitle": "Value",
       "targetEditTargetTitle": "Target",
-      "noInternetConnection": "Please connect to the Internet :D"
+      "noInternetConnection": "Please connect to the Internet :D",
+      "createCountTitle": "Write name for a new count",
+      "createTargetTitle": "Write name for a new target"
     },
     "secondScreen": {
       "categoryEditNameTitle": "Title",
       "categoryEditColorTitle": "Color",
       "categoryEditIconTitle": "Icon",
-      "quitTheApp": "Do you want to quit the app?"
+      "quitTheApp": "Do you want to quit the app?",
+      "createCategoryTitle": "",
+      "addSpend": "Add spend",
+      "howMuch": "How much:",
+      "fromCount": "Count:",
+      "notes": "Notes",
+      "notesPlaceholder": "Your notes (optional)...",
+      "send": "Add spend",
+      "noCounts": "You have no counts"
     },
     "thirdScreen": {
       "historyTitle": "History",
       "monthHistoryButton": "Month history",
       "fullHistoryButton": "Full history",
-      "noHistoryMessage": "You have't any actions"
+      "noHistoryMessage": "You have't any actions",
+      "noNotesDescription": "no notes",
+      "deleteHistoryButton": "Delete"
     },
     "global": {
       "back": "Back",
@@ -65,7 +83,8 @@
       "placeholderTitle": "Your title...",
       "headerBalance": "Balance",
       "noInternet": "No internet",
-      "exitApp": "Exit"
+      "exitApp": "Exit",
+      "create": "Create"
     }
   }
 }

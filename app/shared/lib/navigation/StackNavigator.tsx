@@ -3,15 +3,15 @@ import 'react-native-gesture-handler';
 import { useTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Accounts from '../../../pages/Accounts/Accounts/Accounts';
-import AnalyticsScreen from '../../../pages/Analytics/components/Analytics/Analytics';
-import SignIn from '../../../pages/Auth/components/Authentication/SignIn';
-import SignUp from '../../../pages/Auth/components/Authentication/SignUp';
-import CategoryEdit from '../../../pages/Chart/components/CategoryEdit/CategoryEdit';
-import Chart from '../../../pages/Chart/components/Chart/Chart';
-import CountEdit from '../../../pages/Count/components/CountEdit/CountEdit';
-import Settings from '../../../pages/Settings/components/Settings/Settings';
-import TargetEdit from '../../../pages/Target/components/TargetEdit/TargetEdit';
+import Accounts from '../../../pages/Accounts/Accounts';
+import AnalyticsScreen from '../../../pages/Analytics/components/Analytics';
+import SignIn from '../../../pages/Auth/components/SignIn';
+import SignUp from '../../../pages/Auth/components/SignUp';
+import CategoryEdit from '../../../pages/Chart/components/CategoryEdit';
+import Chart from '../../../pages/Chart/components/Chart';
+import CountEdit from '../../../pages/Count/components/CountEdit';
+import Settings from '../../../pages/Settings/components/Settings';
+import TargetEdit from '../../../pages/Target/components/TargetEdit';
 import Balance from '../../ui/Balance/Balance';
 import SettingsIcon from '../../ui/SettingsIcon/SettingsIcon';
 

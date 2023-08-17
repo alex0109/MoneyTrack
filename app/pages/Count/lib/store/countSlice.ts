@@ -15,10 +15,10 @@ export const countSlice = createSlice({
   initialState,
   reducers: {
     setCountsData: (state, action) => action.payload,
-    addNewCount: (state) => {
+    addNewCount: (state, action: PayloadAction<{ title: string }>) => {
       state.push({
         index: makeid(),
-        title: 'New title',
+        title: action.payload.title,
         value: 0,
         history: [
           {

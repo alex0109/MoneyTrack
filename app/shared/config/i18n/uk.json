@@ -26,7 +26,13 @@
       "bgImage": "Задній фон",
       "currencyTitle": "Валюта",
       "appTitle": "Системні налаштуання",
-      "signOut": "Вийти з аккаунту"
+      "signOut": "Вийти з аккаунту",
+      "cloudTitle": "Хмара",
+      "cloudWarning": "Щоб взаємодіяти із хмарою требя зареєструватися",
+      "downloadData": "Завантажити дані із хмари",
+      "saveData": "Зберегти дані у хмару",
+      "deleteData": "Видалити дані із хмари",
+      "logInButton": "Увійти"
     },
     "firstScreen": {
       "countTitle": "Рахунки",
@@ -45,19 +51,31 @@
       "targetEditNameTitle": "Назва",
       "targetEditValueTitle": "Значення",
       "targetEditTargetTitle": "Ціль",
-      "noInternetConnection": "Підключіться до Інтернету :D"
+      "noInternetConnection": "Підключіться до Інтернету :D",
+      "createCountTitle": "Напишіть назву для нового рахунку",
+      "createTargetTitle": "Напишіть назву для нової цілі"
     },
     "secondScreen": {
       "categoryEditNameTitle": "Назва",
       "categoryEditColorTitle": "Колір",
       "categoryEditIconTitle": "Іконка",
-      "quitTheApp": "Ти дійсно хочеш вийти з MoneyTrack?"
+      "quitTheApp": "Ти дійсно хочеш вийти з MoneyTrack?",
+      "createCategoryTitle": "",
+      "addSpend": "Додати трату",
+      "howMuch": "Сума:",
+      "fromCount": "Рахунок:",
+      "notes": "Примітки:",
+      "notesPlaceholder": "Ваші примітки (опціонально)...",
+      "send": "Додати трату",
+      "noCounts": "У вас немає рахунків"
     },
     "thirdScreen": {
       "historyTitle": "Історія",
       "monthHistoryButton": "Історія за місяць",
       "fullHistoryButton": "Повна історія",
-      "noHistoryMessage": "Зараз ваша історія пуста..."
+      "noHistoryMessage": "Зараз ваша історія пуста...",
+      "noNotesDescription": "без приміток",
+      "deleteHistoryButton": "Видалити"
     },
     "global": {
       "back": "Назад",
@@ -65,7 +83,8 @@
       "placeholderTitle": "Ваша назва...",
       "headerBalance": "Баланс",
       "noInternet": "Немає інтернету",
-      "exitApp": "Вийти"
+      "exitApp": "Вийти",
+      "create": "Створити"
     }
   }
 }

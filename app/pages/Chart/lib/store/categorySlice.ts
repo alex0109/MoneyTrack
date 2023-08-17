@@ -17,10 +17,10 @@ export const categorySlice = createSlice({
   initialState,
   reducers: {
     setCategoriesData: (state, action) => action.payload,
-    addNewCategory: (state) => {
+    addNewCategory: (state, action: PayloadAction<{ title: string }>) => {
       state.push({
         index: makeid(),
-        title: 'New Category',
+        title: action.payload.title,
         count: 0,
         icon: iconsArray[Math.floor(Math.random() * iconsArray.length)],
         color: colorsArray[Math.floor(Math.random() * colorsArray.length)],
