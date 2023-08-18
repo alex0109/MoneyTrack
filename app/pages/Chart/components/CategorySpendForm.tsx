@@ -1,5 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
   KeyboardAvoidingView,
@@ -18,7 +19,6 @@ import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import { validateValue } from '../../../shared/lib/utils/validateValue';
 
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface CategorySpendFormProps {
   categoryID: string;

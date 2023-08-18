@@ -51,7 +51,7 @@ const CreateCountModal: FC<CreateCountModalProps> = ({
           autoFocus={true}
           placeholder={t('global.placeholderTitle')!}
           placeholderTextColor={colors.gray}
-          keyboardType='numeric'
+          keyboardType='default'
           onChangeText={(input) => inputHandler(input)}
         />
       </View>
@@ -68,7 +68,7 @@ const CreateCountModal: FC<CreateCountModalProps> = ({
           onPress={() => {
             createNewCountHandler();
           }}>
-          <Text style={[styles.modalPopUpButton, { color: colors.textColor }]}>
+          <Text style={[styles.modalPopUpButton, { color: colors.success }]}>
             {t('global.create')}
           </Text>
         </TouchableOpacity>

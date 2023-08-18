@@ -4,16 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { useActions } from '../../../shared/lib/hooks/useActions';
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import { AuthContext } from '../../../shared/lib/providers/AuthProvider';
 import Title from '../../../shared/ui/Title/Title';
 
+import { deleteData } from '../lib/api/deleteData';
+import { fetchData } from '../lib/api/fetchData';
 import { loadData } from '../lib/api/loadData';
 
 import type { FC } from 'react';
-import { fetchData } from '../lib/api/fetchData';
-import { deleteData } from '../lib/api/deleteData';
-import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
-import { useActions } from '../../../shared/lib/hooks/useActions';
 
 const Cloud: FC = () => {
   const colors = useTheme().colors;

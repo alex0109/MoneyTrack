@@ -51,7 +51,7 @@ const CreateCategoryModal: FC<CreateCategoryModalProps> = ({
           autoFocus={true}
           placeholder={t('global.placeholderTitle')!}
           placeholderTextColor={colors.gray}
-          keyboardType='numeric'
+          keyboardType='default'
           onChangeText={(input) => inputHandler(input)}
         />
       </View>
@@ -68,7 +68,9 @@ const CreateCategoryModal: FC<CreateCategoryModalProps> = ({
           onPress={() => {
             createNewCategoryHandler();
           }}>
-          <Text style={[styles.modalPopUpButton, { color: colors.textColor }]}>Create</Text>
+          <Text style={[styles.modalPopUpButton, { color: colors.success }]}>
+            {t('global.create')}
+          </Text>
         </TouchableOpacity>
       </View>
     </CustomModal>
