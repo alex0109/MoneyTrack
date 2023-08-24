@@ -13,6 +13,9 @@ import { deleteData } from '../lib/api/deleteData';
 import { fetchData } from '../lib/api/fetchData';
 import { loadData } from '../lib/api/loadData';
 
+import type { ICategory } from '../../Chart/lib/types/interfaces';
+import type { ICount } from '../../Count/lib/types/interfaces';
+import type { ITarget } from '../../Target/lib/types/interfaces';
 import type { FC } from 'react';
 
 const Cloud: FC = () => {
@@ -25,9 +28,9 @@ const Cloud: FC = () => {
   const loadAppData = async () => {
     const response = await loadData(uid);
 
-    const loadedCategories = await Object.values(response)[0].categories;
-    const loadedCounts = await Object.values(response)[0].counts;
-    const loadedTargets = await Object.values(response)[0].targets;
+    const loadedCategories: ICategory[] = await Object.values(response)[0].categories;
+    const loadedCounts: ICount[] = await Object.values(response)[0].counts;
+    const loadedTargets: ITarget[] = await Object.values(response)[0].targets;
 
     if (loadedCategories) {
       setCategoriesData(loadedCategories);

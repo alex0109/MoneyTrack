@@ -1,4 +1,5 @@
 import { useTheme } from '@react-navigation/native';
+
 import React, { useContext, useEffect, useState } from 'react';
 import { ImageBackground, View, useColorScheme } from 'react-native';
 
@@ -9,7 +10,9 @@ import { BGImageContext } from './shared/lib/providers/BGImageProvider';
 import { ThemeContext } from './shared/lib/providers/ThemeProvider';
 import { getCurrentBGImage } from './shared/lib/utils/getCurrentBGImage';
 
-const BGImageLayer = () => {
+import type { FC } from 'react';
+
+const BGImageLayer: FC = () => {
   const colors = useTheme().colors;
   const authContext = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);

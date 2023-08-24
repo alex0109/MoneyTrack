@@ -29,6 +29,16 @@ export const iconsArray: string[] = [
   'restaurant',
   'shirt',
   'wine',
+  'camera',
+  'cash',
+  'chatbubbles',
+  'fitness',
+  'glasses',
+  'headset',
+  'laptop',
+  'library',
+  'pizza',
+  'watch',
 ];
 
 export const colorsArray: string[] = [
@@ -53,4 +63,7 @@ export const colorsArray: string[] = [
   '#0BD1C5',
   '#2C2C2C',
   '#D91047',
+  '#6D261B',
+  '#699525',
+  '#257A95',
 ];
