@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
@@ -28,9 +28,10 @@ const AnalyticHistory: FC = () => {
 
   const [allTimeHistory, setAllTimeHistory] = useState<IMonthsCategory[]>([]);
 
+  const oneMonth = useMemo(() => groupByDate(getHistory(category)), [category]);
+  const sortCategories = useMemo(() => sortByMonths(category, count).reverse(), [category, count]);
+
   useEffect(() => {
-    const oneMonth = groupByDate(getHistory(category));
-    const sortCategories = sortByMonths(category, count).reverse();
     setAllTimeHistory(sortCategories);
     setOneMonthHistory(oneMonth);
   }, [category, count]);

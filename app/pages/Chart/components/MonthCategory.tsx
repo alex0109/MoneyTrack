@@ -1,13 +1,11 @@
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import Pie from 'react-native-pie';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import { useActions } from '../../../shared/lib/hooks/useActions';
 
 import { getCoordinatesForIndex } from '../lib/helpers/getCoordinates';
 
@@ -15,10 +13,10 @@ import { getCurrentMonthName } from '../lib/helpers/getCurrentMonthName';
 
 import CategoryCircle from './CategoryCircle';
 
-import type { IAction } from '../lib/types/interfaces';
-import type { FC } from 'react';
 import CreateCategoryModal from './CreateCategoryModal';
-import { ModalRefProps } from '../../../shared/ui/Modal/Modal';
+
+import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
+import type { IAction } from '../lib/types/interfaces';
 
 interface MonthCategoryProps {
   date: string;
@@ -28,19 +26,18 @@ interface MonthCategoryProps {
   handleOpenCategory: (index: string) => void;
 }
 
-const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpenCategory }) => {
+const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpenCategory }) => {
   const colors = useTheme().colors;
-
-  const { addNewCategory } = useActions();
 
   const { i18n } = useTranslation();
 
   const [isCategoryDelete, setIsCategoryDelete] = useState(false);
 
   const monthTitleEN = moment(date).format('MMMM YYYY');
-  const monthTitleUA = `${getCurrentMonthName(moment(date).month())} ${moment(date).format(
-    'YYYY'
-  )}`;
+  const monthTitleUA = useMemo(
+    () => `${getCurrentMonthName(moment(date).month())} ${moment(date).format('YYYY')}`,
+    [date]
+  );
 
   const refCreateCategoryModal = useRef<ModalRefProps>(null);
 
@@ -112,7 +109,9 @@ const MonthCategory: FC<MonthCategoryProps> = ({ date, actions, data, handleOpen
       />
     </View>
   );
-};
+});
+
+MonthCategory.displayName = 'MonthCategory';
 
 export default MonthCategory;
 

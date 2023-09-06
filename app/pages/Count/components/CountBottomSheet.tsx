@@ -25,22 +25,25 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
   const { count } = useTypedSelector((state) => state);
   const navigation = useNavigation();
 
-  const findModalPropByID = (index: string): ICount => {
-    {
-      const item: ICount | undefined = count.find((item: ICount) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ICount => {
+      {
+        const item: ICount | undefined = count.find((item: ICount) => item.index === index);
 
-      if (item == undefined) {
-        return {
-          title: '',
-          value: 0,
-          index: '0',
-          history: [],
-        };
+        if (item == undefined) {
+          return {
+            title: '',
+            value: 0,
+            index: '0',
+            history: [],
+          };
+        }
+
+        return { ...item };
       }
-
-      return { ...item };
-    }
-  };
+    },
+    [countID]
+  );
 
   const countElement = findModalPropByID(countID);
 

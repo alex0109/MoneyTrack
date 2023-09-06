@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
@@ -21,9 +21,9 @@ const AnalyticsScreen: FC = () => {
     datasets: [{ data: [0] }],
   });
 
+  const data = useMemo(() => getGraphHistory(category), [category]);
   useEffect(() => {
     void Analytics.trackEvent('Analytic/History opened');
-    const data = getGraphHistory(category);
     setGraphData(data);
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {

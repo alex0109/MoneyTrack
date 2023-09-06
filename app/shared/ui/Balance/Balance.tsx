@@ -1,4 +1,3 @@
-import NetInfo from '@react-native-community/netinfo';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +6,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTypedSelector } from '../../lib/hooks/useTypedSelector';
 
 const Balance = () => {
-  const { isConnected } = NetInfo.useNetInfo();
   const colors = useTheme().colors;
   const { count } = useTypedSelector((state) => state);
   const navigation = useNavigation();
@@ -18,15 +16,9 @@ const Balance = () => {
   return (
     <View>
       <TouchableOpacity onPress={() => navigation.navigate('AccountsTab', {})}>
-        {isConnected ? (
-          <Text style={[styles.balance, { color: colors.textColor }]}>
-            {t('global.headerBalance')} {countsSum}
-          </Text>
-        ) : (
-          <Text style={[styles.balance, { color: colors.textColor }]}>
-            {t('global.noInternet')}
-          </Text>
-        )}
+        <Text style={[styles.balance, { color: colors.textColor }]}>
+          {t('global.headerBalance')} {countsSum}
+        </Text>
       </TouchableOpacity>
     </View>
   );

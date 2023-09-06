@@ -3,10 +3,17 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, Pressable, StyleSheet, TextInput } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  FlatList,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 import Title from '../../../shared/ui/Title/Title';

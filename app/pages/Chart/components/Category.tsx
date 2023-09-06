@@ -1,5 +1,5 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,23 +22,26 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
   const { category } = useTypedSelector((state) => state);
   const navigation = useNavigation();
 
-  const findModalPropByID = (index: string): ICategory => {
-    const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ICategory => {
+      const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
 
-    if (item == undefined) {
-      return {
-        index: '0',
-        title: 'Tests',
-        count: 0,
-        icon: 'flask',
-        color: '#fff',
-        percent: 0,
-        history: [],
-      };
-    }
+      if (item == undefined) {
+        return {
+          index: '0',
+          title: 'Tests',
+          count: 0,
+          icon: 'flask',
+          color: '#fff',
+          percent: 0,
+          history: [],
+        };
+      }
 
-    return { ...item };
-  };
+      return { ...item };
+    },
+    [categoryID]
+  );
 
   const matchedCategory = findModalPropByID(categoryID);
 

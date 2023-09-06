@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
@@ -12,17 +13,22 @@ import MonthHistoryItem from './MonthHistoryItem';
 
 import type { IDateGroupItem } from '../lib/types/interfaces';
 
-import type { FC } from 'react';
-
 interface MonthHistoryListDayItemProps {
   date: string;
   values: IDateGroupItem[];
 }
 
-const MonthHistoryListDayItem: FC<MonthHistoryListDayItemProps> = ({ date, values }) => {
+const MonthHistoryListDayItem = memo<MonthHistoryListDayItemProps>(({ date, values }) => {
   const colors = useTheme().colors;
   const { i18n } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const currentWeekendName = useMemo(
+    () =>
+      `${getCurrentWeekendhName(moment(date).isoWeekday())} - ${moment(date).format('DD.MM.YYYY')}`,
+    [date]
+  );
+
   return (
     <Animated.View
       entering={FadeIn}
@@ -30,11 +36,7 @@ const MonthHistoryListDayItem: FC<MonthHistoryListDayItemProps> = ({ date, value
       <View style={{ backgroundColor: colors.textColor, padding: 10, borderRadius: 5 }}>
         <TouchableOpacity onPress={() => setIsCollapsed((state) => !state)}>
           <Text style={[styles.historyTitle, { color: colors.themeColor }]}>
-            {i18n.language == 'uk'
-              ? `${getCurrentWeekendhName(moment(date).isoWeekday())} - ${moment(date).format(
-                  'DD.MM.YYYY'
-                )}`
-              : moment(date).format('dddd - DD.MM.YYYY')}
+            {i18n.language == 'uk' ? currentWeekendName : moment(date).format('dddd - DD.MM.YYYY')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -45,7 +47,9 @@ const MonthHistoryListDayItem: FC<MonthHistoryListDayItemProps> = ({ date, value
       </Collapsible>
     </Animated.View>
   );
-};
+});
+
+MonthHistoryListDayItem.displayName = 'MonthHistoryListDayItem';
 
 export default MonthHistoryListDayItem;
 

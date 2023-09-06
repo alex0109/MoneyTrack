@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import Title from '../../../shared/ui/Title/Title';
 
@@ -23,7 +22,6 @@ interface TargetListProps {
 
 const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   const { target } = useTypedSelector((state) => state);
-  const { addNewTarget } = useActions();
 
   const colors = useTheme().colors;
   const { t } = useTranslation();

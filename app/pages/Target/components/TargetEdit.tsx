@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
@@ -24,11 +24,14 @@ const TargetEdit: FC = ({ route }) => {
   const [targetValueSubmitAvailable, setTargetValueSubmitAvailable] = useState(false);
   const [targetSubmitAvailable, setTargetSubmitAvailable] = useState(false);
 
-  const findModalPropByID = (index: string): ITarget => {
-    const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ITarget => {
+      const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
 
-    return item ? { ...item } : { index: '0', title: '', value: 0, target: 0 };
-  };
+      return item ? { ...item } : { index: '0', title: '', value: 0, target: 0 };
+    },
+    [targetID]
+  );
 
   const targetElement = findModalPropByID(targetID);
 

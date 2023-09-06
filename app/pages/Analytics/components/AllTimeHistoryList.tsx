@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import moment from 'moment';
-import React from 'react';
+import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -8,13 +8,12 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { getCurrentMonthName } from '../../Chart/lib/helpers/getCurrentMonthName';
 
 import type { IMonthsCategory } from '../../Chart/lib/types/interfaces';
-import type { FC } from 'react';
 
 type AllTimeHistoryListProps = {
   allTimeHistory: IMonthsCategory[];
 };
 
-const AllTimeHistoryList: FC<AllTimeHistoryListProps> = ({ allTimeHistory }) => {
+const AllTimeHistoryList = memo<AllTimeHistoryListProps>(({ allTimeHistory }) => {
   const colors = useTheme().colors;
   const { i18n, t } = useTranslation();
 
@@ -90,7 +89,9 @@ const AllTimeHistoryList: FC<AllTimeHistoryListProps> = ({ allTimeHistory }) => 
       )}
     </>
   );
-};
+});
+
+AllTimeHistoryList.displayName = 'AllTimeHistoryList';
 
 export default AllTimeHistoryList;
 

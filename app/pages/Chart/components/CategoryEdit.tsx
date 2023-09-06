@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -26,23 +26,26 @@ const CategoryEdit: FC = ({ route }) => {
   const { categoryID }: string = route.params;
   const [categoryTitleSubmitAvailable, setCategoryTitleSubmitAvailable] = useState(false);
 
-  const findModalPropByID = (index: string): ICategory => {
-    const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ICategory => {
+      const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
 
-    if (item == undefined) {
-      return {
-        index: '0',
-        title: 'Tests',
-        count: 0,
-        icon: 'flask',
-        color: '#fff',
-        percent: 0,
-        history: [],
-      };
-    }
+      if (item == undefined) {
+        return {
+          index: '0',
+          title: 'Tests',
+          count: 0,
+          icon: 'flask',
+          color: '#fff',
+          percent: 0,
+          history: [],
+        };
+      }
 
-    return { ...item };
-  };
+      return { ...item };
+    },
+    [categoryID]
+  );
 
   const matchedCategory = findModalPropByID(categoryID);
 

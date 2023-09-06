@@ -31,11 +31,14 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
   const { deleteTarget } = useActions();
   const navigation = useNavigation();
 
-  const findModalPropByID = (index: string): ITarget => {
-    const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ITarget => {
+      const item: ITarget | undefined = target.find((item: ITarget) => item.index === index);
 
-    return item ? { ...item } : { index: '0', title: '', value: 0, target: 0 };
-  };
+      return item ? { ...item } : { index: '0', title: '', value: 0, target: 0 };
+    },
+    [targetID]
+  );
 
   const targetElement = findModalPropByID(targetID);
 

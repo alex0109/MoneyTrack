@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -23,20 +23,23 @@ const CountEdit: FC = ({ route }) => {
   const [titleSubmitDisable, setTitleSubmitDisable] = useState(false);
   const [countValueSubmitDisable, setCountValueSubmitDisable] = useState(false);
 
-  const findModalPropByID = (index: string): ICount => {
-    const item: ICount | undefined = count.find((item: ICount) => item.index === index);
+  const findModalPropByID = useCallback(
+    (index: string): ICount => {
+      const item: ICount | undefined = count.find((item: ICount) => item.index === index);
 
-    if (item == undefined) {
-      return {
-        title: '',
-        value: 0,
-        index: '0',
-        history: [],
-      };
-    }
+      if (item == undefined) {
+        return {
+          title: '',
+          value: 0,
+          index: '0',
+          history: [],
+        };
+      }
 
-    return { ...item };
-  };
+      return { ...item };
+    },
+    [countID]
+  );
 
   const countElement = findModalPropByID(countID);
 

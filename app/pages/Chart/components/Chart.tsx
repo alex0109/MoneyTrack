@@ -2,7 +2,7 @@ import { useTheme } from '@react-navigation/native';
 
 import Analytics from 'appcenter-analytics';
 
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { BackHandler, SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import BackModal from '../../../shared/ui/BackModal/BackModal';
 import { sortByCurrentMonth } from '../lib/helpers/getByCurrentMonth';
 import { getPercantageForCategory } from '../lib/helpers/getPercent';
+
 import Category from './Category';
 
 import MonthCategory from './MonthCategory';
@@ -52,11 +53,15 @@ const Chart: FC = () => {
     categoryBottomSheetRef.current!.expand();
   }, []);
 
+  const cachedSoretedMonthData = useMemo(
+    () => sortByCurrentMonth(category, count),
+    [category, count]
+  );
+
   useEffect(() => {
     void Analytics.trackEvent('Chart opened');
 
-    const currMonth = sortByCurrentMonth(category, count);
-    setSortedByCurrentMonth(...currMonth);
+    setSortedByCurrentMonth(...cachedSoretedMonthData);
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       setBackModalVisible(true);
