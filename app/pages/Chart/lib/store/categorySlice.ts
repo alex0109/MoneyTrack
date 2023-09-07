@@ -76,7 +76,7 @@ export const categorySlice = createSlice({
           categoryToChange.history.push({
             index: makeid(),
             title: categoryToChange.title,
-            date: moment().format('YYYY-MM-DD hh:mm'),
+            date: moment().format('YYYY-MM-DD HH:mm'),
             value: action.payload.value,
             fromCount: action.payload.fromCount,
             categoryIndex: categoryToChange.index,
@@ -88,7 +88,7 @@ export const categorySlice = createSlice({
           categoryToChange.history.push({
             index: makeid(),
             title: categoryToChange.title,
-            date: moment().format('YYYY-MM-DD hh:mm'),
+            date: moment().format('YYYY-MM-DD HH:mm'),
             value: action.payload.value,
             fromCount: action.payload.fromCount,
             categoryIndex: categoryToChange.index,

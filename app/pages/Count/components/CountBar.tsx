@@ -1,14 +1,14 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
-import { Swipeable } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Button } from 'react-native';
+import { Swipeable, TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Colors from '../../../shared/assets/styles/colors';
 import { useActions } from '../../../shared/lib/hooks/useActions';
 
 import type { ICount } from '../lib/types/interfaces';
-import type { FC } from 'react';
+import { FC, useState } from 'react';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -17,16 +17,42 @@ const CountBar: FC<ICount> = (count) => {
 
   const colors = useTheme().colors;
 
+  const [data, setData] = useState([{ id: 1 }]);
+
+  const [input, setInput] = useState('');
+
+  const sendMessageHandler = () => {
+    if (input.length > 0) {
+      setData({ id: '124', title: input, index: 1 });
+      setInput('');
+    }
+  };
+
   const onRightSwipe = () => (
     <View
       style={{
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderTopRightRadius: 5,
-        borderBottomRightRadius: 5,
-        backgroundColor: colors.red,
       }}>
-      <TouchableOpacity onPress={() => deleteCount({ index: count.index })}>
+      <TouchableOpacity
+        onPress={() => deleteCount({ index: count.index })}
+        style={{
+          backgroundColor: colors.red,
+          height: '100%',
+          justifyContent: 'center',
+        }}>
+        <Ionicons name='md-close-outline' size={35} color={colors.textColor} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => console.log({ index: count.index })}
+        style={{
+          backgroundColor: colors.info,
+          height: '100%',
+          justifyContent: 'center',
+          borderTopRightRadius: 5,
+          borderBottomRightRadius: 5,
+        }}>
         <Ionicons name='md-close-outline' size={35} color={colors.textColor} />
       </TouchableOpacity>
     </View>
@@ -42,6 +68,8 @@ const CountBar: FC<ICount> = (count) => {
           </View>
         </View>
       </Swipeable>
+      <TextInput defaultValue={input} onChangeText={(usersInput) => setInput(usersInput)} />
+      <Button onPress={() => sendMessageHandler()} />
     </View>
   );
 };

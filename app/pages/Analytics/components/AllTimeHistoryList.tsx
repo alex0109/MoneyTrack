@@ -7,6 +7,8 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { getCurrentMonthName } from '../../Chart/lib/helpers/getCurrentMonthName';
 
+import AllTimeHistoryListItem from './AllTimeHistoryListItem';
+
 import type { IMonthsCategory } from '../../Chart/lib/types/interfaces';
 
 type AllTimeHistoryListProps = {
@@ -33,6 +35,7 @@ const AllTimeHistoryList = memo<AllTimeHistoryListProps>(({ allTimeHistory }) =>
                 backgroundColor: colors.contrastColor,
                 marginBottom: 20,
                 borderRadius: 5,
+                paddingBottom: 10,
               }}>
               <View
                 style={{
@@ -54,21 +57,15 @@ const AllTimeHistoryList = memo<AllTimeHistoryListProps>(({ allTimeHistory }) =>
                   </Text>
                 </View>
               </View>
-              {month.actions.map((action, index) =>
+              {month.actions.map((action) =>
                 action.amount > 0 ? (
-                  <View key={action.index} style={{ padding: 5, marginVertical: 5 }}>
-                    <Text
-                      style={{
-                        color: colors.textColor,
-                        fontSize: 18,
-                        fontFamily: 'NotoSans-SemiBold',
-                      }}>
-                      {action.title} {action.amount}
-                    </Text>
-                  </View>
-                ) : (
-                  <View key={index}></View>
-                )
+                  <AllTimeHistoryListItem
+                    key={action.index}
+                    title={action.title}
+                    amount={action.amount}
+                    history={action.history}
+                  />
+                ) : null
               )}
             </Animated.View>
           );

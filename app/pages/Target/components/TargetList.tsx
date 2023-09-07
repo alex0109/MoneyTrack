@@ -69,9 +69,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
               <Pressable onPress={() => setCreateTargetModalVisible(true)}>
                 <Ionicons name='add-outline' size={35} color={colors.textColor} />
               </Pressable>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </View>
         </View>
       )}

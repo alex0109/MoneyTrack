@@ -49,7 +49,7 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
         <Text style={[styles.categoryTitle, { color: colors.textColor }]}>
           {dayValues.title} ({dayValues.value})
         </Text>
-        <Text style={{ color: colors.gray }}>{moment(dayValues.date).format('hh:mm')}</Text>
+        <Text style={{ color: colors.gray }}>{moment(dayValues.date).format('HH:mm')}</Text>
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>
         {dayValues.note ? (

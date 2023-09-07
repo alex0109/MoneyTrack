@@ -41,7 +41,7 @@ const CreateCategoryModal: FC<CreateCategoryModalProps> = ({
 
   return (
     <CustomModal ref={refModal} visible={modalVisible || false}>
-      <ModalTitle>Write name of your category</ModalTitle>
+      <ModalTitle> {t('secondScreen.createCategoryTitle')}</ModalTitle>
       <View style={[styles.modalPopUpContent]}>
         <TextInput
           style={[

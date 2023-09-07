@@ -3,15 +3,8 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  FlatList,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
@@ -76,9 +69,7 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
               <Pressable onPress={() => setCreateCountModalVisible(true)}>
                 <Ionicons name='add-outline' size={35} color={colors.textColor} />
               </Pressable>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </View>
         </View>
       )}

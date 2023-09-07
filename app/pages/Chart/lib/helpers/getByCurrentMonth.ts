@@ -26,7 +26,7 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
               monthsActions.push(existingMonth);
             }
 
-            let existingAction = existingMonth.actions.find(
+            const existingAction = existingMonth.actions.find(
               (action) => action.index === category.index
             );
             if (existingAction) {
@@ -74,7 +74,9 @@ export function sortByCurrentMonth(categories: ICategory[], counts: ICount[]): I
         monthsActions.push(existingMonth);
       }
 
-      let existingAction = existingMonth.actions.find((action) => action.index === category.index);
+      const existingAction = existingMonth.actions.find(
+        (action) => action.index === category.index
+      );
       if (!existingAction) {
         existingMonth.actions.push({
           index: category.index,

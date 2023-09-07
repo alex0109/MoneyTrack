@@ -66,7 +66,7 @@ const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpe
 
             return item ? (
               <CategoryCircle
-                key={index}
+                key={item.index}
                 categoryIndex={item.index}
                 color={item.color}
                 icon={item.icon}
