@@ -16,7 +16,7 @@ import CountBar from './CountBar';
 import CreateCountModal from './CreateCountModal';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
-import type { ICount } from '../lib/types/interfaces';
+
 import type { FC } from 'react';
 
 interface CountListProps {
@@ -41,7 +41,7 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
   const createCountModalVisible = refCreateCountModal.current?.modalVisible;
 
   return (
-    <View style={{ paddingLeft: 25, marginBottom: 60 }}>
+    <View style={{ paddingLeft: 25 }}>
       <Title>{t('firstScreen.countTitle')}</Title>
 
       {count.length == 0 ? (
@@ -56,15 +56,56 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
       ) : (
         <View>
           <View style={styles.countsContent}>
-            {count.map((item: ICount) => (
-              <TouchableOpacity
-                key={item.index}
-                onPress={() => {
-                  handleModalOpen(item.index);
-                }}>
-                <CountBar key={item.index} {...item} />
-              </TouchableOpacity>
-            ))}
+            <SwipeListView
+              contentContainerStyle={styles.countsContent}
+              data={count}
+              renderItem={(item) => (
+                <TouchableOpacity
+                  key={item.index}
+                  onPress={() => {
+                    handleModalOpen(item.item.index);
+                  }}>
+                  <CountBar key={item.item.index} {...item.item} />
+                </TouchableOpacity>
+              )}
+              renderHiddenItem={(data, rowMap) => (
+                <View
+                  style={{
+                    backgroundColor: colors.contrastColor,
+                    width: '100%',
+                    height: 50,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    borderRadius: 10,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: colors.red,
+                      height: '100%',
+                      width: 55,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Ionicons name='trash' size={35} color={colors.textColor} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: colors.success,
+                      height: '100%',
+                      width: 55,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderTopRightRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Ionicons name='add-outline' size={35} color={colors.textColor} />
+                  </TouchableOpacity>
+                </View>
+              )}
+              rightOpenValue={-100}
+              disableRightSwipe
+            />
             {count.length < 4 ? (
               <Pressable onPress={() => setCreateCountModalVisible(true)}>
                 <Ionicons name='add-outline' size={35} color={colors.textColor} />
@@ -73,6 +114,7 @@ const CountList: FC<CountListProps> = ({ handleModalOpen }) => {
           </View>
         </View>
       )}
+
       <CreateCountModal
         refModal={refCreateCountModal}
         modalVisible={createCountModalVisible}

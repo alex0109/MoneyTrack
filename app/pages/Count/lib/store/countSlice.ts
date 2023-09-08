@@ -20,12 +20,7 @@ export const countSlice = createSlice({
         index: makeid(),
         title: action.payload.title,
         value: 0,
-        history: [
-          {
-            date: moment().format('YYYY-MM-DD'),
-            value: 0,
-          },
-        ],
+        history: [],
       });
     },
     deleteCount: (state, action: PayloadAction<{ index: string }>) =>

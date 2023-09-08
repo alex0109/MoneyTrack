@@ -4,6 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import React, { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
@@ -13,7 +14,7 @@ import CreateTargetModal from './CreateTargetModal';
 import TargetBar from './TargetBar';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
-import type { ITarget } from '../lib/types/interfaces';
+
 import type { FC } from 'react';
 
 interface TargetListProps {
@@ -56,15 +57,56 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
       ) : (
         <View>
           <View style={styles.targetsContent}>
-            {target.map((item: ITarget) => (
-              <TouchableOpacity
-                key={item.index}
-                onPress={() => {
-                  handleModalOpen(item.index);
-                }}>
-                <TargetBar key={item.index} {...item} />
-              </TouchableOpacity>
-            ))}
+            <SwipeListView
+              contentContainerStyle={styles.targetsContent}
+              data={target}
+              renderItem={(item) => (
+                <TouchableOpacity
+                  key={item.item.index}
+                  onPress={() => {
+                    handleModalOpen(item.item.index);
+                  }}>
+                  <TargetBar key={item.item.index} {...item.item} />
+                </TouchableOpacity>
+              )}
+              renderHiddenItem={(data, rowMap) => (
+                <View
+                  style={{
+                    backgroundColor: colors.contrastColor,
+                    width: '100%',
+                    height: 50,
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    borderRadius: 10,
+                  }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: colors.red,
+                      height: '100%',
+                      width: 55,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Ionicons name='trash' size={35} color={colors.textColor} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: colors.success,
+                      height: '100%',
+                      width: 55,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderTopRightRadius: 10,
+                      borderBottomRightRadius: 10,
+                    }}>
+                    <Ionicons name='add-outline' size={35} color={colors.textColor} />
+                  </TouchableOpacity>
+                </View>
+              )}
+              rightOpenValue={-100}
+              disableRightSwipe
+            />
             {target.length < 5 ? (
               <Pressable onPress={() => setCreateTargetModalVisible(true)}>
                 <Ionicons name='add-outline' size={35} color={colors.textColor} />

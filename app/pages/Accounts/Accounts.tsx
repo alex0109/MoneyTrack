@@ -1,16 +1,8 @@
-import NetInfo from '@react-native-community/netinfo';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import Analytics from 'appcenter-analytics';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  BackHandler,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+
+import { BackHandler, SafeAreaView, ScrollView, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../modules/BottomSheet/BottomSheet';
@@ -25,7 +17,6 @@ import type { BottomSheetRefProps } from '../../modules/BottomSheet/BottomSheet'
 import type { FC } from 'react';
 
 const Accounts: FC = () => {
-  const { isConnected } = NetInfo.useNetInfo();
   const [accountID, setAccountID] = useState<string>('');
 
   const countError = useTypedSelector((state) => state.count.error);
@@ -33,7 +24,6 @@ const Accounts: FC = () => {
 
   const colors = useTheme().colors;
   const navigation = useNavigation();
-  const { t } = useTranslation();
 
   const { height } = useWindowDimensions();
   const countBottomSheetRef = useRef<BottomSheetRefProps>(null);
