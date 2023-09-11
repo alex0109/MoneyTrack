@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import moment from 'moment';
+
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
 import type { ITarget } from '../types/interfaces';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import moment from 'moment';
 
 const initialState: ITarget[] = [];
 

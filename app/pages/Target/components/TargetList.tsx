@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import { useTheme } from '@react-navigation/native';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
@@ -13,6 +13,8 @@ import Title from '../../../shared/ui/Title/Title';
 import CreateTargetModal from './CreateTargetModal';
 import TargetBar from './TargetBar';
 
+import TargetValueModal from './TargetValueModal';
+
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
 
 import type { FC } from 'react';
@@ -23,6 +25,7 @@ interface TargetListProps {
 
 const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   const { target } = useTypedSelector((state) => state);
+  const [targetIndex, setTargetIndex] = useState('');
 
   const colors = useTheme().colors;
   const { t } = useTranslation();
@@ -37,6 +40,17 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
   }, []);
 
   const createTargetModalVisible = refCreateTargetModal.current?.modalVisible;
+
+  const refTargeValuetModal = useRef<ModalRefProps>(null);
+
+  const setTargetValueModalVisible = useCallback((modalVisible: boolean) => {
+    const setModalVisible = refTargeValuetModal.current?.setModalVisible(modalVisible);
+    if (setModalVisible) {
+      refTargeValuetModal.current?.setModalVisible(modalVisible);
+    }
+  }, []);
+
+  const targetValueModalVisible = refTargeValuetModal.current?.modalVisible;
 
   return (
     <View style={{ paddingLeft: 25 }}>
@@ -58,6 +72,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
         <View>
           <View style={styles.targetsContent}>
             <SwipeListView
+              scrollEnabled={false}
               contentContainerStyle={styles.targetsContent}
               data={target}
               renderItem={(item) => (
@@ -81,16 +96,10 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
                     borderRadius: 10,
                   }}>
                   <TouchableOpacity
-                    style={{
-                      backgroundColor: colors.red,
-                      height: '100%',
-                      width: 55,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Ionicons name='trash' size={35} color={colors.textColor} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
+                    onPress={() => {
+                      setTargetIndex(data.item.index);
+                      setTargetValueModalVisible(true);
+                    }}
                     style={{
                       backgroundColor: colors.success,
                       height: '100%',
@@ -104,7 +113,7 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
                   </TouchableOpacity>
                 </View>
               )}
-              rightOpenValue={-100}
+              rightOpenValue={-50}
               disableRightSwipe
             />
             {target.length < 5 ? (
@@ -119,6 +128,12 @@ const TargetList: FC<TargetListProps> = ({ handleModalOpen }) => {
         refModal={refCreateTargetModal}
         modalVisible={createTargetModalVisible}
         setModalVisible={setCreateTargetModalVisible}
+      />
+      <TargetValueModal
+        targetIndex={targetIndex}
+        refModal={refTargeValuetModal}
+        modalVisible={targetValueModalVisible}
+        setModalVisible={setTargetValueModalVisible}
       />
     </View>
   );

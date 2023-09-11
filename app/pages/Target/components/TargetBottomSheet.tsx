@@ -109,7 +109,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
           </View>
         </View>
         <TargetValueModal
-          targetElement={targetElement}
+          targetIndex={targetID}
           refModal={refTargeValuetModal}
           modalVisible={targetValueModalVisible}
           setModalVisible={setTargetValueModalVisible}

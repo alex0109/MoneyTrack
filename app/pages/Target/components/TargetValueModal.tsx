@@ -15,14 +15,14 @@ import type { ITarget } from '../lib/types/interfaces';
 import type { FC, RefObject } from 'react';
 
 interface TargetValueModalProps {
-  targetElement: ITarget;
+  targetIndex: string;
   refModal: RefObject<ModalRefProps>;
   modalVisible: boolean | undefined;
   setModalVisible: (arg0: boolean) => void;
 }
 
 const TargetValueModal: FC<TargetValueModalProps> = ({
-  targetElement,
+  targetIndex,
   refModal,
   modalVisible,
   setModalVisible,
@@ -39,7 +39,7 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   };
 
   const addValueHandler = (index: string): void => {
-    topUpTargetValue({ index: index, value: addedValue });
+    topUpTargetValue({ index: index, value: addedValue, countIndex: '1' });
     setAddedValue(0);
     setModalVisible(false);
   };
@@ -71,7 +71,7 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            addValueHandler(targetElement.index);
+            addValueHandler(targetIndex);
           }}>
           <Text style={[styles.modalPopUpButton, { color: colors.textColor }]}>
             {t('firstScreen.modalAddButton')}

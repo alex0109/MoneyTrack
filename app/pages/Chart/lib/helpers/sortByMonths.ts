@@ -60,7 +60,6 @@ export function sortByMonths(categories: ICategory[], counts: ICount[]): IMonths
           );
 
           if (existingAction) {
-            // Обновляем существующую запись
             if (history.value !== 0) {
               existingAction.history.push({
                 index: history.index,
@@ -75,7 +74,6 @@ export function sortByMonths(categories: ICategory[], counts: ICount[]): IMonths
               existingAction.amount += history.value;
             }
           } else if (history.value !== 0) {
-            // Добавляем новую запись, если value не равен нулю
             if (!monthAction.actions) {
               monthAction.actions = [];
             }

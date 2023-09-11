@@ -75,7 +75,7 @@ const CountModal: FC<CountModalProps> = ({
           onPress={() => {
             addCountHandler(countElementIndex);
           }}>
-          <Text style={[styles.modalPopUpButton, { color: colors.textColor }]}>
+          <Text style={[styles.modalPopUpButton, { color: colors.success }]}>
             {t('firstScreen.modalAddButton')}
           </Text>
         </TouchableOpacity>

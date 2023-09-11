@@ -1,7 +1,7 @@
 const commonColors = {
   themeWhite: '#f3f3f1',
   white: '#FCFCFA',
-  gray: '#8D8D8D',
+  gray: '#B8BFC2',
   red: '#FA3D16',
   success: '#38CA35',
   warning: '#FABD16',

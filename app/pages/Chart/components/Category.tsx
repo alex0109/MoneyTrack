@@ -1,5 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import moment from 'moment';
+import React, { useCallback, useMemo } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -45,6 +46,21 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
 
   const matchedCategory = findModalPropByID(categoryID);
 
+  function calculateCurrentAmount(category: ICategory) {
+    const currentMonth = moment().format('YYYY-MM');
+    let currentAmount = 0;
+
+    for (const history of category.history) {
+      if (moment(history.date).format('YYYY-MM') === currentMonth) {
+        currentAmount += history.value;
+      }
+    }
+
+    return currentAmount;
+  }
+
+  const currentAmount = useMemo(() => calculateCurrentAmount(matchedCategory), [matchedCategory]);
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: matchedCategory?.color }]}>
       <View style={[styles.header, { backgroundColor: matchedCategory?.color }]}>
@@ -65,7 +81,8 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
             <Text style={[styles.title, { color: colors.themeColor }]}>
               {matchedCategory.title}
             </Text>
-            <Text style={[styles.title, { color: colors.themeColor }]}>
+            <Text style={[styles.title, { color: colors.themeColor }]}>{currentAmount}</Text>
+            <Text style={[styles.title, { color: `${colors.themeColor}90`, fontSize: 18 }]}>
               {matchedCategory.count}
             </Text>
           </TouchableOpacity>
