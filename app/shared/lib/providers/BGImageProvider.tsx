@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 
-import { get, save } from '../utils/asyncMethods';
+import { storage } from '../store/mmkv';
 
 import type { FC, ReactNode } from 'react';
 
@@ -27,17 +27,17 @@ const BGImageProvider: FC<BGImageProviderProps> = ({ children }) => {
   const [imageName, setImageName] = useState('none');
   const [imageIndex, setImageIndex] = useState(1);
 
-  const saveImageName = useCallback(async (imageValue: string) => {
-    await save('Image', imageValue);
+  const saveImageName = useCallback((imageValue: string) => {
+    storage.set('Image', imageValue);
   }, []);
 
-  const saveImageIndex = useCallback(async (index: number) => {
-    await save('ImageIndex', String(index));
+  const saveImageIndex = useCallback((index: number) => {
+    storage.set('ImageIndex', String(index));
   }, []);
 
-  const getImage = useCallback(async () => {
-    const savedImageName = await get<string>('Image');
-    const savedImageIndex = await get<string>('ImageIndex');
+  const getImage = useCallback(() => {
+    const savedImageName = storage.getString('Image');
+    const savedImageIndex = storage.getString('ImageIndex');
     if (savedImageName) {
       setImageName(savedImageName);
     }
@@ -50,11 +50,11 @@ const BGImageProvider: FC<BGImageProviderProps> = ({ children }) => {
     void getImage();
   }, [getImage]);
 
-  const changeImage = useCallback(async (newTheme: string, newIndex: number) => {
+  const changeImage = useCallback((newTheme: string, newIndex: number) => {
     setImageName(newTheme);
     setImageIndex(newIndex);
-    await saveImageName(newTheme);
-    await saveImageIndex(newIndex);
+    saveImageName(newTheme);
+    saveImageIndex(newIndex);
   }, []);
 
   const value = {

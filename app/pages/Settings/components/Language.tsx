@@ -4,7 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 
-import { saveString } from '../../../shared/lib/utils/asyncMethods';
+import { storage } from '../../../shared/lib/store/mmkv';
 import Title from '../../../shared/ui/Title/Title';
 
 const Language = () => {
@@ -13,7 +13,7 @@ const Language = () => {
 
   const changeCurrentLanguage = async (language: string) => {
     try {
-      await saveString('currentLanguage', language);
+      storage.set('currentLanguage', language);
       await i18n.changeLanguage(language);
     } catch (error) {
       return;
