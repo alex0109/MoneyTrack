@@ -19,7 +19,7 @@ const Root: FC = () => {
   const { isConnected } = NetInfo.useNetInfo();
 
   const { theme } = useContext(ThemeContext);
-  const authContext = useContext(AuthContext);
+  const { isAuthenticated, authenticate } = useContext(AuthContext);
 
   const deviceTheme = useColorScheme();
 
@@ -43,14 +43,14 @@ const Root: FC = () => {
       const isGuest: boolean = await get('isGuest');
 
       if (storedToken) {
-        authContext.authenticate(storedToken, storedUid, isGuest);
+        authenticate(storedToken, storedUid, isGuest);
       }
 
       setIsTryingLogin(false);
     }
 
     void fetchToken();
-  }, [authContext.isAuthenticated, isConnected]);
+  }, [isAuthenticated, isConnected]);
 
   if (!isTryingLogin) {
     SplashScreen.hide();

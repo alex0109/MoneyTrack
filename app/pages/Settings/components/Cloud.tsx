@@ -79,7 +79,7 @@ const Cloud: FC = () => {
         <TouchableOpacity
           disabled={isGuest}
           style={[styles.button, { backgroundColor: !isGuest ? colors.red : colors.gray }]}
-          onPress={async () => console.log(await deleteData(uid))}>
+          onPress={async () => await deleteData(uid)}>
           <Ionicons name='trash' size={30} />
           <Text style={[styles.buttonText, { color: colors.themeColor }]}>
             {t('settings.deleteData')}

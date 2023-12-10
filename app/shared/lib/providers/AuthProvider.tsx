@@ -1,6 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useState } from 'react';
 
-import { storage } from '../store/mmkv';
+import { save } from '../utils/asyncMethods';
 
 import type { FC, ReactNode } from 'react';
 
@@ -9,7 +10,6 @@ interface AuthContextType {
   uid: string;
   isGuest: boolean;
   isAuthenticated: boolean;
-  // eslint-disable-next-line no-unused-vars
   authenticate: (arg0: string, arg1: string, arg2: boolean) => void;
 
   logout: () => void;
@@ -40,18 +40,18 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
     setAuthToken(token);
     setUserID(uid);
     setIsGuest(isGuest);
-    void storage.set('isGuest', isGuest);
-    void storage.set('token', token);
-    void storage.set('uid', uid);
+    void save('isGuest', isGuest);
+    void save('token', token);
+    void save('uid', uid);
   }, []);
 
   const logout = useCallback(() => {
     setAuthToken(null);
     setUserID(null);
     setIsGuest(false);
-    void storage.delete('isGuest');
-    void storage.delete('token');
-    void storage.delete('uid');
+    void AsyncStorage.removeItem('isGuest');
+    void AsyncStorage.removeItem('token');
+    void AsyncStorage.removeItem('uid');
   }, []);
 
   const value = {

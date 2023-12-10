@@ -1,14 +1,13 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 
 import { persistStore, persistReducer } from 'redux-persist';
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+import thunk from 'redux-thunk';
 
 import { categoryReducer } from '../../../pages/Chart/lib/store/categorySlice';
 import { countReducers } from '../../../pages/Count/lib/store/countSlice';
 import { targetReducers } from '../../../pages/Target/lib/store/targetSlice';
-
-import { reduxStorageMMKV } from './mmkv';
 
 const rootReducer = combineReducers({
   count: countReducers,
@@ -18,19 +17,14 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: reduxStorageMMKV,
+  storage: AsyncStorage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+  middleware: [thunk],
 });
 
 export type AppDispatch = typeof store.dispatch;

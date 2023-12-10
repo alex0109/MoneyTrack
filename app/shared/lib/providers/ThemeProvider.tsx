@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 
-import { storage } from '../store/mmkv';
+import { save, get } from '../utils/asyncMethods';
 
 import type { FC, ReactNode } from 'react';
 
@@ -27,17 +27,17 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<string>('light');
   const [themeIndex, setThemeIndex] = useState<number>(2);
 
-  const saveTheme = useCallback((themeValue: string) => {
-    storage.set('Theme', themeValue);
+  const saveTheme = useCallback(async (themeValue: string) => {
+    await save('Theme', themeValue);
   }, []);
 
-  const saveThemeIndex = useCallback((index: number) => {
-    storage.set('ThemeIndex', String(index));
+  const saveThemeIndex = useCallback(async (index: number) => {
+    await save('ThemeIndex', String(index));
   }, []);
 
-  const getTheme = useCallback(() => {
-    const savedTheme = storage.getString('Theme');
-    const savedThemeIndex = storage.getString('ThemeIndex');
+  const getTheme = useCallback(async () => {
+    const savedTheme = await get<string>('Theme');
+    const savedThemeIndex = await get<string>('ThemeIndex');
     if (savedTheme) {
       setTheme(savedTheme);
     }
@@ -51,11 +51,11 @@ const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
   }, [getTheme]);
 
   const changeTheme = useCallback(
-    (newTheme: string, newIndex: number) => {
+    async (newTheme: string, newIndex: number) => {
       setTheme(newTheme);
       setThemeIndex(newIndex);
-      saveTheme(newTheme);
-      saveThemeIndex(newIndex);
+      await saveTheme(newTheme);
+      await saveThemeIndex(newIndex);
     },
     [saveTheme, saveThemeIndex]
   );

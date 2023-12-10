@@ -3,6 +3,9 @@ import { useTheme } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { ImageBackground, View, useColorScheme } from 'react-native';
 
+import { deleteData } from './pages/Settings/lib/api/deleteData';
+import { fetchData } from './pages/Settings/lib/api/fetchData';
+import { useTypedSelector } from './shared/lib/hooks/useTypedSelector';
 import { AuthStackNavigator } from './shared/lib/navigation/StackNavigator';
 import TabNavigator from './shared/lib/navigation/TabNavigator';
 import { AuthContext } from './shared/lib/providers/AuthProvider';
@@ -14,9 +17,11 @@ import type { FC } from 'react';
 
 const BGImageLayer: FC = () => {
   const colors = useTheme().colors;
-  const authContext = useContext(AuthContext);
   const { theme } = useContext(ThemeContext);
   const { imageName } = useContext(BGImageContext);
+
+  const { isAuthenticated } = useContext(AuthContext);
+
   const deviceTheme = useColorScheme();
 
   const [backgroundImage, setBackgraoundImage] = useState(
@@ -38,8 +43,8 @@ const BGImageLayer: FC = () => {
         imageStyle={{ opacity: 0.2 }}
         source={backgroundImage}
         resizeMode='repeat'>
-        {authContext.isAuthenticated && <TabNavigator />}
-        {!authContext.isAuthenticated && <AuthStackNavigator />}
+        {isAuthenticated && <TabNavigator />}
+        {!isAuthenticated && <AuthStackNavigator />}
       </ImageBackground>
     </View>
   );
