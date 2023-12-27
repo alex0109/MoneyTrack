@@ -6,12 +6,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Collapsible from 'react-native-collapsible';
 
-import type { IHistoryCategory } from '../../Chart/lib/types/interfaces';
+import type { IHistory } from '../lib/types/interfaces';
 
 interface AllTimeHistoryListItemProps {
   title: string;
   amount: number;
-  history: IHistoryCategory[];
+  history: IHistory[];
 }
 
 const AllTimeHistoryListItem = memo<AllTimeHistoryListItemProps>(({ title, amount, history }) => {
@@ -37,7 +37,7 @@ const AllTimeHistoryListItem = memo<AllTimeHistoryListItemProps>(({ title, amoun
             <Text style={{ marginBottom: 5, fontSize: 16, color: colors.textColor }}>
               <Text style={{ color: colors.red }}>{item.value}</Text>
               {' - '}
-              {moment(item.date).format('YYYY.MM.DD')}
+              {moment(item.date).format('DD.MM.YYYY')}
             </Text>
             {item.note ? (
               <Text

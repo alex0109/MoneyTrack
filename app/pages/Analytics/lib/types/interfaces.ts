@@ -5,7 +5,7 @@ export interface IDateGroupItem {
   fromCount: string;
   note: string;
   date: string;
-  categoryIndex: string;
+  originalID: string;
 }
 
 export interface IDateGroupes {
@@ -16,4 +16,20 @@ export interface IDateGroupes {
 export interface IGraphData {
   labels: string[];
   datasets: { data: number[] }[];
+}
+
+export interface IHistory {
+  date: string;
+  value: number;
+  index: string;
+  originalID: string;
+  title: string;
+  fromCount?: string;
+  note?: string;
+}
+
+export interface IHistoryState {
+  counts: IHistory[];
+  targets: IHistory[];
+  categories: IHistory[];
 }

@@ -1,7 +1,6 @@
-import type { IHistory } from '../../../../shared/types/IHistory';
+import type { IHistory } from '../../../Analytics/lib/types/interfaces';
 
 interface ITargetHistory extends IHistory {
-  index: string;
   fromCount: string;
 }
 
@@ -13,8 +12,8 @@ export interface ITarget {
   hisory: ITargetHistory[];
 }
 
-export type TargetState = {
-  data: ITarget[];
-  loading: boolean;
-  error: string | null;
-};
+// export type ITargetState = {
+//   data: ITarget[];
+//   loading: boolean;
+//   error: string | null;
+// };

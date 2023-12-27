@@ -19,21 +19,33 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const { decreaseCategoryCount, deleteCategoryHistory, topUpCountValue } = useActions();
+  const {
+    decreaseCategoryCount,
+    topUpCountValue,
+    removeCategoryHistory,
+    removeCountHistory,
+    removeTargetHistory,
+  } = useActions();
 
-  const onDeleteHistory = () => {
-    topUpCountValue({
-      index: dayValues.fromCount,
-      value: dayValues.value,
-    });
-    decreaseCategoryCount({
-      index: dayValues.categoryIndex,
-      count: dayValues.value,
-    });
-    deleteCategoryHistory({
-      index: dayValues.categoryIndex,
-      historyIndex: dayValues.index,
-    });
+  // const onDeleteHistory = () => {
+  //   topUpCountValue({
+  //     index: dayValues.fromCount,
+  //     value: dayValues.value,
+  //   });
+  //   decreaseCategoryCount({
+  //     index: dayValues.categoryIndex,
+  //     count: dayValues.value,
+  //   });
+  //   deleteCategoryHistory({
+  //     index: dayValues.categoryIndex,
+  //     historyIndex: dayValues.index,
+  //   });
+  // };
+
+  const onDeleteHistory = (index: string): void => {
+    if (index.split('-')[0] === '100') removeCountHistory({ index });
+    if (index.split('-')[0] === '010') removeTargetHistory({ index });
+    if (index.split('-')[0] === '001') removeCategoryHistory({ index });
   };
 
   return (
@@ -47,7 +59,11 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
         style={{ flexDirection: 'row', justifyContent: 'space-between' }}
         onPress={() => setIsCollapsed((state) => !state)}>
         <Text style={[styles.categoryTitle, { color: colors.textColor }]}>
-          {dayValues.title} ({dayValues.value})
+          {dayValues.title}{' '}
+          <Text style={{ color: dayValues.fromCount ? colors.red : colors.success }}>
+            ({dayValues.fromCount ? '-' : '+'}
+            {dayValues.value})
+          </Text>
         </Text>
         <Text style={{ color: colors.gray }}>{moment(dayValues.date).format('HH:mm')}</Text>
       </TouchableOpacity>
@@ -59,7 +75,7 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
             {t('thirdScreen.noNotesDescription')}
           </Text>
         )}
-        <TouchableOpacity onPress={() => onDeleteHistory()}>
+        <TouchableOpacity onPress={() => onDeleteHistory(dayValues.index)}>
           <Text style={[styles.categoryText, { color: colors.red }]}>
             {t('thirdScreen.deleteHistoryButton')}
           </Text>

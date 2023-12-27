@@ -1,16 +1,13 @@
-import type { IHistory } from '../../../../shared/types/IHistory';
+import type { IHistory } from '../../../Analytics/lib/types/interfaces';
 
 export interface IPoint {
   x: number;
   y: number;
 }
 
-export interface IHistoryCategory extends IHistory {
-  title: string;
-  categoryIndex: string;
-  index: string;
-  fromCount: string;
-  note: string;
+interface ILocalCategoryHistory {
+  date: string;
+  value: string;
 }
 
 export interface ICategory {
@@ -20,22 +17,14 @@ export interface ICategory {
   icon: string;
   color: string;
   percent: number;
-  history: IHistoryCategory[];
-}
-
-export interface CategoryState {
-  data: ICategory[];
-  loading: boolean;
-  error: string | null;
+  history: ILocalCategoryHistory[];
 }
 
 export interface IAction {
   index: string;
   title: string;
   amount: number;
-  color: string;
-  icon: string;
-  history: IHistoryCategory[];
+  history: IHistory[];
 }
 
 export interface IMonthsCategory {

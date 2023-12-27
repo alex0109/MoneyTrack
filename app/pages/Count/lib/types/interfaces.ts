@@ -1,4 +1,4 @@
-import type { IHistory } from '../../../../shared/types/IHistory';
+import type { IHistory } from '../../../Analytics/lib/types/interfaces';
 
 export interface ICount {
   index: string;
@@ -7,8 +7,8 @@ export interface ICount {
   history: IHistory[];
 }
 
-export type CountState = {
-  data: ICount[];
-  loading: boolean;
-  error: string | null;
-};
+// export type ICountState = {
+//   data: ICount[];
+//   loading: boolean;
+//   error: string | null;
+// };

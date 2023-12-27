@@ -5,6 +5,7 @@ import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import thunk from 'redux-thunk';
 
+import { historyReducer } from '../../../pages/Analytics/lib/store/historySlice';
 import { categoryReducer } from '../../../pages/Chart/lib/store/categorySlice';
 import { countReducers } from '../../../pages/Count/lib/store/countSlice';
 import { targetReducers } from '../../../pages/Target/lib/store/targetSlice';
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   count: countReducers,
   target: targetReducers,
   category: categoryReducer,
+  history: historyReducer,
 });
 
 const persistConfig = {
