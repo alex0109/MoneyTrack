@@ -10,7 +10,32 @@ import { colorsArray, iconsArray } from './propertires';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ICategory[] = [];
+const initialState: ICategory[] = [
+  {
+    index: 'sportIndex',
+    title: 'Sport',
+    count: 0,
+    icon: 'flask',
+    color: '#ccc',
+    percent: 0,
+  },
+  {
+    index: 'busIndex',
+    title: 'Bus',
+    count: 0,
+    icon: 'flask',
+    color: '#6124bd',
+    percent: 0,
+  },
+  {
+    index: 'foodIndex',
+    title: 'Food',
+    count: 0,
+    icon: 'flask',
+    color: '#fcba03',
+    percent: 0,
+  },
+];
 
 export const categorySlice = createSlice({
   name: 'category',
@@ -25,7 +50,6 @@ export const categorySlice = createSlice({
         icon: iconsArray[Math.floor(Math.random() * iconsArray.length)],
         color: colorsArray[Math.floor(Math.random() * colorsArray.length)],
         percent: 0,
-        history: [],
       });
     },
     deleteCategory: (state, action: PayloadAction<{ index: string }>) =>

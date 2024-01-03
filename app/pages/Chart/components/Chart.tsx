@@ -4,13 +4,13 @@ import Analytics from 'appcenter-analytics';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { BackHandler, SafeAreaView, StyleSheet, useWindowDimensions } from 'react-native';
+import { BackHandler, SafeAreaView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../../modules/BottomSheet/BottomSheet';
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import BackModal from '../../../shared/ui/BackModal/BackModal';
-import { sortByCurrentMonth } from '../lib/helpers/getByCurrentMonth';
+import { mapCategories } from '../lib/helpers/getByCurrentMonth';
 import { getPercantageForCategory } from '../lib/helpers/getPercent';
 
 import Category from './Category';
@@ -19,20 +19,20 @@ import MonthCategory from './MonthCategory';
 
 import type { BottomSheetRefProps } from '../../../modules/BottomSheet/BottomSheet';
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
-import type { IMonthsCategory } from '../lib/types/interfaces';
+import type { IMappedCategories } from '../lib/types/interfaces';
 import type { FC } from 'react';
 
 const Chart: FC = () => {
   const colors = useTheme().colors;
   const { height } = useWindowDimensions();
-  const { category } = useTypedSelector((state) => state);
+  const { category, history } = useTypedSelector((state) => state);
   const { count } = useTypedSelector((state) => state);
   const [categoryID, setCategoryID] = useState<string>('');
 
-  const [sortedByCurrentMonth, setSortedByCurrentMonth] = useState<IMonthsCategory>({
+  const [sortedByCurrentMonth, setSortedByCurrentMonth] = useState<IMappedCategories>({
     month: '',
-    income: 0,
-    actions: [],
+    total: 0,
+    categories: [],
   });
 
   const categoryBottomSheetRef = useRef<BottomSheetRefProps>(null);
@@ -53,15 +53,15 @@ const Chart: FC = () => {
     categoryBottomSheetRef.current!.expand();
   }, []);
 
-  const cachedSoretedMonthData = useMemo(
-    () => sortByCurrentMonth(category, count),
+  const cachedMappedCategories = useMemo(
+    () => mapCategories(category, history.categories),
     [category, count]
   );
 
   useEffect(() => {
     void Analytics.trackEvent('Chart opened');
 
-    setSortedByCurrentMonth(...cachedSoretedMonthData);
+    setSortedByCurrentMonth(cachedMappedCategories);
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       setBackModalVisible(true);
@@ -76,8 +76,8 @@ const Chart: FC = () => {
       <SafeAreaView style={[styles.main]}>
         <MonthCategory
           date={sortedByCurrentMonth.month}
-          actions={sortedByCurrentMonth.actions}
-          data={getPercantageForCategory(sortedByCurrentMonth.actions)}
+          categories={sortedByCurrentMonth.categories}
+          data={getPercantageForCategory(sortedByCurrentMonth.categories)}
           handleOpenCategory={handleOpenCategory}
         />
         <BottomSheet
@@ -92,6 +92,7 @@ const Chart: FC = () => {
           modalVisible={backModalVisible}
           setModalVisible={setBackModalVisible}
         />
+        <View />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

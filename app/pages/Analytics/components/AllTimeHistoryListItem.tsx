@@ -35,7 +35,9 @@ const AllTimeHistoryListItem = memo<AllTimeHistoryListItemProps>(({ title, amoun
         {history.map((item) => (
           <View style={styles.note} key={item.index}>
             <Text style={{ marginBottom: 5, fontSize: 16, color: colors.textColor }}>
-              <Text style={{ color: colors.red }}>{item.value}</Text>
+              <Text style={{ color: item.fromCount ? colors.red : colors.success }}>
+                {item.value}
+              </Text>
               {' - '}
               {moment(item.date).format('DD.MM.YYYY')}
             </Text>

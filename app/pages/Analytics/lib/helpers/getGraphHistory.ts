@@ -1,9 +1,8 @@
 import moment from 'moment';
 
-import type { ICategory } from '../../../Chart/lib/types/interfaces';
-import type { IGraphData } from '../types/interfaces';
+import type { IGraphData, IHistory } from '../types/interfaces';
 
-export function getGraphHistory(arr: ICategory[]): IGraphData {
+export function getGraphHistory(arr: IHistory[]): IGraphData {
   if (arr.length === 0) {
     return {
       labels: ['0'],
@@ -11,21 +10,19 @@ export function getGraphHistory(arr: ICategory[]): IGraphData {
     };
   }
 
-  const dateValueMap = {};
+  const dateValueMap: { [key: string]: number } = {};
 
-  arr.forEach((item) => {
-    item.history.forEach((historyItem) => {
-      const { date, value } = historyItem;
-      const formattedDate = moment(date).format('YYYY-MM-DD');
+  arr.forEach((historyItem) => {
+    const { date, value } = historyItem;
+    const formattedDate = moment(date).format('YYYY-MM-DD');
 
-      if (moment(date).isSame(moment(), 'month')) {
-        if (dateValueMap[formattedDate]) {
-          dateValueMap[formattedDate] += value;
-        } else {
-          dateValueMap[formattedDate] = value;
-        }
+    if (moment(date).isSame(moment(), 'month')) {
+      if (dateValueMap[formattedDate]) {
+        dateValueMap[formattedDate] += value;
+      } else {
+        dateValueMap[formattedDate] = value;
       }
-    });
+    }
   });
 
   const startDate = moment().startOf('month');

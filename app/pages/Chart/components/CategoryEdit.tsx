@@ -1,4 +1,5 @@
 import { useTheme } from '@react-navigation/native';
+import moment from 'moment';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -15,20 +16,26 @@ import Title from '../../../shared/ui/Title/Title';
 
 import { colorsArray, iconsArray } from '../lib/store/propertires';
 
-import type { ICategory } from '../lib/types/interfaces';
+import type { IHistory } from '../../Analytics/lib/types/interfaces';
+import type { ICategory, ICategoryWithHistory } from '../lib/types/interfaces';
 import type { FC } from 'react';
 
 const CategoryEdit: FC = ({ route }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const { category } = useTypedSelector((state) => state);
+  const { category, history } = useTypedSelector((state) => state);
   const { changeCategoryColor, changeCategoryIcon, changeCategoryTitle } = useActions();
-  const { categoryID }: string = route.params;
+  const { categoryID } = route.params;
   const [categoryTitleSubmitAvailable, setCategoryTitleSubmitAvailable] = useState(false);
 
   const findModalPropByID = useCallback(
-    (index: string): ICategory => {
+    (index: string): ICategoryWithHistory => {
       const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
+      const thisCategoryHistory: IHistory[] = history.categories.filter(
+        (item) =>
+          item.originalID === categoryID &&
+          moment(item.date).format('YYYY-MM') === moment().format('YYYY-MM')
+      );
 
       if (item == undefined) {
         return {
@@ -42,7 +49,7 @@ const CategoryEdit: FC = ({ route }) => {
         };
       }
 
-      return { ...item };
+      return { ...item, history: thisCategoryHistory };
     },
     [categoryID]
   );

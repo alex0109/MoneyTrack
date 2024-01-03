@@ -7,14 +7,13 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import Title from '../../../shared/ui/Title/Title';
 
-import { processHistory } from '../../Chart/lib/helpers/sortByMonths';
 import { combineByDate } from '../lib/helpers/combineByDate';
+import { sortByMonths } from '../lib/helpers/sortByMonths';
 
 import AllTimeHistoryList from './AllTimeHistoryList';
 import MonthHistoryList from './MonthHistoryList';
 
-import type { IMonthsCategory } from '../../Chart/lib/types/interfaces';
-import type { IDateGroupes } from '../lib/types/interfaces';
+import type { IDateGroupes, IMonthsCategory } from '../lib/types/interfaces';
 import type { FC } from 'react';
 
 const AnalyticHistory: FC = () => {
@@ -28,12 +27,11 @@ const AnalyticHistory: FC = () => {
   const [allTimeHistory, setAllTimeHistory] = useState<IMonthsCategory[]>([]);
 
   const oneMonth = useMemo(() => combineByDate(history), [history]);
-  const sortCategories = useMemo(() => processHistory(history).reverse(), [category, count]);
+  const sortCategories = useMemo(() => sortByMonths(history).reverse(), [category, count]);
 
   useEffect(() => {
     setAllTimeHistory(sortCategories);
     setOneMonthHistory(oneMonth);
-    console.log(sortCategories.map((item) => item.actions));
   }, [history, count]);
 
   return (

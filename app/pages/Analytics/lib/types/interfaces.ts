@@ -33,3 +33,16 @@ export interface IHistoryState {
   targets: IHistory[];
   categories: IHistory[];
 }
+
+export interface IAction {
+  index: string;
+  title: string;
+  amount: number;
+  history: IHistory[];
+}
+
+export interface IMonthsCategory {
+  month: string;
+  income: number;
+  actions: IAction[];
+}

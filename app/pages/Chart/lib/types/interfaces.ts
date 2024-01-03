@@ -5,11 +5,6 @@ export interface IPoint {
   y: number;
 }
 
-interface ILocalCategoryHistory {
-  date: string;
-  value: string;
-}
-
 export interface ICategory {
   index: string;
   title: string;
@@ -17,18 +12,14 @@ export interface ICategory {
   icon: string;
   color: string;
   percent: number;
-  history: ILocalCategoryHistory[];
 }
 
-export interface IAction {
-  index: string;
-  title: string;
-  amount: number;
+export interface ICategoryWithHistory extends ICategory {
   history: IHistory[];
 }
 
-export interface IMonthsCategory {
+export interface IMappedCategories {
   month: string;
-  income: number;
-  actions: IAction[];
+  total: number;
+  categories: ICategoryWithHistory[];
 }

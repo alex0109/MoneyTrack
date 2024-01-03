@@ -9,7 +9,8 @@ import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 import CategorySpendForm from './CategorySpendForm';
 
-import type { ICategory } from '../lib/types/interfaces';
+import type { IHistory } from '../../Analytics/lib/types/interfaces';
+import type { ICategory, ICategoryWithHistory } from '../lib/types/interfaces';
 import type { FC } from 'react';
 
 const { height } = Dimensions.get('window');
@@ -20,12 +21,17 @@ interface CategoryProps {
 
 const Category: FC<CategoryProps> = ({ categoryID }) => {
   const colors = useTheme().colors;
-  const { category } = useTypedSelector((state) => state);
+  const { category, history } = useTypedSelector((state) => state);
   const navigation = useNavigation();
 
   const findModalPropByID = useCallback(
-    (index: string): ICategory => {
+    (index: string): ICategoryWithHistory => {
       const item: ICategory | undefined = category.find((item: ICategory) => item.index === index);
+      const thisCategoryHistory: IHistory[] = history.categories.filter(
+        (item) =>
+          item.originalID === categoryID &&
+          moment(item.date).format('YYYY-MM') === moment().format('YYYY-MM')
+      );
 
       if (item == undefined) {
         return {
@@ -39,27 +45,17 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
         };
       }
 
-      return { ...item };
+      return { ...item, history: thisCategoryHistory };
     },
     [categoryID]
   );
 
   const matchedCategory = findModalPropByID(categoryID);
 
-  function calculateCurrentAmount(category: ICategory) {
-    const currentMonth = moment().format('YYYY-MM');
-    let currentAmount = 0;
-
-    for (const history of category.history) {
-      if (moment(history.date).format('YYYY-MM') === currentMonth) {
-        currentAmount += history.value;
-      }
-    }
-
-    return currentAmount;
-  }
-
-  const currentAmount = useMemo(() => calculateCurrentAmount(matchedCategory), [matchedCategory]);
+  const currentAmount = useMemo(
+    () => matchedCategory.history.reduce((a, b) => a + b.value, 0),
+    [history, categoryID]
+  );
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: matchedCategory?.color }]}>
@@ -82,9 +78,6 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
               {matchedCategory.title}
             </Text>
             <Text style={[styles.title, { color: colors.themeColor }]}>{currentAmount}</Text>
-            <Text style={[styles.title, { color: `${colors.themeColor}90`, fontSize: 18 }]}>
-              {matchedCategory.count}
-            </Text>
           </TouchableOpacity>
         </View>
       </View>

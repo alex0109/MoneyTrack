@@ -11,7 +11,6 @@ interface AuthContextType {
   isGuest: boolean;
   isAuthenticated: boolean;
   authenticate: (arg0: string, arg1: string, arg2: boolean) => void;
-
   logout: () => void;
 }
 

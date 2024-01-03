@@ -7,7 +7,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import AllTimeHistoryListMonthItem from './AllTimeHistoryListMonthItem';
 
-import type { IMonthsCategory } from '../../Chart/lib/types/interfaces';
+import type { IMonthsCategory } from '../lib/types/interfaces';
 
 type AllTimeHistoryListProps = {
   allTimeHistory: IMonthsCategory[];

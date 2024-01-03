@@ -1,14 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import moment from 'moment';
-
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
 import type { ICount } from '../types/interfaces';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ICount[] = [];
+const initialState: ICount[] = [
+  {
+    index: 'countIndex',
+    title: 'Debit card',
+    value: 283,
+  },
+];
 
 export const countSlice = createSlice({
   name: 'count',
@@ -20,7 +24,6 @@ export const countSlice = createSlice({
         index: makeid(),
         title: action.payload.title,
         value: 0,
-        history: [],
       });
     },
     deleteCount: (state, action: PayloadAction<{ index: string }>) =>
@@ -40,10 +43,6 @@ export const countSlice = createSlice({
       const countToChange = state.find((count) => count.index === action.payload.index);
       if (countToChange) {
         countToChange.value = action.payload.value;
-        countToChange.history.push({
-          date: moment().format('YYYY-MM-DD'),
-          value: action.payload.historyValue,
-        });
         return state;
       }
     },
@@ -58,10 +57,6 @@ export const countSlice = createSlice({
       const countToChange = state.find((count) => count.index === action.payload.index);
       if (countToChange && action.payload.value > 0) {
         countToChange.value = countToChange.value + action.payload.value;
-        countToChange.history.push({
-          date: moment().format('YYYY-MM-DD'),
-          value: action.payload.value,
-        });
         return state;
       }
     },

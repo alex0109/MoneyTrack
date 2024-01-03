@@ -21,17 +21,17 @@ import CategoryCircle from './CategoryCircle';
 import CreateCategoryModal from './CreateCategoryModal';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
-import type * as interfaces from '../lib/types/interfaces';
+import type { ICategoryWithHistory } from '../lib/types/interfaces';
 
 interface MonthCategoryProps {
   date: string;
-  actions: interfaces.IAction[];
+  categories: ICategoryWithHistory[];
   data: { percentage: number; color: string }[];
   // eslint-disable-next-line no-unused-vars
   handleOpenCategory: (index: string) => void;
 }
 
-const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpenCategory }) => {
+const MonthCategory = memo<MonthCategoryProps>(({ date, categories, data, handleOpenCategory }) => {
   const { uid } = useContext(AuthContext);
   const { category, count, target } = useTypedSelector((state) => state);
 
@@ -93,8 +93,8 @@ const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpe
         <Pie radius={100} innerRadius={70} sections={data} strokeCap={'butt'} />
 
         <View style={[styles.categoriesCircle]}>
-          {actions.map((item, index) => {
-            const { x, y } = getCoordinatesForIndex(-index + 1, actions.length);
+          {categories.map((item, index) => {
+            const { x, y } = getCoordinatesForIndex(-index + 1, categories.length);
 
             return item ? (
               <CategoryCircle
@@ -106,7 +106,7 @@ const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpe
                 setIsCategoryDelete={setIsCategoryDelete}
                 x={x}
                 y={y}
-                amount={item.amount}
+                amount={item.count}
               />
             ) : null;
           })}
@@ -123,7 +123,7 @@ const MonthCategory = memo<MonthCategoryProps>(({ date, actions, data, handleOpe
                 <Ionicons name={'trash'} size={35} color={colors.red} />
               </Pressable>
             </View>
-          ) : actions.length < 9 ? (
+          ) : categories.length < 9 ? (
             <View style={[styles.addItemCircle, { borderColor: colors.textColor }]}>
               <Pressable onPress={() => setCreateCategoryModalVisible(true)}>
                 <Ionicons name={'add-outline'} size={35} color={colors.textColor} />

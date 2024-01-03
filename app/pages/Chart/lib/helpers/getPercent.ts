@@ -1,10 +1,10 @@
-import type { IAction } from '../types/interfaces';
+import type { ICategoryWithHistory } from '../types/interfaces';
 
-export function getPercantageForCategory(actions: IAction[]) {
-  const totalCount = actions.map((item) => item.amount).reduce((a, b) => a + b, 0);
+export function getPercantageForCategory(categories: ICategoryWithHistory[]) {
+  const totalCount = categories.map((item) => item.count).reduce((a, b) => a + b, 0);
 
-  const output = actions.map((item) => {
-    const percent = item.amount / (totalCount > 0 ? totalCount : 1);
+  const output = categories.map((item) => {
+    const percent = item.count / (totalCount > 0 ? totalCount : 1);
     return {
       percentage: Math.trunc(percent * 10000) / 100,
       color: item.color,

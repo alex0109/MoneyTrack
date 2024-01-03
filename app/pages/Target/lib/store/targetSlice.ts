@@ -1,13 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import moment from 'moment';
-
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
 import type { ITarget } from '../types/interfaces';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ITarget[] = [];
+const initialState: ITarget[] = [
+  {
+    index: 'targetIndex',
+    title: 'Air Jordan 1',
+    value: 30,
+    target: 150,
+  },
+];
 
 export const targetSlice = createSlice({
   name: 'target',
@@ -20,7 +25,6 @@ export const targetSlice = createSlice({
         title: action.payload.title,
         target: 0,
         value: 0,
-        hisory: [],
       });
     },
     deleteTarget: (state, action: PayloadAction<{ index: string }>) =>
@@ -61,12 +65,6 @@ export const targetSlice = createSlice({
       const targetToChange = state.find((count) => count.index === action.payload.index);
       if (targetToChange && action.payload.value > 0) {
         targetToChange.value = targetToChange.value + action.payload.value;
-        targetToChange.hisory.push({
-          index: makeid(),
-          date: moment().format('YYYY-MM-DD HH:mm'),
-          value: action.payload.value,
-          fromCount: action.payload.countIndex,
-        });
         return state;
       }
     },

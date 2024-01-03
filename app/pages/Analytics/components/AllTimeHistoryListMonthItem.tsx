@@ -10,7 +10,7 @@ import { getCurrentMonthName } from '../../Chart/lib/helpers/getCurrentMonthName
 
 import AllTimeHistoryListItem from './AllTimeHistoryListItem';
 
-import type { IAction } from '../../Chart/lib/types/interfaces';
+import type { IAction } from '../lib/types/interfaces';
 
 interface AllTimeHistoryListMonthItemProps {
   month: string;

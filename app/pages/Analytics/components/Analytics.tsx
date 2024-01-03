@@ -15,13 +15,14 @@ import type { FC } from 'react';
 const AnalyticsScreen: FC = () => {
   const navigation = useNavigation();
 
-  const { category } = useTypedSelector((state) => state);
+  const { history } = useTypedSelector((state) => state);
   const [graphData, setGraphData] = useState<IGraphData>({
     labels: ['0'],
     datasets: [{ data: [0] }],
   });
 
-  const data = useMemo(() => getGraphHistory(category), [category]);
+  const data = useMemo(() => getGraphHistory(history.categories), [history]);
+
   useEffect(() => {
     void Analytics.trackEvent('Analytic/History opened');
     setGraphData(data);
@@ -32,7 +33,7 @@ const AnalyticsScreen: FC = () => {
     });
 
     return () => backHandler.remove();
-  }, [category]);
+  }, [history]);
 
   return (
     <View style={[styles.container]}>
