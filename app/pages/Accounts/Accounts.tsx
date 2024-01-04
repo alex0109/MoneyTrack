@@ -7,7 +7,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import BottomSheet from '../../modules/BottomSheet/BottomSheet';
 
-import { useTypedSelector } from '../../shared/lib/hooks/useTypedSelector';
 import CountBottomSheet from '../Count/components/CountBottomSheet';
 import CountList from '../Count/components/CountList';
 import TargetBottomSheet from '../Target/components/TargetBottomSheet';
@@ -18,9 +17,6 @@ import type { FC } from 'react';
 
 const Accounts: FC = () => {
   const [accountID, setAccountID] = useState<string>('');
-
-  const countError = useTypedSelector((state) => state.count.error);
-  const targetError = useTypedSelector((state) => state.target.error);
 
   const colors = useTheme().colors;
   const navigation = useNavigation();
@@ -58,8 +54,6 @@ const Accounts: FC = () => {
     return () => backHandler.remove();
   }, []);
 
-  useEffect(() => {}, [countError, targetError]);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -76,7 +70,7 @@ const Accounts: FC = () => {
         </BottomSheet>
         <BottomSheet
           ref={targetBottomSheetRef}
-          activeHeight={height * 0.9}
+          activeHeight={height * 0.7}
           backgroundColor={colors.themeColor}
           backDropColor={'black'}>
           <TargetBottomSheet handleTargetClose={handleTargetClose} targetID={accountID} />

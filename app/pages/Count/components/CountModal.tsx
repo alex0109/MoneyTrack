@@ -20,6 +20,7 @@ interface CountModalProps {
   refModal: RefObject<ModalRefProps>;
   modalVisible: boolean | undefined;
   setModalVisible: (arg0: boolean) => void;
+  title: string;
 }
 
 const CountModal: FC<CountModalProps> = ({
@@ -27,12 +28,13 @@ const CountModal: FC<CountModalProps> = ({
   refModal,
   modalVisible,
   setModalVisible,
+  title,
 }) => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const { topUpCountValue } = useActions();
+  const { topUpCountValue, appendCountHistory } = useActions();
 
-  const [addedCount, setAddedCount] = useState<number>('');
+  const [addedCount, setAddedCount] = useState<number>(0);
 
   const inputHandler = (value: number): void => {
     if (validateValue(value)) {
@@ -42,6 +44,7 @@ const CountModal: FC<CountModalProps> = ({
 
   const addCountHandler = (index: string): void => {
     topUpCountValue({ index: index, value: addedCount });
+    appendCountHistory({ value: addedCount, originalID: index, title });
     setAddedCount(0);
     setModalVisible(false);
   };

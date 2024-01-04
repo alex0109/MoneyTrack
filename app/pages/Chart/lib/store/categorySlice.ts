@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import moment from 'moment';
-
 import { makeid } from '../../../../shared/lib/utils/generateID';
 
 import { type ICategory } from '../types/interfaces';
@@ -41,7 +39,7 @@ export const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
-    setCategoriesData: (state, action) => action.payload,
+    setCategoriesData: (state, action: PayloadAction<ICategory[]>) => action.payload,
     addNewCategory: (state, action: PayloadAction<{ title: string }>) => {
       state.push({
         index: makeid(),
@@ -87,55 +85,6 @@ export const categorySlice = createSlice({
       if (categoryToChange && action.payload.count > 0) {
         categoryToChange.count = categoryToChange.count - action.payload.count;
         return state;
-      }
-    },
-    addCategoryHistory: (
-      state,
-      action: PayloadAction<{ index: string; value: number; fromCount: string; note: string }>
-    ) => {
-      const categoryToChange = state.find((item) => item.index === action.payload.index);
-      if (categoryToChange) {
-        if (!categoryToChange.history) {
-          categoryToChange.history = [];
-          categoryToChange.history.push({
-            index: makeid(),
-            title: categoryToChange.title,
-            date: moment().format('YYYY-MM-DD HH:mm'),
-            value: action.payload.value,
-            fromCount: action.payload.fromCount,
-            categoryIndex: categoryToChange.index,
-            note: action.payload.note,
-          });
-
-          return state;
-        } else {
-          categoryToChange.history.push({
-            index: makeid(),
-            title: categoryToChange.title,
-            date: moment().format('YYYY-MM-DD HH:mm'),
-            value: action.payload.value,
-            fromCount: action.payload.fromCount,
-            categoryIndex: categoryToChange.index,
-            note: action.payload.note,
-          });
-
-          return state;
-        }
-      }
-    },
-    deleteCategoryHistory: (
-      state,
-      action: PayloadAction<{ index: string; historyIndex: string }>
-    ) => {
-      const categoryToChange = state.find((count) => count.index === action.payload.index);
-
-      if (categoryToChange) {
-        for (let i = 0; i < categoryToChange.history.length; i++) {
-          if (categoryToChange.history[i].index === action.payload.historyIndex) {
-            categoryToChange.history.splice(i, 1);
-            return state;
-          }
-        }
       }
     },
   },

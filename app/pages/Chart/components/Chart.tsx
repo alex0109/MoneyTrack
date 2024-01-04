@@ -69,7 +69,7 @@ const Chart: FC = () => {
     });
 
     return () => backHandler.remove();
-  }, [category, count]);
+  }, [category, count, history]);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

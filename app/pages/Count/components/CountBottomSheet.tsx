@@ -6,6 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useActions } from '../../../shared/lib/hooks/useActions';
 import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
+
 import CountModal from './CountModal';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
@@ -35,7 +36,6 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
             title: '',
             value: 0,
             index: '0',
-            history: [],
           };
         }
 
@@ -81,7 +81,7 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
             <Ionicons name='md-construct' size={35} color={colors.textColor} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setCountModalVisible(true)}>
-            <Ionicons name='add-outline' size={35} color={colors.textColor} />
+            <Ionicons name='add-outline' size={35} color={colors.success} />
           </TouchableOpacity>
         </View>
         <CountModal
@@ -89,6 +89,7 @@ const CountBottomSheet: FC<CountBottomSheetProps> = ({ handleCountClose, countID
           refModal={refCountModal}
           modalVisible={countModalVisible}
           setModalVisible={setCountModalVisible}
+          title={countElement.title}
         />
       </View>
     </View>

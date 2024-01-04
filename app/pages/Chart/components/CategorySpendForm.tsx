@@ -22,16 +22,17 @@ import type { FC } from 'react';
 
 interface CategorySpendFormProps {
   categoryID: string;
+  title: string;
 }
 
 const { width, height } = Dimensions.get('window');
 
-const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
+const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID, title }) => {
   const colors = useTheme().colors;
   const [currentCount, setCurrentCount] = useState(0);
   const { count } = useTypedSelector((state) => state);
   const { t } = useTranslation();
-  const { addCategoryHistory, topUpCategoryCount, decreaseCountValue } = useActions();
+  const { topUpCategoryCount, decreaseCountValue, appendCategoryHistory } = useActions();
 
   const [inputFormValue, setInputFormValue] = useState(0);
   const [inputFormNotes, setInputFormNotes] = useState('');
@@ -50,10 +51,11 @@ const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID }) => {
         index: categoryID,
         count: value,
       });
-      addCategoryHistory({
-        index: categoryID,
-        value: value,
+      appendCategoryHistory({
+        value,
+        title,
         note: notes,
+        originalID: categoryID,
         fromCount: count[currentCount].index,
       });
       decreaseCountValue({ index: count[currentCount].index, value: value });

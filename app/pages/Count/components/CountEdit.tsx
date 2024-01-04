@@ -32,7 +32,6 @@ const CountEdit: FC = ({ route }) => {
           title: '',
           value: 0,
           index: '0',
-          history: [],
         };
       }
 
@@ -67,11 +66,9 @@ const CountEdit: FC = ({ route }) => {
 
   const changeCountValueHandler = (newValue: number) => {
     if (validateValue(newValue)) {
-      const historyValue: number = newValue - countElement.value;
       changeCountValue({
         index: countID,
         value: newValue,
-        historyValue: historyValue,
       });
       setCountValueSubmitDisable(false);
     }

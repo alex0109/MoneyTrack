@@ -47,7 +47,7 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
 
       return { ...item, history: thisCategoryHistory };
     },
-    [categoryID]
+    [history, categoryID]
   );
 
   const matchedCategory = findModalPropByID(categoryID);
@@ -81,7 +81,7 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <CategorySpendForm categoryID={categoryID} />
+      <CategorySpendForm categoryID={categoryID} title={matchedCategory.title} />
     </SafeAreaView>
   );
 };

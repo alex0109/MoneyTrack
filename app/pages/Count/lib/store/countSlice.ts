@@ -18,7 +18,7 @@ export const countSlice = createSlice({
   name: 'count',
   initialState,
   reducers: {
-    setCountsData: (state, action) => action.payload,
+    setCountsData: (state, action: PayloadAction<ICount[]>) => action.payload,
     addNewCount: (state, action: PayloadAction<{ title: string }>) => {
       state.push({
         index: makeid(),
@@ -36,10 +36,7 @@ export const countSlice = createSlice({
         return state;
       }
     },
-    changeCountValue: (
-      state,
-      action: PayloadAction<{ index: string; value: number; historyValue: number }>
-    ) => {
+    changeCountValue: (state, action: PayloadAction<{ index: string; value: number }>) => {
       const countToChange = state.find((count) => count.index === action.payload.index);
       if (countToChange) {
         countToChange.value = action.payload.value;

@@ -33,9 +33,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     width: windowWidth / 1.2,
-    borderRadius: 10,
-    borderRightWidth: 3,
-    borderColor: Colors.light.colors.success,
   },
   contentItem: {
     flexDirection: 'row',

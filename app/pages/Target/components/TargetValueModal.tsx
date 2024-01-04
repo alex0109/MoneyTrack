@@ -11,14 +11,15 @@ import CustomModal from '../../../shared/ui/Modal/Modal';
 import ModalTitle from '../../../shared/ui/ModalTitle/ModalTitle';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
-import type { ITarget } from '../lib/types/interfaces';
 import type { FC, RefObject } from 'react';
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 interface TargetValueModalProps {
   targetIndex: string;
   refModal: RefObject<ModalRefProps>;
   modalVisible: boolean | undefined;
   setModalVisible: (arg0: boolean) => void;
+  title: string;
 }
 
 const TargetValueModal: FC<TargetValueModalProps> = ({
@@ -26,11 +27,22 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
   refModal,
   modalVisible,
   setModalVisible,
+  title,
 }) => {
   const [addedValue, setAddedValue] = useState<number>(0);
+  const [currentCount, setCurrentCount] = useState(0);
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const { topUpTargetValue } = useActions();
+  const { count } = useTypedSelector((state) => state);
+  const { topUpTargetValue, appendTargetHistory, decreaseCountValue } = useActions();
+
+  const changeCountHandler = () => {
+    if (currentCount == count.length - 1) {
+      setCurrentCount(0);
+    } else {
+      setCurrentCount((index) => index + 1);
+    }
+  };
 
   const inputHandler = (value: string) => {
     if (validateValue(value)) {
@@ -40,6 +52,13 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
 
   const addValueHandler = (index: string): void => {
     topUpTargetValue({ index: index, value: addedValue, countIndex: '1' });
+    decreaseCountValue({ index: count[currentCount].index, value: addedValue });
+    appendTargetHistory({
+      originalID: index,
+      value: addedValue,
+      title,
+      fromCount: count[currentCount].index,
+    });
     setAddedValue(0);
     setModalVisible(false);
   };
@@ -59,6 +78,11 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
           keyboardType='numeric'
           onChangeText={(input) => inputHandler(input)}
         />
+        <TouchableOpacity onPress={() => changeCountHandler()}>
+          <Text style={[styles.modalPopUpTitle, { color: colors.info }]}>
+            {count[currentCount].title} {count[currentCount].value}
+          </Text>
+        </TouchableOpacity>
       </View>
       <View style={[styles.modalPopUpButtonContainer]}>
         <TouchableOpacity

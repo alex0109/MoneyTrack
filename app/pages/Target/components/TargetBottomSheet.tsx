@@ -6,8 +6,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { useActions } from '../../../shared/lib/hooks/useActions';
 
-import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
-
 import TargetDonut from './TargetDonut';
 import TargetValueModal from './TargetValueModal';
 
@@ -15,6 +13,7 @@ import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
 
 import type { ITarget } from '../lib/types/interfaces';
 import type { FC } from 'react';
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 const radius = PixelRatio.roundToNearestPixel(90);
 const STROKE_WIDTH = 9;
@@ -27,8 +26,8 @@ interface TargetBottomSheetProps {
 }
 const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targetID }) => {
   const colors = useTheme().colors;
-  const { target } = useTypedSelector((state) => state);
   const { deleteTarget } = useActions();
+  const { target } = useTypedSelector((state) => state);
   const navigation = useNavigation();
 
   const findModalPropByID = useCallback(
@@ -96,7 +95,7 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
             <Ionicons name='add-outline' size={35} color={colors.textColor} />
           </TouchableOpacity>
         </View>
-        <View style={styles.donutContainer}>
+        {/* <View style={styles.donutContainer}>
           <View style={styles.donutChartContainer}>
             <TargetDonut
               backgroundColor='white'
@@ -107,12 +106,13 @@ const TargetBottomSheet: FC<TargetBottomSheetProps> = ({ handleTargetClose, targ
               font={font}
             />
           </View>
-        </View>
+        </View> */}
         <TargetValueModal
           targetIndex={targetID}
           refModal={refTargeValuetModal}
           modalVisible={targetValueModalVisible}
           setModalVisible={setTargetValueModalVisible}
+          title={targetElement.title}
         />
       </View>
     </View>

@@ -24,6 +24,8 @@ export function mapCategories(
         moment(historyItem.date).format('YYYY-MM') === moment().format('YYYY-MM')
     );
 
+    console.log(!matchingCategory);
+
     if (matchingCategory) {
       const categoryId = matchingCategory.index;
 
