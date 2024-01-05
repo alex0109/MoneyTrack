@@ -38,7 +38,7 @@ const Root: FC = () => {
   }
 
   useEffect(() => {
-    persistor.purge();
+    // persistor.purge();
 
     async function fetchToken() {
       const storedToken: string = await get('token');
