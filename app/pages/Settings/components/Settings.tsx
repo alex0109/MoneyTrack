@@ -17,10 +17,10 @@ const Settings: FC = () => {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor: colors.themeColor }]}>
-      <Cloud />
       <Theme />
       <BGImage />
       <Language />
+      {/* <Cloud />a */}
       <Exit />
     </ScrollView>
   );

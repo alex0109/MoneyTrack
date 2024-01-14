@@ -1,47 +1,32 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { useActions } from '../../../shared/lib/hooks/useActions';
-import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import { AuthContext } from '../../../shared/lib/providers/AuthProvider';
 import Title from '../../../shared/ui/Title/Title';
 
-import { deleteData } from '../lib/api/deleteData';
-import { fetchData } from '../lib/api/fetchData';
-import { loadData } from '../lib/api/loadData';
+import CloudModal from './CloudModal';
 
-import type { ICategory } from '../../Chart/lib/types/interfaces';
-import type { ICount } from '../../Count/lib/types/interfaces';
-import type { ITarget } from '../../Target/lib/types/interfaces';
+import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
 import type { FC } from 'react';
 
 const Cloud: FC = () => {
   const colors = useTheme().colors;
   const { t } = useTranslation();
-  const { isGuest, uid } = useContext(AuthContext);
-  const { category, count, target } = useTypedSelector((state) => state);
-  const { setCategoriesData, setCountsData, setTargetsData } = useActions();
+  const { isGuest } = useContext(AuthContext);
 
-  const loadAppData = async () => {
-    const response = await loadData(uid);
+  const refCloudModal = useRef<ModalRefProps>(null);
 
-    const loadedCategories: ICategory[] = await Object.values(response)[0].categories;
-    const loadedCounts: ICount[] = await Object.values(response)[0].counts;
-    const loadedTargets: ITarget[] = await Object.values(response)[0].targets;
+  const setCloudModalVisible = useCallback((modalVisible: boolean) => {
+    const setModalVisible = refCloudModal.current?.setModalVisible(modalVisible);
+    if (setModalVisible) {
+      refCloudModal.current?.setModalVisible(modalVisible);
+    }
+  }, []);
 
-    if (loadedCategories) {
-      setCategoriesData(loadedCategories);
-    }
-    if (loadedCounts) {
-      setCountsData(loadedCounts);
-    }
-    if (loadedTargets) {
-      setTargetsData(loadedTargets);
-    }
-  };
+  const cloudModalModalVisible = refCloudModal.current?.modalVisible;
 
   return (
     <View>
@@ -54,7 +39,7 @@ const Cloud: FC = () => {
         <></>
       )}
       <View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           disabled={isGuest}
           style={[styles.button, { backgroundColor: !isGuest ? colors.info : colors.gray }]}
           onPress={async () => loadAppData()}>
@@ -62,8 +47,8 @@ const Cloud: FC = () => {
           <Text style={[styles.buttonText, { color: colors.themeColor }]}>
             {t('settings.downloadData')}
           </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity
           disabled={isGuest}
           style={[styles.button, { backgroundColor: !isGuest ? colors.success : colors.gray }]}
           onPress={async () => {
@@ -74,18 +59,23 @@ const Cloud: FC = () => {
           <Text style={[styles.buttonText, { color: colors.themeColor }]}>
             {t('settings.saveData')}
           </Text>
-        </TouchableOpacity>
-
+        </TouchableOpacity> */}
         <TouchableOpacity
           disabled={isGuest}
           style={[styles.button, { backgroundColor: !isGuest ? colors.red : colors.gray }]}
-          onPress={async () => await deleteData(uid)}>
+          onPress={async () => setCloudModalVisible(true)}>
           <Ionicons name='trash' size={30} />
           <Text style={[styles.buttonText, { color: colors.themeColor }]}>
             {t('settings.deleteData')}
           </Text>
         </TouchableOpacity>
       </View>
+
+      <CloudModal
+        refModal={refCloudModal}
+        modalVisible={cloudModalModalVisible}
+        setModalVisible={setCloudModalVisible}
+      />
     </View>
   );
 };

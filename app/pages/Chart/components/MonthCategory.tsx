@@ -32,8 +32,8 @@ interface MonthCategoryProps {
 }
 
 const MonthCategory = memo<MonthCategoryProps>(({ date, categories, data, handleOpenCategory }) => {
-  const { uid } = useContext(AuthContext);
-  const { category, count, target } = useTypedSelector((state) => state);
+  // const { uid } = useContext(AuthContext);
+  // const { category, count, target } = useTypedSelector((state) => state);
 
   const colors = useTheme().colors;
 
@@ -59,21 +59,21 @@ const MonthCategory = memo<MonthCategoryProps>(({ date, categories, data, handle
 
   const createCategoryModalVisible = refCreateCategoryModal.current?.modalVisible;
 
-  useEffect(() => {
-    async function saveData() {
-      try {
-        setLoading(true);
-        await deleteData(uid);
-        await fetchData(uid, category, count, target);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    }
+  // useEffect(() => {
+  //   async function saveData() {
+  //     try {
+  //       setLoading(true);
+  //       await deleteData(uid);
+  //       await fetchData(uid, category, count, target);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       setLoading(false);
+  //       console.log(error);
+  //     }
+  //   }
 
-    void saveData();
-  }, []);
+  //   void saveData();
+  // }, []);
 
   return (
     <View style={styles.main}>

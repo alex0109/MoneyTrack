@@ -13,7 +13,7 @@ export const fetchData = async (
   counts: ICount[],
   targets: ITarget[]
 ) => {
-  const response = await axios.post(`${root_url}/users/${uid}.json?auth=${db_key}`, {
+  const response = await axios.post(`${root_url}/users.json?auth=${db_key}`, {
     categories: [...categories],
     counts: [...counts],
     targets: [...targets],

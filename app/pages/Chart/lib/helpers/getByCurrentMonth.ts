@@ -95,7 +95,5 @@ export function mapCategories(
     return { ...categoryMap[categoryId], count: categoryTotal };
   });
 
-  console.log(mappedCategories.categories.map((item) => item.history));
-
   return mappedCategories;
 }

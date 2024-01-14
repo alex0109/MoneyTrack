@@ -32,7 +32,9 @@
       "downloadData": "Завантажити дані із хмари",
       "saveData": "Зберегти дані у хмару",
       "deleteData": "Видалити дані із хмари",
-      "logInButton": "Увійти"
+      "logInButton": "Увійти",
+      "deleteTitleModal": "Ви впевнені, що хочете видалити всі данні з хмари?",
+      "delete": "Видалити"
     },
     "firstScreen": {
       "countTitle": "Рахунки",

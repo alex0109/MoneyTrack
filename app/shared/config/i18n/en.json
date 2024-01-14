@@ -32,7 +32,9 @@
       "downloadData": "Download data from cloud",
       "saveData": "Save data to cloud",
       "deleteData": "Delete data from cloud",
-      "logInButton": "Log In"
+      "logInButton": "Log In",
+      "deleteTitleModal": "Are you sure you want to delete all data from cloud?",
+      "delete": "Delete"
     },
     "firstScreen": {
       "countTitle": "Counts",
