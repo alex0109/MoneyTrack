@@ -5,14 +5,7 @@ import { makeid } from '../../../../shared/lib/utils/generateID';
 import type { ITarget } from '../types/interfaces';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ITarget[] = [
-  {
-    index: 'targetIndex',
-    title: 'Air Jordan 1',
-    value: 30,
-    target: 150,
-  },
-];
+const initialState: ITarget[] = [];
 
 export const targetSlice = createSlice({
   name: 'target',

@@ -6,13 +6,7 @@ import type { ICount } from '../types/interfaces';
 
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: ICount[] = [
-  {
-    index: 'countIndex',
-    title: 'Debit card',
-    value: 283,
-  },
-];
+const initialState: ICount[] = [];
 
 export const countSlice = createSlice({
   name: 'count',
