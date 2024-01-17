@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { useActions } from '../../../shared/lib/hooks/useActions';
+import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 import { validateValue } from '../../../shared/lib/utils/validateValue';
 import CustomModal from '../../../shared/ui/Modal/Modal';
 
@@ -12,7 +13,6 @@ import ModalTitle from '../../../shared/ui/ModalTitle/ModalTitle';
 
 import type { ModalRefProps } from '../../../shared/ui/Modal/Modal';
 import type { FC, RefObject } from 'react';
-import { useTypedSelector } from '../../../shared/lib/hooks/useTypedSelector';
 
 interface TargetValueModalProps {
   targetIndex: string;
@@ -50,6 +50,8 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
     }
   };
 
+  useEffect(() => {}, [count]);
+
   const addValueHandler = (index: string): void => {
     topUpTargetValue({ index: index, value: addedValue, countIndex: '1' });
     decreaseCountValue({ index: count[currentCount].index, value: addedValue });
@@ -80,7 +82,8 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
         />
         <TouchableOpacity onPress={() => changeCountHandler()}>
           <Text style={[styles.modalPopUpTitle, { color: colors.info }]}>
-            {count[currentCount].title} {count[currentCount].value}
+            {count[currentCount] ? count[currentCount].title : t('secondScreen.noCounts')}{' '}
+            {count[currentCount] ? count[currentCount].value : null}
           </Text>
         </TouchableOpacity>
       </View>
@@ -94,10 +97,15 @@ const TargetValueModal: FC<TargetValueModalProps> = ({
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={!count[currentCount]}
           onPress={() => {
             addValueHandler(targetIndex);
           }}>
-          <Text style={[styles.modalPopUpButton, { color: colors.textColor }]}>
+          <Text
+            style={[
+              styles.modalPopUpButton,
+              { color: count[currentCount] ? colors.textColor : colors.gray },
+            ]}>
             {t('firstScreen.modalAddButton')}
           </Text>
         </TouchableOpacity>
