@@ -1,5 +1,5 @@
 import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
@@ -30,7 +30,7 @@ const { width, height } = Dimensions.get('window');
 const CategorySpendForm: FC<CategorySpendFormProps> = ({ categoryID, title }) => {
   const colors = useTheme().colors;
   const [currentCount, setCurrentCount] = useState(0);
-  const { count } = useTypedSelector((state) => state);
+  const { count, category } = useTypedSelector((state) => state);
   const { t } = useTranslation();
   const { topUpCategoryCount, decreaseCountValue, appendCategoryHistory } = useActions();
 

@@ -51,7 +51,7 @@ const CategoryEdit: FC = ({ route }) => {
 
       return { ...item, history: thisCategoryHistory };
     },
-    [categoryID]
+    [categoryID, category]
   );
 
   const matchedCategory = findModalPropByID(categoryID);

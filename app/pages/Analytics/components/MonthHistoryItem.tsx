@@ -20,32 +20,33 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
   const { t } = useTranslation();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const {
-    decreaseCategoryCount,
     topUpCountValue,
+    decreaseCountValue,
+    decreaseTargetValue,
     removeCategoryHistory,
     removeCountHistory,
     removeTargetHistory,
   } = useActions();
 
-  // const onDeleteHistory = () => {
-  //   topUpCountValue({
-  //     index: dayValues.fromCount,
-  //     value: dayValues.value,
-  //   });
-  //   decreaseCategoryCount({
-  //     index: dayValues.categoryIndex,
-  //     count: dayValues.value,
-  //   });
-  //   deleteCategoryHistory({
-  //     index: dayValues.categoryIndex,
-  //     historyIndex: dayValues.index,
-  //   });
-  // };
-
-  const onDeleteHistory = (index: string): void => {
-    if (index.split('-')[0] === '100') removeCountHistory({ index });
-    if (index.split('-')[0] === '010') removeTargetHistory({ index });
-    if (index.split('-')[0] === '001') removeCategoryHistory({ index });
+  const onDeleteHistory = (
+    historyIndex: string,
+    originalIndex: string,
+    countIndex: string,
+    value: number
+  ): void => {
+    if (historyIndex.split('-')[0] === '001') {
+      decreaseCountValue({ index: originalIndex, value });
+      removeCountHistory({ index: historyIndex });
+    }
+    if (historyIndex.split('-')[0] === '010') {
+      topUpCountValue({ index: countIndex, value });
+      decreaseTargetValue({ index: originalIndex, value });
+      removeTargetHistory({ index: historyIndex });
+    }
+    if (historyIndex.split('-')[0] === '100') {
+      topUpCountValue({ index: countIndex, value });
+      removeCategoryHistory({ index: historyIndex });
+    }
   };
 
   return (
@@ -75,7 +76,15 @@ const MonthHistoryItem: FC<MonthHistoryItemProps> = ({ dayValues }) => {
             {t('thirdScreen.noNotesDescription')}
           </Text>
         )}
-        <TouchableOpacity onPress={() => onDeleteHistory(dayValues.index)}>
+        <TouchableOpacity
+          onPress={() =>
+            onDeleteHistory(
+              dayValues.index,
+              dayValues.originalID,
+              dayValues?.fromCount,
+              dayValues.value
+            )
+          }>
           <Text style={[styles.categoryText, { color: colors.red }]}>
             {t('thirdScreen.deleteHistoryButton')}
           </Text>

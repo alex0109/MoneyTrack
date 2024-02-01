@@ -47,7 +47,7 @@ const Category: FC<CategoryProps> = ({ categoryID }) => {
 
       return { ...item, history: thisCategoryHistory };
     },
-    [history, categoryID]
+    [history, category, categoryID]
   );
 
   const matchedCategory = findModalPropByID(categoryID);

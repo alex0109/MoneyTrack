@@ -27,7 +27,7 @@ export const historySlice = createSlice({
     ) => {
       state.counts.push({
         date: moment().format('YYYY-MM-DD HH:mm'),
-        index: makeid(),
+        index: `001-${makeid()}`,
         value: action.payload.value,
         title: action.payload.title,
         originalID: action.payload.originalID,
@@ -49,7 +49,7 @@ export const historySlice = createSlice({
     ) => {
       state.targets.push({
         date: moment().format('YYYY-MM-DD HH:mm'),
-        index: makeid(),
+        index: `010-${makeid()}`,
         value: action.payload.value,
         title: action.payload.title,
         originalID: action.payload.originalID,
@@ -73,7 +73,7 @@ export const historySlice = createSlice({
     ) => {
       state.categories.push({
         date: moment().format('YYYY-MM-DD HH:mm'),
-        index: makeid(),
+        index: `100-${makeid()}`,
         value: action.payload.value,
         title: action.payload.title,
         originalID: action.payload.originalID,

@@ -28,7 +28,7 @@ export function sortByMonths(history: IHistoryState): IMonthsCategory[] {
       currentMonth = month;
     }
 
-    if (entry.index.startsWith('100')) {
+    if (entry.index.startsWith('001')) {
       currentIncome += entry.value;
     }
 
@@ -37,7 +37,7 @@ export function sortByMonths(history: IHistoryState): IMonthsCategory[] {
     if (existingAction) {
       existingAction.amount += entry.value;
       existingAction.history.push(entry);
-    } else {
+    } else if (!entry.index.startsWith('001')) {
       currentActions.push({
         index: entry.originalID,
         title: entry.title,

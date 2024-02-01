@@ -14,6 +14,7 @@ import { ThemeContext } from './shared/lib/providers/ThemeProvider';
 import { get } from './shared/lib/utils/asyncMethods';
 
 import type { FC } from 'react';
+import { persistor } from './shared/lib/store/store';
 
 const Root: FC = () => {
   const { isConnected } = NetInfo.useNetInfo();

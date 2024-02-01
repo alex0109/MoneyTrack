@@ -101,11 +101,11 @@ const CountEdit: FC = ({ route }) => {
           submitDisable={countValueSubmitDisable}
           submitEditing={() => changeCountValueHandler(inputCountValue)}
         />
-        <View style={{ width: '80%', marginTop: 5 }}>
+        {/* <View style={{ width: '80%', marginTop: 5 }}>
           <Text style={{ color: colors.red, fontFamily: 'NotoSans-Regular' }}>
             {t('firstScreen.countEditValueWarning')}
           </Text>
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
